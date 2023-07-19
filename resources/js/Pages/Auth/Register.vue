@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Checkbox.vue';
@@ -7,106 +7,88 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import TopBar from '@/Components/TopBar.vue';
+import BorderButton from '@/Components/BorderButton.vue';
+import StepperHeader from '@/Components/StepperHeader.vue';
+import RegisterContainer from '@/Components/RegisterContainer.vue';
+import Tst from './Tst.vue';
+import Tst2 from './Tst2.vue';
+import Stepper from '@/Components/Stepper.vue';
+import { computed, ref } from 'vue';
 
 const form = useForm({
     name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
+    cpf: '',
+    certificate: '',
+    phone: '',
     terms: false,
 });
+
+const steps = [Tst, Tst2]
 
 const submit = () => {
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const currentStep = ref(0)
+
+const test = () => {
+    // let data1 = router.restore('tst')
+    // let data2 = router.restore('tst2')
+
+    // console.log(data1, data2);
+
+    currentStep.value++;
+}
+
+const steps2 = ref([
+    { label: 'step1' },
+    { label: 'step2' }
+])
+
+const test2 = () => {
+    console.log("submit")
+}
+
 </script>
 
 <template>
-    <Head title="Register" />
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <Head title="Register" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
+        <TopBar>
+            <template #buttons>
+                <div class="w-[1px] h-[40px] bg-white mx-1"></div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
-                <TextInput
-                    id="name"
-                    v-model="form.name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="username"
-                />
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="new-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-                <TextInput
-                    id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="new-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
-                <InputLabel for="terms">
-                    <div class="flex items-center">
-                        <Checkbox id="terms" v-model:checked="form.terms" name="terms" required />
-
-                        <div class="ml-2">
-                            I agree to the <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">Privacy Policy</a>
-                        </div>
-                    </div>
-                    <InputError class="mt-2" :message="form.errors.terms" />
-                </InputLabel>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link :href="route('login')" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                    Already registered?
+                <Link :href="route('login')">
+                    <BorderButton class="text-white ml-2 text-xs md:text-base sm:p-1 md:p-2">
+                        Já tenho cadastro
+                    </BorderButton>
                 </Link>
 
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </AuthenticationCard>
+            </template>
+        </TopBar>
+
+        <RegisterContainer>
+
+            <!-- <StepperHeader :current-step="currentStep" :total-steps="4" />
+        
+            <component :is="steps[currentStep]"></component>
+
+            <button @click="currentStep++">test</button>
+            <br>
+            <br>
+            <br>
+            <button @click="currentStep--">test2</button>
+            <button @click="test()">test3</button> -->
+
+            <Stepper :value="steps2" v-model:currentStep="currentStep">
+                <component :is="steps[currentStep]" @nextStep="test()" @submit="test2()"></component>
+            </Stepper>
+
+        </RegisterContainer>
+    </div>
+    
 </template>

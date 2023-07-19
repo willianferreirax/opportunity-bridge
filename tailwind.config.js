@@ -17,8 +17,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'ey-black': '#2e2e38',
+                'ey-yellow': '#ffe600'
+            }
         },
+
     },
+
+    darkMode: 'class',
 
     plugins: [forms, typography],
 };
