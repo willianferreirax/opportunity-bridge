@@ -76,7 +76,7 @@ const calculateBarPosition = () => {
 
 <template id="vue-stepper">
 	<div>
-		<div class="flex-container container">
+		<div class="flex-container">
 			<div class="progress" :style="pBarSize">
 				<div class="progress-bar"
 					role="progressbar"
@@ -88,7 +88,7 @@ const calculateBarPosition = () => {
 				</div>
 			</div>
 			<div 
-				class="step"
+				class="step w-10"
 				v-for="(step, i) in steps"
 				:key="i"
 				:class="{ done: step.number < currentStepComputed, current: step.number === currentStepComputed }"
@@ -99,15 +99,19 @@ const calculateBarPosition = () => {
 					v-on:click="moveStep(step.number)"
 				>
 
-					<svg v-if="step.number < currentStepComputed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					<svg v-if="step.number < currentStepComputed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 text-ey-black">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
 					</svg>
 
-					<span v-else>
+					<span 
+						v-else
+						class="font-bold"
+						:class="{ 'text-ey-black': step.number === currentStepComputed }"
+					>
 						{{step.number}}
 					</span>
 				</div>
-				<div class="step-label">{{step.label}}</div>
+				<div class="step-label">{{step?.label ?? ""}}</div>
 			</div>
 		</div>
 
@@ -136,20 +140,20 @@ const calculateBarPosition = () => {
   background-color: #cdcdcd;
 }
 .flex-container .progress .progress-bar {
-  background-color: #46c0bd;
+  background-color: #ffe600;
 }
 .flex-container .step {
   text-align: center;
   z-index: 2;
 }
 .flex-container .step .step-number {
-  background-color: #cdcdcd;
+  background-color: #2e2e38;
   padding: 0.5em;
   color: white;
   border-radius: 2em;
   background-size: 0% 0%;
   background-position: center;
-  background-image: radial-gradient(circle at center, #b384c7 50%, transparent 50%);
+  background-image: radial-gradient(circle at center, #ffe600 50%, transparent 50%);
   background-repeat: no-repeat;
 }
 .flex-container .step.current .step-number {
@@ -157,7 +161,7 @@ const calculateBarPosition = () => {
   transition: all 0.4s 0.5s;
 }
 .flex-container .step.done .step-number {
-  background-color: #46c0bd;
+  background-color: #ffe600;
 }
 .flex-container .step .step-label {
   padding-top: 5px;

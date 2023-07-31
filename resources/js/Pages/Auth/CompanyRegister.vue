@@ -11,10 +11,10 @@ import TopBar from '@/Components/TopBar.vue';
 import BorderButton from '@/Components/BorderButton.vue';
 import StepperHeader from '@/Components/StepperHeader.vue';
 import RegisterContainer from '@/Components/RegisterContainer.vue';
-import Step1 from './Register/Step1.vue';
-import Step2 from './Register/Step2.vue';
-import Step3 from './Register/Step3.vue';
-import Step4 from './Register/Step4.vue';
+import Step1 from './CompanyRegister/Step1.vue';
+import Step2 from './CompanyRegister/Step2.vue';
+import Step3 from './CompanyRegister/Step3.vue';
+
 import Stepper from '@/Components/Stepper.vue';
 import { computed, ref } from 'vue';
 
@@ -26,12 +26,10 @@ const form = useForm({
     terms: false,
 });
 
-const steps = [Step1, Step2, Step3, Step4]
+const steps = [Step1, Step2, Step3]
 
 const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
+
 };
 
 const currentStep = ref(0)
@@ -49,7 +47,7 @@ const steps2 = ref([
     { label: '' },
     { label: '' },
     { label: '' },
-    { label: '' },
+
 ])
 
 const test2 = () => {

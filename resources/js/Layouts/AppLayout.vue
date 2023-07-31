@@ -76,14 +76,14 @@ const logout = () => {
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('user.dashboard')">
                                     <ApplicationMark class="block h-9 w-auto" />
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <NavLink :href="route('user.dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
                             </div>
@@ -118,10 +118,6 @@ const logout = () => {
 
                                         <DropdownLink :href="route('profile.show')">
                                             Profile
-                                        </DropdownLink>
-
-                                        <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
-                                            API Tokens
                                         </DropdownLink>
 
                                         <div class="border-t border-gray-200 dark:border-gray-600" />
@@ -171,7 +167,7 @@ const logout = () => {
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('user.dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
@@ -185,8 +181,15 @@ const logout = () => {
                 </div>
             </header>
 
+            
+            <div class="bg-ey-yellow text-ey-black text-center font-bold p-1">
+                <Link :href="route('profile.curriculum.show')">
+                    <p class="underline underline-offset-2">Complete seu curriculo para poder se candidatar</p>
+                </Link>
+            </div>
             <!-- Page Content -->
-            <main>
+            <main class="mx-4 md:mx-28 p-8 bg-white h-full min-h-screen">
+                
                 <slot />
             </main>
         </div>

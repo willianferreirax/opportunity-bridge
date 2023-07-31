@@ -23,8 +23,8 @@ import { Head, Link } from '@inertiajs/vue3';
                 <div class="w-[1px] h-[40px] bg-white mx-1"></div>
 
                 <Link :href="route('login')">
-                    <BorderButton class="text-white ml-2 text-xs md:text-base sm:p-1 md:p-2">
-                        Já tenho cadastro
+                    <BorderButton class="text-white ml-2 text-xs md:text-base sm:p-1 md:py-2 md:px-6">
+                        Login
                     </BorderButton>
                 </Link>
 
@@ -41,9 +41,11 @@ import { Head, Link } from '@inertiajs/vue3';
 
                     <div class="grid mt-10 gap-10">
                         <div>
-                            <BorderButton class="border-black w-full md:w-1/2 text-xl p-4">
-                                Anunciar minha vaga
-                            </BorderButton>
+                            <Link :href="route('company.register')">
+                                <BorderButton class="border-black w-full md:w-1/2 text-xl p-4">
+                                    Anunciar minha vaga
+                                </BorderButton>
+                            </Link>
                         </div>
 
                         <div>
