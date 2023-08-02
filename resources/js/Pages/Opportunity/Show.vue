@@ -9,7 +9,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
         <section class="">
 
             <div>
-                <div class="mb-4 font-bold text-lg">
+                <div class="mb-4 font-bold text-lg sm:text-2xl">
                     Progesso da candidatura
                 </div>
                 <div>
@@ -42,6 +42,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
                     </div>
                 </div>
             </div>
+
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
             
             <div class="flex justify-center items-center p-4">
                 <ApplicationMark class="block h-20 md:h-32 w-auto" />

@@ -19,8 +19,10 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "apexcharts": "^3.41.0",
         "maska": "^2.1.9",
         "vue-select": "^4.0.0-beta.6",
+        "vue3-apexcharts": "^1.4.4",
         "vue3-toastify": "^0.1.11"
     }
 }

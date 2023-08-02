@@ -3,6 +3,22 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Link } from '@inertiajs/vue3';
+
+
+const options = {
+        chart: {
+          id: 'vuechart-example'
+        },
+        xaxis: {
+          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+        }
+      }
+      
+ const series = [{
+        name: 'series-1',
+        data: [30, 40, 45, 50, 49, 60, 70, 91]
+      }]
+
 </script>
 
 <template>
@@ -150,7 +166,7 @@ import { Link } from '@inertiajs/vue3';
                 </h3>
 
                 <div>
-                    grafico
+                    <apexchart width="500" type="bar" :options="options" :series="series"></apexchart>
                 </div>
             </div>
 
