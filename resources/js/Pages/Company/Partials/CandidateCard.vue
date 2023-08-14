@@ -1,7 +1,6 @@
 <script setup>
 
 import { Link } from '@inertiajs/vue3';
-import ApplicationMark from '@/Components/ApplicationMark.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import StandardSelect from '@/Components/StandardSelect.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';

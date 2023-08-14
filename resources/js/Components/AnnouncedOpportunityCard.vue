@@ -7,7 +7,7 @@ import PrimaryButton from './PrimaryButton.vue';
 
 <template>
     
-    <Link :href="route('company.opportunitiy.report', 1)" class="flex bg-gray-100 w-full rounded-lg mb-12 p-4">
+    <Link :href="route('company.opportunitiy.report', 1)" class="flex bg-gray-100 w-full rounded-lg p-4">
         <div class="w-full flex flex-col justify-center sm:px-0 pr-4">
             <div>
                 <h2 class="font-bold sm:text-xl">
