@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,6 +24,11 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('frontpage');
+
+Route::prefix('auth')->group(function (){
+    Route::post('register/user', [AuthController::class, 'registerUser'])
+        ->name('register.user');
+});
 
 Route::middleware([
     'auth:sanctum',

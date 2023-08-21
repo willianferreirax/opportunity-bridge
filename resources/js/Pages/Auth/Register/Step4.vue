@@ -1,9 +1,8 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import StandardSelect from '@/Components/StandardSelect.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 
@@ -17,16 +16,24 @@ const form = useForm('userRegisterStep4', {
 
 });
 
+const page = usePage();
+
 const submit = () => {
 
+    form.clearErrors()
 
-    emit("nextStep")
+    if(!form.sex){
+        page.props.errors.sex = 'Sexo é obrigatório'
+        return;
+    }
+
+    emit("submit")
 };
 
-const emit = defineEmits(["nextStep"])
+const emit = defineEmits(["submit"])
 </script>
 <template>
-    <form @submit.prevent="submit" class="p-12 pt-8">
+    <div class="p-12 pt-8">
 
         <div class="mb-8">
             <h1 class="font-bold text-xl">
@@ -43,7 +50,7 @@ const emit = defineEmits(["nextStep"])
                 <option value="1">Masculino</option>
                 <option value="2">Feminino</option>
             </StandardSelect>
-            <InputError class="mt-2" :message="form.errors.sex" />
+            <InputError class="mt-2" :message="$page.props.errors.sex" />
         </div>
 
         <div class="mt-4">
@@ -57,7 +64,7 @@ const emit = defineEmits(["nextStep"])
                 <option value="4">Parda</option>
                 <option value="5">Indígena</option>
             </StandardSelect>
-            <InputError class="mt-2" :message="form.errors.skin" />
+            <InputError class="mt-2" :message="$page.props.errors.skin" />
         </div>
 
         <div class="mt-4">
@@ -69,7 +76,7 @@ const emit = defineEmits(["nextStep"])
                 <option value="2">option2</option>
                 <option value="3">option3</option>
             </StandardSelect>
-            <InputError class="mt-2" :message="form.errors.gender" />
+            <InputError class="mt-2" :message="$page.props.errors.gender" />
         </div>
 
         <div class="mt-4">
@@ -81,7 +88,7 @@ const emit = defineEmits(["nextStep"])
                 <option value="2">Estrangeiro</option>
                 
             </StandardSelect>
-            <InputError class="mt-2" :message="form.errors.nacionality" />
+            <InputError class="mt-2" :message="$page.props.errors.nacionality" />
         </div>
 
         <div class="mt-4">
@@ -99,15 +106,15 @@ const emit = defineEmits(["nextStep"])
                     
                 </StandardSelect>
             </div>
-            <InputError class="mt-2" :message="form.errors.deficiency" />
+            <InputError class="mt-2" :message="$page.props.errors.deficiency" />
         </div>
 
 
         <div class="flex items-center justify-center mt-4">
             
-            <PrimaryButton class="ml-4">
+            <PrimaryButton class="ml-4" @click="submit()">
                 Concluir
             </PrimaryButton>
         </div>
-    </form>
+    </div>
 </template>

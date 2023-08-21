@@ -1,9 +1,10 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import validatePassword from '@/Utils/validatePassword';
 
 const form = useForm('userRegisterStep2', {
     email: '',
@@ -11,10 +12,36 @@ const form = useForm('userRegisterStep2', {
     passwordConfirm: '',
 });
 
-const submit = () => {
-    // form.post(route('register'), {
+const page = usePage();
 
-    // });
+const nextStep = () => {
+    
+    form.clearErrors()
+
+    if(!form.email) {
+        page.props.errors.email = 'Email é obrigatório'
+        return;
+    }
+
+    if(!form.password) {
+        page.props.errors.password = 'Senha é obrigatório'
+        return;
+    }
+
+    if(!form.passwordConfirm) {
+        page.props.errors.passwordConfirm = 'Confirmação de senha é obrigatório'
+        return;
+    }
+
+    if(!validatePassword(form.password)) {
+        page.props.errors.password = 'Senha inválida'
+        return;
+    }
+
+    if(form.password != form.passwordConfirm) {
+        page.props.errors.passwordConfirm = 'As senhas não conferem'
+        return;
+    }
 
     emit("nextStep")
 };
@@ -22,7 +49,7 @@ const submit = () => {
 const emit = defineEmits(["nextStep"])
 </script>
 <template>
-    <form class="p-12 pt-8" @submit.prevent="submit">
+    <div class="p-12 pt-8">
 
         <div class="mb-8">
             <h1 class="font-bold text-xl">
@@ -44,7 +71,7 @@ const emit = defineEmits(["nextStep"])
                 autofocus
                 autocomplete="email"
             />
-            <InputError class="mt-2" :message="form.errors.email" />
+            <InputError class="mt-2" :message="$page.props.errors.email" />
         </div>
 
         <div class="mt-4">
@@ -61,7 +88,7 @@ const emit = defineEmits(["nextStep"])
             <p class="text-sm text-gray-600">
                 *Minimo de 8 caracteres, 1 caractere especial, 1 letra maiusucula, letras e numeros
             </p>
-            <InputError class="mt-2" :message="form.errors.password" />
+            <InputError class="mt-2" :message="$page.props.errors.password" />
         </div>
 
         <div class="mt-4">
@@ -75,14 +102,14 @@ const emit = defineEmits(["nextStep"])
                 autofocus
                 autocomplete="passwordConfirm"
             />
-            <InputError class="mt-2" :message="form.errors.passwordConfirm" />
+            <InputError class="mt-2" :message="$page.props.errors.passwordConfirm" />
         </div>
 
         <div class="flex items-center justify-center mt-4">
             
-            <PrimaryButton class="ml-4">
+            <PrimaryButton class="ml-4" @click="nextStep()">
                 Próximo
             </PrimaryButton>
         </div>
-    </form>
+    </div>
 </template>

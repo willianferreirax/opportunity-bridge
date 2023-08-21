@@ -57,6 +57,11 @@ const progress = computed(() => {
 });
 
 const moveStep = (stepNumber) => {
+
+	if(stepNumber > currentStepComputed.value){
+		return
+	}
+	
 	if (stepNumber > steps.value.length) {
 		return;
 	}

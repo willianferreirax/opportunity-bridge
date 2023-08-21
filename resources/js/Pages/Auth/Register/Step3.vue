@@ -1,9 +1,10 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { vMaska } from 'maska';
 
 const form = useForm('userRegisterStep3', {
     cep: '',
@@ -13,8 +14,43 @@ const form = useForm('userRegisterStep3', {
     number: '',
 });
 
-const submit = () => {
+const page = usePage();
 
+const nextStep = () => {
+
+    form.clearErrors()
+
+    if(!form.cep) {
+        page.props.errors.cep = 'CEP é obrigatório'
+        return;
+    }
+
+    cep = form.cep.replace(/[^\d]+/g, '');
+
+    if(cep.length != 8) {
+        page.props.errors.cep = 'CEP inválido'
+        return;
+    }
+
+    if(!form.street) {
+        page.props.errors.street = 'Rua é obrigatório'
+        return;
+    }
+
+    if(!form.neighbor) {
+        page.props.errors.neighbor = 'Bairro é obrigatório'
+        return;
+    }
+
+    if(!form.city) {
+        page.props.errors.city = 'Cidade é obrigatório'
+        return;
+    }
+
+    if(!form.number) {
+        page.props.errors.number = 'Número é obrigatório'
+        return;
+    }
 
     emit("nextStep")
 };
@@ -22,7 +58,7 @@ const submit = () => {
 const emit = defineEmits(["nextStep"])
 </script>
 <template>
-    <form @submit.prevent="submit" class="p-12 pt-8">
+    <div class="p-12 pt-8">
 
         <div class="mb-8">
             <h1 class="font-bold text-xl">
@@ -43,8 +79,10 @@ const emit = defineEmits(["nextStep"])
                 required
                 autofocus
                 autocomplete="cep"
+                v-maska 
+                data-maska="#####-###"
             />
-            <InputError class="mt-2" :message="form.errors.cep" />
+            <InputError class="mt-2" :message="$page.props.errors.cep" />
         </div>
 
         <div class="mt-4">
@@ -58,7 +96,7 @@ const emit = defineEmits(["nextStep"])
                 autofocus
                 autocomplete="street"
             />
-            <InputError class="mt-2" :message="form.errors.street" />
+            <InputError class="mt-2" :message="$page.props.errors.street" />
         </div>
 
         <div class="mt-4">
@@ -72,7 +110,7 @@ const emit = defineEmits(["nextStep"])
                 autofocus
                 autocomplete="neighbor"
             />
-            <InputError class="mt-2" :message="form.errors.neighbor" />
+            <InputError class="mt-2" :message="$page.props.errors.neighbor" />
         </div>
 
         <div class="mt-4">
@@ -86,7 +124,7 @@ const emit = defineEmits(["nextStep"])
                 autofocus
                 autocomplete="city"
             />
-            <InputError class="mt-2" :message="form.errors.city" />
+            <InputError class="mt-2" :message="$page.props.errors.city" />
         </div>
 
         <div class="mt-4">
@@ -99,15 +137,17 @@ const emit = defineEmits(["nextStep"])
                 required
                 autofocus
                 autocomplete="number"
+                v-maska 
+                data-maska="#####"
             />
-            <InputError class="mt-2" :message="form.errors.number" />
+            <InputError class="mt-2" :message="$page.props.errors.number" />
         </div>
 
         <div class="flex items-center justify-center mt-4">
             
-            <PrimaryButton class="ml-4">
+            <PrimaryButton class="ml-4" @click="nextStep()">
                 Próximo
             </PrimaryButton>
         </div>
-    </form>
+    </div>
 </template>
