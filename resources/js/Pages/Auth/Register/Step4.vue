@@ -5,6 +5,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import StandardSelect from '@/Components/StandardSelect.vue';
 import Checkbox from '@/Components/Checkbox.vue';
+import VueSelect from "vue-select";
+import { ref } from 'vue';
 
 const form = useForm('userRegisterStep4', {
     sex: '',
@@ -12,9 +14,20 @@ const form = useForm('userRegisterStep4', {
     gender: '',
     nacionality: '',
     isPCD: false,
-    deficiency: '',
+    deficiency: [],
 
 });
+
+const deficiencies = ref([
+    {
+        id: 1,
+        label: 'Deficiencia visual'
+    },
+    {
+        id: 2,
+        label: 'Outro'
+    }
+]);
 
 const page = usePage();
 
@@ -58,11 +71,11 @@ const emit = defineEmits(["submit"])
             <StandardSelect
                 v-model="form.skin"
             >
-                <option value="1">Branca</option>
-                <option value="2">Preta</option>
-                <option value="3">Amarela</option>
-                <option value="4">Parda</option>
-                <option value="5">Indígena</option>
+                <option value="B">Branca</option>
+                <option value="Pt">Preta</option>
+                <option value="A">Amarela</option>
+                <option value="Pd">Parda</option>
+
             </StandardSelect>
             <InputError class="mt-2" :message="$page.props.errors.skin" />
         </div>
@@ -72,9 +85,9 @@ const emit = defineEmits(["submit"])
             <StandardSelect
                 v-model="form.gender"
             >
-                <option value="1">Prefiro não responder</option>
-                <option value="2">option2</option>
-                <option value="3">option3</option>
+                <option value="Pnr">Prefiro não responder</option>
+                <option value="Gn">Gênero neutro</option>
+                <option value="Ag">Agênero</option>
             </StandardSelect>
             <InputError class="mt-2" :message="$page.props.errors.gender" />
         </div>
@@ -97,14 +110,16 @@ const emit = defineEmits(["submit"])
 
                 <Checkbox v-model:checked="form.isPCD" value="true"></Checkbox>
 
-                <StandardSelect
+                <vue-select 
                     :disabled="!form.isPCD"
-                    v-model="form.deficiency"
+                    v-model="form.deficiency" :options="deficiencies" multiple :closeOnSelect="false"
+                    :reduce="deficiency => deficiency.id"
+                    aria-multiselectable="true"
+                    id="deficiency"
+                    class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 >
-                    <option value="1">Deficiencia visual</option>
-                    <option value="2">Outro</option>
-                    
-                </StandardSelect>
+                </vue-select>
+
             </div>
             <InputError class="mt-2" :message="$page.props.errors.deficiency" />
         </div>
@@ -118,3 +133,15 @@ const emit = defineEmits(["submit"])
         </div>
     </div>
 </template>
+<style>
+@import "vue-select/dist/vue-select.css";
+
+.step-content {
+    border: 1px solid #ccc;
+    padding: 20px;
+}
+
+.vs__dropdown-toggle {
+    border: 0;
+}
+</style>

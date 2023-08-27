@@ -12,4 +12,8 @@ class Certificate extends Model
     public function findByHash($hash){
         return $this->where('hash', $hash)->first();
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

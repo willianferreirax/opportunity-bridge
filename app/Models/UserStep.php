@@ -2,22 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserPersonalData extends Model
+class UserStep extends Model
 {
     use HasFactory;
-    use HasUuids;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'sex', 'skin_id', 'gender_id', 'nacionality'
+        'user_id',
+        'hasCurriculum',
     ];
 
     public function user(){

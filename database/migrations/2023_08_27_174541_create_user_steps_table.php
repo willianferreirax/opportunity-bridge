@@ -11,24 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_deficiency', function (Blueprint $table) {
+        Schema::create('user_steps', function (Blueprint $table) {
             $table->id();
-
             $table->uuid('user_id')->nullable();
-            $table->unsignedBigInteger('deficiency_id')->nullable();
+            $table->string('hasCurriculum')->nullable();
             $table->timestamps();
+
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('set null');
 
-            $table->foreign('deficiency_id')
-                ->references('id')
-                ->on('deficiencies')
-                ->onDelete('set null');
-
-            
         });
     }
 
@@ -39,11 +33,10 @@ return new class extends Migration
     {
 
         //drop foreign keys
-        Schema::table('user_deficiency', function (Blueprint $table) {
-            $table->dropForeign('user_deficiency_user_id_foreign');
-            $table->dropForeign('user_deficiency_deficiency_id_foreign');
+        Schema::table('user_steps', function (Blueprint $table) {
+            $table->dropForeign('user_steps_user_id_foreign');
         });
 
-        Schema::dropIfExists('user_deficiency');
+        Schema::dropIfExists('user_steps');
     }
 };

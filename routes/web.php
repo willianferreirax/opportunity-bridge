@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,12 +18,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('FrontPage', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('FrontPage' );
 })->name('frontpage');
 
 Route::prefix('auth')->group(function (){
@@ -46,9 +42,8 @@ Route::middleware([
 
     Route::prefix('user')->group(function () {
 
-        Route::get('/dashboard', function () {
-            return Inertia::render('User/Dashboard');
-        })->name('user.dashboard');
+        Route::get('/dashboard', [UserController::class, 'index'])
+            ->name('user.dashboard');
 
         Route::get('/recommendedJobs', function () {
             return Inertia::render('User/RecommendedOpportunities');

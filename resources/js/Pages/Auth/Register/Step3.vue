@@ -5,12 +5,14 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { vMaska } from 'maska';
+import consultCep from '@/Utils/consultCep';
 
 const form = useForm('userRegisterStep3', {
     cep: '',
     street: '',
     neighbor: '',
     city: '',
+    state: '',
     number: '',
 });
 
@@ -52,8 +54,31 @@ const nextStep = () => {
         return;
     }
 
+    if(!form.state) {
+        page.props.errors.state = 'Estado é obrigatório'
+        return;
+    }
+
     emit("nextStep")
 };
+
+function getAddress(cep) {
+    
+    cep = cep.replace(/[^\d]+/g, '');
+
+    if(cep.length != 8) {
+        return;
+    }
+
+    consultCep(cep).then((response) => {
+
+        form.street = response.data.logradouro;
+        form.neighbor = response.data.bairro;
+        form.city = response.data.localidade;
+        form.state = response.data.uf;
+    })
+
+}
 
 const emit = defineEmits(["nextStep"])
 </script>
@@ -79,6 +104,7 @@ const emit = defineEmits(["nextStep"])
                 required
                 autofocus
                 autocomplete="cep"
+                @change="getAddress($event.target.value)"
                 v-maska 
                 data-maska="#####-###"
             />
@@ -125,6 +151,21 @@ const emit = defineEmits(["nextStep"])
                 autocomplete="city"
             />
             <InputError class="mt-2" :message="$page.props.errors.city" />
+        </div>
+
+        <div class="mt-4">
+            <InputLabel class="mb-2" for="state" value="Estado:" />
+            <TextInput
+                id="state"
+                v-model="form.state"
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autofocus
+                autocomplete="state"
+            />
+            <InputError class="mt-2" :message="$page.props.errors.state" />
+
         </div>
 
         <div class="mt-4">

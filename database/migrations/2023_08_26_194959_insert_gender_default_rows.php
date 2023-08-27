@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,11 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deficiencies', function (Blueprint $table) {
-            $table->id();
-            $table->string("deficiency");
-            $table->timestamps();
-        });
+        $data = [
+            ["id" => "Pnr", 'label' => 'Prefiro não responder'],
+            ["id" => "Gn", 'label' => 'Gênero neutro'],
+            ["id" => "Ag", 'label' => 'Agênero']
+        ];
+
+        DB::table('genders')->insert($data);
     }
 
     /**
@@ -23,6 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('deficiencies');
+        //truncate
+        DB::table("genders")->truncate();
     }
 };

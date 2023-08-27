@@ -11,4 +11,16 @@ class UserContact extends Model
     use HasFactory;
     use HasUuids;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'ddd', 'phone'
+    ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

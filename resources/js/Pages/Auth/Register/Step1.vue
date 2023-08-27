@@ -7,6 +7,7 @@ import TextInput from '@/Components/TextInput.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import { vMaska } from 'maska';
 import validateCPF from '@/Utils/validateCPF';
+import validatePhone from '@/Utils/validatePhone';
 
 const form = useForm('userRegisterStep1', {
     name: '',
@@ -48,6 +49,11 @@ function nextStep() {
         return;
     }
 
+    if(!validatePhone(form.phone)) {
+        page.props.errors.phone = 'Celular inválido'
+        return;
+    }
+
     emit('nextStep')
 };
 
@@ -83,7 +89,7 @@ const emit = defineEmits(['nextStep', 'resetForm'])
         </div>
 
         <div class="mt-4">
-            <InputLabel class="mb-2" for="name" value="Name" />
+            <InputLabel class="mb-2" for="name" value="Nome" />
             <TextInput
                 id="name"
                 v-model="form.name"

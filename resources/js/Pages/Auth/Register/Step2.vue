@@ -9,7 +9,7 @@ import validatePassword from '@/Utils/validatePassword';
 const form = useForm('userRegisterStep2', {
     email: '',
     password: '',
-    passwordConfirm: '',
+    password_confirmation: '',
 });
 
 const page = usePage();
@@ -28,8 +28,8 @@ const nextStep = () => {
         return;
     }
 
-    if(!form.passwordConfirm) {
-        page.props.errors.passwordConfirm = 'Confirmação de senha é obrigatório'
+    if(!form.password_confirmation) {
+        page.props.errors.password_confirmation = 'Confirmação de senha é obrigatório'
         return;
     }
 
@@ -38,8 +38,8 @@ const nextStep = () => {
         return;
     }
 
-    if(form.password != form.passwordConfirm) {
-        page.props.errors.passwordConfirm = 'As senhas não conferem'
+    if(form.password != form.password_confirmation) {
+        page.props.errors.password_confirmation = 'As senhas não conferem'
         return;
     }
 
@@ -92,17 +92,17 @@ const emit = defineEmits(["nextStep"])
         </div>
 
         <div class="mt-4">
-            <InputLabel class="mb-2" for="passwordConfirm" value="Confirme a senha" />
+            <InputLabel class="mb-2" for="password_confirmation" value="Confirme a senha" />
             <TextInput
-                id="passwordConfirm"
-                v-model="form.passwordConfirm"
+                id="password_confirmation"
+                v-model="form.password_confirmation"
                 type="password"
                 class="mt-1 block w-full"
                 required
                 autofocus
-                autocomplete="passwordConfirm"
+                autocomplete="password_confirmation"
             />
-            <InputError class="mt-2" :message="$page.props.errors.passwordConfirm" />
+            <InputError class="mt-2" :message="$page.props.errors.password_confirmation" />
         </div>
 
         <div class="flex items-center justify-center mt-4">

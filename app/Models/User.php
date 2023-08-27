@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -28,7 +29,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'cpf', 'birth_date' ,'email', 'password',
+        'name', 'cpf', 'birth_date', 'is_pcd', 'email', 'password',
     ];
 
     /**
@@ -91,5 +92,43 @@ class User extends Authenticatable
     public static function existsByCpf(string $cpf): bool{
         $user = User::where('cpf', $cpf)->first();
         return $user ? true : false;
+    }
+
+    public static function existsByEmail(string $email): bool{
+        $user = User::where('email', $email)->first();
+        return $user ? true : false;
+    }
+
+    public static function isEmailTaken(string $email): bool{
+        return self::existsByEmail($email);
+    }
+
+    public function address(): HasOne{
+        return $this->hasOne(UserAddress::class);
+    }
+
+    public function certificate(): HasOne{
+        return $this->hasOne(Certificate::class);
+    }
+
+    public function contact(): HasOne{
+        return $this->hasOne(UserContact::class);
+    }
+
+    public function personal(): HasOne{
+        return $this->hasOne(UserPersonalData::class);
+    }
+
+    public function deficiences(){
+        return $this->belongsToMany(Deficiency::class, 'user_deficiency')
+            ->using(UserDeficiency::class);
+    }
+
+    public function steps(){
+        return $this->hasOne(UserStep::class);
+    }
+
+    public function hasCurriculum(): bool{
+        return $this->steps()->first()->hasCurriculum;
     }
 }
