@@ -4,11 +4,12 @@ import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import { useForm } from '@inertiajs/vue3';
 import TextInput from '@/Components/TextInput.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const emit = defineEmits([
     'close',
-    'addExperience',
+    'addAcadExperience',
+    'updateAcadExperience'
 ]);
 
 const props = defineProps({
@@ -23,18 +24,76 @@ const props = defineProps({
     closeable: {
         type: Boolean,
         default: true,
-    }
+    },
+    experience: {
+        type: Object,
+        default:{
+            id: '',
+            institution_name: '',
+            course_name: '',
+            start_date: '',
+            end_date: '',
+            still_coursing: false,
+        }
+    },
+    isEditing: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const form = useForm({
-    companyName: '',
+    institutionName: '',
+    courseName: '',
+    dateStart: '',
+    dateEnd: '',
+    stillStudying: ''
 });
 
-const stillStudying = ref(false);
+watch(() => props.show, () => {
+
+    if (props.isEditing) {
+        form.institutionName = props.experience.institution_name;
+        form.courseName = props.experience.course_name;
+        form.dateStart = props.experience.start_date;
+        form.dateEnd = props.experience.end_date;
+        form.stillStudying = props.experience.still_coursing ? true : false;
+    }
+
+    if(!props.isEditing){
+
+        form.reset();
+    }
+
+});
 
 const addExperience = () => {
-    emit('addExperience', form.resume);
-    close();
+    form.post(route('profile.curriculum.acadExperience.create'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            emit('addAcadExperience', form.data());
+            close();
+        },
+    });
+};
+
+const updateExperience = () => {
+
+    form.put(route('profile.curriculum.acadExperience.update', props.experience.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            emit('updateAcadExperience', {
+                id: props.experience.id,
+                institution_name: form.institutionName,
+                course_name: form.courseName,
+                start_date: form.dateStart,
+                end_date: form.dateEnd,
+                still_coursing: form.stillStudying ? true : false,
+            });
+            close();
+        },
+    });
+
 };
 
 const close = () => {
@@ -50,7 +109,7 @@ const close = () => {
         :closeable="closeable"
         @close="close"
     >
-        <form class="">
+        <!-- <form class=""> -->
             <div class="px-6 py-4">
                 <div class="text-lg font-medium text-gray-900">
                     <h3 class="text-lg font-medium text-gray-900">
@@ -77,13 +136,13 @@ const close = () => {
                         <div class="mt-4">
                             <InputLabel for="course" value="Curso:" />
                             <TextInput 
-                                v-model="form.course"
+                                v-model="form.courseName"
                                 id="course" type="text" 
                                 class="mt-1 block w-full" 
                                 required
                                 autofocus
                             />
-                            <InputError class="mt-2" :message="form.errors.course" />
+                            <InputError class="mt-2" :message="form.errors.courseName" />
                         
                         </div>
 
@@ -100,7 +159,7 @@ const close = () => {
                                 />
                                 <InputError class="mt-2" :message="form.errors.dateStart" />
                             </div>
-                            <div v-if="!stillStudying" class="w-full ml-2">
+                            <div v-if="!form.stillStudying" class="w-full ml-2">
                                 <InputLabel for="dateEnd" value="Fim:" />
                                 <TextInput
                                     v-model="form.dateEnd"
@@ -116,7 +175,7 @@ const close = () => {
                         <div class="mt-4">
                             <label class="relative inline-flex items-center cursor-pointer mt-2">
                                 <input
-                                    v-model="stillStudying" 
+                                    v-model="form.stillStudying" 
                                     type="checkbox" 
                                     value="1" 
                                     class="sr-only peer"
@@ -134,11 +193,19 @@ const close = () => {
             <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 text-right">
 
                 <button
+                    v-if="!isEditing"
                     @click="addExperience()" 
                     class="bg-blue-600 text-white rounded py-2 px-3 font-semibold hover:bg-blue-400 mr-3" 
-                    type="submit"
                 >
                     Adicionar
+                </button>
+
+                <button
+                    v-if="isEditing"
+                    @click="updateExperience()" 
+                    class="bg-blue-600 text-white rounded py-2 px-3 font-semibold hover:bg-blue-400 mr-3" 
+                >
+                    Atualizar
                 </button>
                 
                 <button class="bg-red-600 text-white rounded py-2 px-3 font-semibold hover:bg-red-400" @click="close()">
@@ -146,6 +213,6 @@ const close = () => {
                 </button>
 
             </div>
-        </form>
+        <!-- </form> -->
     </Modal>
 </template>

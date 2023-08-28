@@ -10,6 +10,7 @@ import AddProfessionalExperienceModal from './Partials/AddProfessionalExperience
 import AddAcademicExperienceModal from './Partials/AddAcademicExperienceModal.vue';
 import AddCourseModal from './Partials/AddCourseModal.vue';
 import AddLanguageModal from './Partials/AddLanguageModal.vue';
+import NoContentCard from './Partials/NoContentCard.vue';
 
 const resumeModal = ref(false);
 const addProfessionalExperienceModal = ref(false);
@@ -18,37 +19,18 @@ const addCourseModal = ref(false);
 const addLanguageModal = ref(false);
 
 const props = defineProps({
-    resume: {
-        type: String,
-        default: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sequi rerum quisquam officiis. Magni autem fuga omnis, harum debitis quasi.',
-    },
-    professionalExperiences: {
-        default: [
-            {
-                id: 1,
-                companyName: 'Empresa',
-                role: 'Cargo',
-                dateStart: '2021-01-01',
-                dateEnd: '2021-01-01',
-                resume: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sequi rerum quisquam officiis. Magni autem fuga omnis, harum debitis quasi.',
-                stillWorking: false,
-            },
-            {
-                id: 2,
-                companyName: 'Empresa2',
-                role: 'Cargo2',
-                dateStart: '2021-01-02',
-                dateEnd: '2021-01-02',
-                resume: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi sequi rerum quisquam officiis. Magni autem fuga omnis, harum debitis quasi.',
-                stillWorking: false,
-            },
-        ]
-    }
+    resume: String,
+    professionalExperiences: Array,
+    academicExperiences: Array,
+    courses: Array,
+    languages: Array,
 });
 
 const selected = ref({});
 const isEditing = ref(false);
 const selectedIndex = ref(null);
+
+// -------------------------- professional experience ----------------------
 
 function udpateProExperienceModal(index) {
     isEditing.value = true;
@@ -58,12 +40,64 @@ function udpateProExperienceModal(index) {
 }
 
 function addProExperience() {
-    props.professionalExperiences.push(selected.value);
+    // props.professionalExperiences.push(selected.value);
 }
 
 //talvez nao seja necessario, ao dar back() vai rolar o fetch disso dnv
 function udpateProExperience(data) {
     props.professionalExperiences[selectedIndex.value] = data;
+}
+
+// -------------------------- academic experience --------------------------
+
+function udpateAcadExperienceModal(index) {
+    isEditing.value = true;
+    selectedIndex.value = index;
+    addAcademicExperienceModal.value = true;
+    selected.value = props.academicExperiences[index];
+}
+
+function addAcadExperience(data) {
+    // props.academicExperiences.push(selected.value);
+}
+
+function udpateAcadExperience(data){
+    props.academicExperiences[selectedIndex.value] = data;
+}
+
+// -------------------------- language --------------------------
+
+function udpateLanguageModal(index) {
+    isEditing.value = true;
+    selectedIndex.value = index;
+    addLanguageModal.value = true;
+    selected.value = props.languages[index];
+}
+
+function addLanguage(data) {
+    // props.languages.push(selected.value);
+    // props.languages.push(data);
+}
+
+function updateLanguage(data) {
+    props.languages[selectedIndex.value] = data;
+}
+
+// -------------------------- course --------------------------
+
+function updateCourseModal(index) {
+    isEditing.value = true;
+    selectedIndex.value = index;
+    addCourseModal.value = true;
+    selected.value = props.courses[index];
+}
+
+function addCourse(data) {
+    // props.courses.push(selected.value);
+}
+
+function updateCourse(data) {
+    props.courses[selectedIndex.value] = data;
 }
 
 </script>
@@ -89,17 +123,29 @@ function udpateProExperience(data) {
 
         <AddAcademicExperienceModal
             :show="addAcademicExperienceModal"
-            @close="addAcademicExperienceModal = false"
+            @close="addAcademicExperienceModal = false; selected = {}; isEditing = false; selectedIndex = null"
+            @addAcadExperience="addAcadExperience"
+            @updateAcadExperience="udpateAcadExperience($event)"
+            :experience="selected"
+            :isEditing="isEditing"
         />
 
         <AddCourseModal
             :show="addCourseModal"
-            @close="addCourseModal = false"
+            @close="addCourseModal = false; selected = {}; isEditing = false; selectedIndex = null"
+            @addCourse="addCourse"
+            @updateCourse="updateCourse($event)"
+            :experience="selected"
+            :isEditing="isEditing"
         />
 
         <AddLanguageModal
             :show="addLanguageModal"
-            @close="addLanguageModal = false"
+            @close="addLanguageModal = false; selected = {}; isEditing = false; selectedIndex = null"
+            @addLanguage="addLanguage"
+            @updateLanguage="updateLanguage($event)"
+            :experience="selected"
+            :isEditing="isEditing"
         />
 
         <section class="">
@@ -120,9 +166,14 @@ function udpateProExperience(data) {
                     </div>
                 </div>
 
-                <div class="bg-gray-200 p-4 rounded-lg">
+                <div v-if="resume" class="bg-gray-200 p-4 rounded-lg">
                     {{ resume }}
                 </div>
+
+                <NoContentCard 
+                    v-if="!resume" 
+                    text="Você ainda não adicionou um resumo"
+                />
 
             </div>
 
@@ -143,11 +194,16 @@ function udpateProExperience(data) {
                 <ProfissionalExperienceCard
                     v-for="(experience, key ) in professionalExperiences"
                     :key="key"
-                    :companyName="experience.companyName"
+                    :companyName="experience.company_name"
                     :position="experience.role"
-                    :startDate="experience.dateStart"
-                    :endDate="experience.dateEnd"
+                    :startDate="experience.start_date"
+                    :endDate="experience.end_date"
                     @update-experience="udpateProExperienceModal(key)"
+                />
+
+                <NoContentCard 
+                    v-if="professionalExperiences.length == 0" 
+                    text="Você ainda não adicionou nenhuma experiência profissional"
                 />
                 
             </div>
@@ -166,7 +222,20 @@ function udpateProExperience(data) {
                     </div>
                 </div>
 
-                <AcademicExperienceCard></AcademicExperienceCard>
+                <AcademicExperienceCard
+                    v-for="(experience, key ) in academicExperiences"
+                    :key="key"
+                    :institutionName="experience.institution_name"
+                    :courseName="experience.course_name"
+                    :startDate="experience.start_date"
+                    :endDate="experience.end_date"
+                    @updateAcadExperience="udpateAcadExperienceModal(key)"
+                />
+
+                <NoContentCard 
+                    v-if="academicExperiences.length == 0" 
+                    text="Você ainda não adicionou nenhuma experiência acadêmica"
+                />                
                 
             </div>
 
@@ -184,7 +253,19 @@ function udpateProExperience(data) {
                     </div>
                 </div>
 
-                <LanguageCard></LanguageCard>
+                <LanguageCard
+                    v-for="(language, key ) in languages"
+                    :key="key"
+                    :institutionName="language.institution_name"
+                    :language="language.language"
+                    :level="language.level"
+                    @updateLanguage="udpateLanguageModal(key)"               
+                />
+
+                <NoContentCard 
+                    v-if="languages.length == 0" 
+                    text="Você ainda não adicionou nenhum idioma"
+                />
                 
             </div>
 
@@ -202,7 +283,20 @@ function udpateProExperience(data) {
                     </div>
                 </div>
 
-                <CourseCard></CourseCard>
+                <CourseCard
+                    v-for="(course, key ) in courses"
+                    :key="key"
+                    :institutionName="course.institution_name"
+                    :courseName="course.course_name"
+                    :startDate="course.start_date"
+                    :endDate="course.end_date"   
+                    @update-course="updateCourseModal(key)"
+                />
+
+                <NoContentCard 
+                    v-if="courses.length == 0" 
+                    text="Você ainda não adicionou nenhum curso"
+                />    
                 
             </div>
 

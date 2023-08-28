@@ -30,12 +30,12 @@ const props = defineProps({
         type: Object,
         default:{
             id: '',
-            companyName: '',
+            company_name: '',
             role: '',
-            dateStart: '',
-            dateEnd: '',
-            resume: '',
-            stillWorking: false,
+            start_date: '',
+            end_date: '',
+            description: '',
+            is_current: false,
         }
     },
     isEditing: {
@@ -56,12 +56,12 @@ const form = useForm({
 watch(() => props.show, () => {
 
     if (props.isEditing) {
-        form.companyName = props.experience.companyName;
+        form.companyName = props.experience.company_name;
         form.role = props.experience.role;
-        form.dateStart = props.experience.dateStart;
-        form.dateEnd = props.experience.dateEnd;
-        form.resume = props.experience.resume;
-        form.stillWorking = props.experience.stillWorking;
+        form.dateStart = props.experience.start_date;
+        form.dateEnd = props.experience.end_date;
+        form.resume = props.experience.description;
+        form.stillWorking = props.experience.is_current ? true : false;
     }
 
     if(!props.isEditing){
@@ -72,13 +72,35 @@ watch(() => props.show, () => {
 });
 
 const addExperience = () => {
-    emit('addExperience', form.data());
-    close();
+
+    form.post(route('profile.curriculum.proExperience.create'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            emit('addExperience', form.data());
+            close();
+        },
+    });
+
 };
 
 const updateExperience = () => {
-    emit('updateExperience', form.data());
-    close();
+
+    form.put(route('profile.curriculum.proExperience.update', props.experience.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            emit('updateExperience', {
+                id: props.experience.id,
+                company_name: form.companyName,
+                role: form.role,
+                start_date: form.dateStart,
+                end_date: form.dateEnd,
+                description: form.resume,
+                is_current: form.stillWorking ? true : false,
+            });
+            close();
+        },
+    });
+
 };
 
 const close = () => {

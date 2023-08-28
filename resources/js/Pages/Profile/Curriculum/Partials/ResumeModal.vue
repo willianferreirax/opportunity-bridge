@@ -34,6 +34,15 @@ const form = useForm({
 });
 
 const updateResume = () => {
+
+    form.post(route('profile.curriculum.resume.update'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset();
+            close();
+        },
+    });
+
     emit('updateResume', form.resume);
     close();
 };

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserPersonalData extends Model
+class CurriculumLanguage extends Model
 {
     use HasFactory;
     use HasUuids;
@@ -18,7 +18,10 @@ class UserPersonalData extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'sex', 'skin_id', 'gender_id', 'nacionality'
+        'user_id',
+        'institution_name',
+        'language',
+        'level'
     ];
 
     public function user(): BelongsTo

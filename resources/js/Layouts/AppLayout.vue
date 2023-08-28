@@ -182,7 +182,7 @@ const logout = () => {
             </header>
 
             
-            <div class="bg-ey-yellow text-ey-black text-center font-bold p-1">
+            <div v-if="!$page.props.hasCurriculum" class="bg-ey-yellow text-ey-black text-center font-bold p-1">
                 <Link :href="route('profile.curriculum.show')">
                     <p class="underline underline-offset-2">Complete seu curriculo para poder se candidatar</p>
                 </Link>

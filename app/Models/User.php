@@ -103,6 +103,10 @@ class User extends Authenticatable
         return self::existsByEmail($email);
     }
 
+    public function hasCurriculum(): bool{
+        return $this->steps()->first()->hasCurriculum;
+    }
+
     public function address(): HasOne{
         return $this->hasOne(UserAddress::class);
     }
@@ -128,7 +132,24 @@ class User extends Authenticatable
         return $this->hasOne(UserStep::class);
     }
 
-    public function hasCurriculum(): bool{
-        return $this->steps()->first()->hasCurriculum;
+    public function curriculumResume(){
+        return $this->hasOne(CurriculumResume::class);
     }
+
+    public function curriculumProExperiences(){
+        return $this->hasMany(CurriculumProExperience::class);
+    }
+
+    public function curriculumCourses(){
+        return $this->hasMany(CurriculumCourse::class);
+    }
+
+    public function curriculumLanguages(){
+        return $this->hasMany(CurriculumLanguage::class);
+    }
+
+    public function curriculumAcadExperiences(){
+        return $this->hasMany(CurriculumAcadExperience::class);
+    }
+
 }

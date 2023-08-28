@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserPersonalData extends Model
+class CurriculumResume extends Model
 {
     use HasFactory;
     use HasUuids;
@@ -18,9 +18,15 @@ class UserPersonalData extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'sex', 'skin_id', 'gender_id', 'nacionality'
+        'user_id',
+        'resume',
     ];
 
+    /**
+     * Get the user that owns the CurriculumResume
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
