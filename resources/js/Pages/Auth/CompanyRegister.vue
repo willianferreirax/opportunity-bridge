@@ -1,58 +1,62 @@
 <script setup>
-import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import Checkbox from '@/Components/Checkbox.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import TopBar from '@/Components/TopBar.vue';
 import BorderButton from '@/Components/BorderButton.vue';
-import StepperHeader from '@/Components/StepperHeader.vue';
 import RegisterContainer from '@/Components/RegisterContainer.vue';
 import Step1 from './CompanyRegister/Step1.vue';
 import Step2 from './CompanyRegister/Step2.vue';
 import Step3 from './CompanyRegister/Step3.vue';
 
 import Stepper from '@/Components/Stepper.vue';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
+import { toast } from 'vue3-toastify';
 
-const form = useForm({
-    name: '',
-    cpf: '',
-    certificate: '',
-    phone: '',
-    terms: false,
-});
+const page = usePage();
 
 const steps = [Step1, Step2, Step3]
 
-const submit = () => {
-
-};
-
 const currentStep = ref(0)
 
-const test = () => {
-    // let data1 = router.restore('tst')
-    // let data2 = router.restore('tst2')
-
-    // console.log(data1, data2);
-
+const nextStep = () => {
     currentStep.value++;
+}
+
+function resetForm(object){
+    Object.keys(object).forEach(key => {
+        if(typeof object[key] === 'object') {
+            resetForm(object[key])
+        } else {
+            page.props.errors[key] = ''
+        }
+    })
 }
 
 const steps2 = ref([
     { label: '' },
     { label: '' },
     { label: '' },
-
 ])
 
-const test2 = () => {
-    console.log("submit")
-}
+function submit () {
+    let data1 = router.restore('companyRegisterStep1')
+    let data2 = router.restore('companyRegisterStep2')
+    let data3 = router.restore('companyRegisterStep3')
+
+    router.post(route('auth.register.company'), {
+        ...data1.data,
+        ...data2.data,
+        ...data3.data
+    },
+    {
+        preserveState: true,
+        onError: (errors) => {
+
+            const error = errors[Object.keys(errors)[0]]
+            toast.error(error)
+
+        },
+    })
+};
 
 </script>
 
@@ -75,22 +79,15 @@ const test2 = () => {
 
         <RegisterContainer>
 
-            <!-- <StepperHeader :current-step="currentStep" :total-steps="4" />
-        
-            <component :is="steps[currentStep]"></component>
-
-            <button @click="currentStep++">test</button>
-            <br>
-            <br>
-            <br>
-            <button @click="currentStep--">test2</button>
-            <button @click="test()">test3</button> -->
-
             <Stepper :value="steps2" v-model:currentStep="currentStep">
-                <component :is="steps[currentStep]" @nextStep="test()" @submit="test2()"></component>
+                <component :is="steps[currentStep]" @nextStep="nextStep()" @submit="submit()" @resetForm="resetForm($event)"></component>
             </Stepper>
 
         </RegisterContainer>
     </div>
     
 </template>
+<style>
+@import 'vue3-toastify/dist/index.css';
+
+</style>

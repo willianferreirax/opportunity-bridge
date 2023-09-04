@@ -14,14 +14,6 @@ defineProps({
 
 const showingNavigationDropdown = ref(false);
 
-const switchToTeam = (team) => {
-    router.put(route('current-team.update'), {
-        team_id: team.id,
-    }, {
-        preserveState: false,
-    });
-};
-
 const logout = () => {
     router.post(route('logout'));
 };
@@ -57,6 +49,10 @@ const logout = () => {
                                         Profile
                                     </DropdownLink>
 
+                                    <DropdownLink :href="route('profile.curriculum.show')">
+                                        Curriculo
+                                    </DropdownLink>
+
                                     <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
                                         API Tokens
                                     </DropdownLink>
@@ -83,8 +79,11 @@ const logout = () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('user.dashboard')" :active="route().current('dashboard')">
+                                <NavLink :href="route('user.dashboard')" :active="route().current('user.dashboard')">
                                     Dashboard
+                                </NavLink>
+                                <NavLink :href="route('profile.curriculum.show')" :active="route().current('profile.curriculum.show')">
+                                    Curriculo
                                 </NavLink>
                             </div>
                         </div>
@@ -118,6 +117,10 @@ const logout = () => {
 
                                         <DropdownLink :href="route('profile.show')">
                                             Profile
+                                        </DropdownLink>
+
+                                        <DropdownLink :href="route('profile.curriculum.show')">
+                                            Curriculo
                                         </DropdownLink>
 
                                         <div class="border-t border-gray-200 dark:border-gray-600" />
@@ -184,7 +187,7 @@ const logout = () => {
             
             <div v-if="!$page.props.hasCurriculum" class="bg-ey-yellow text-ey-black text-center font-bold p-1">
                 <Link :href="route('profile.curriculum.show')">
-                    <p class="underline underline-offset-2">Complete seu curriculo para poder se candidatar</p>
+                    <p class="underline underline-offset-2">Complete seu curriculo e tenha mais chances</p>
                 </Link>
             </div>
             <!-- Page Content -->

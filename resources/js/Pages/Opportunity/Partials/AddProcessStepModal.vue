@@ -5,11 +5,12 @@ import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import VueSelect from "vue-select";
 import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const emit = defineEmits([
     'close',
     'add',
+    'updateStep'
 ]);
 
 const props = defineProps({
@@ -25,6 +26,21 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    step: {
+        type: Object,
+        default:{
+            id: '',
+            description: '',
+            limitDate: '',
+            link: '',
+            name: '',
+            type: '',
+        }
+    },
+    isEditing: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const form = useForm({
@@ -33,6 +49,23 @@ const form = useForm({
     type: '',
     limitDate: '',
     link: '',
+});
+
+watch(() => props.show, () => {
+
+    if (props.isEditing) {
+        form.name = props.step.name;
+        form.description = props.step.description;
+        form.type = props.step.type;
+        form.limitDate = props.step.limitDate;
+        form.link = props.step.link;
+    }
+
+    if(!props.isEditing){
+
+        form.reset();
+    }
+
 });
 
 const type = ref([
@@ -91,6 +124,18 @@ function add(){
     close();
 }
 
+function update(){
+    emit('updateStep', {
+        name: form.name,
+        description: form.description,
+        type: form.type,
+        limitDate: form.limitDate,
+        link: form.link,
+    });
+
+    close();
+}
+
 </script>
 
 <template>
@@ -126,7 +171,7 @@ function add(){
 
                         <InputLabel class="mt-2" for="type" value="Tipo de etapa" />
                         <vue-select 
-                            v-model="form.type" :options="type" clearable :closeOnSelect="false"
+                            v-model="form.type" :options="type" clearable :closeOnSelect="true"
                             id="type"
                             class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         >
@@ -203,11 +248,19 @@ function add(){
             <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 text-right">
 
                 <button
+                    v-if="!isEditing"
                     @click="add()" 
                     class="bg-blue-600 text-white rounded py-2 px-3 font-semibold hover:bg-blue-400 mr-3" 
-                    type="submit"
                 >
                     Adicionar
+                </button>
+
+                <button
+                    v-if="isEditing"
+                    @click="update()" 
+                    class="bg-blue-600 text-white rounded py-2 px-3 font-semibold hover:bg-blue-400 mr-3" 
+                >
+                    Atualizar
                 </button>
                 
                 <button class="bg-red-600 text-white rounded py-2 px-3 font-semibold hover:bg-red-400" @click="close()">

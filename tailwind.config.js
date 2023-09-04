@@ -19,7 +19,10 @@ export default {
             },
             colors: {
                 'ey-black': '#2e2e38',
-                'ey-yellow': '#ffe600'
+                'ey-yellow': {
+                    DEFAULT: '#ffe600',
+                    400: '#96761b',
+                }
             }
         },
 

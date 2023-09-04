@@ -29,12 +29,19 @@ Route::get('/', function () {
 Route::prefix('auth')->group(function (){
     Route::post('register/user', [AuthController::class, 'registerUser'])
         ->name('register.user');
+
+    Route::post('register/company', [AuthController::class, 'registerCompany'])
+        ->name('auth.register.company');
 });
 
+Route::get('company/register', function () {
+    return Inertia::render('Auth/CompanyRegister');
+})->name('company.register');
+
 Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
+    // 'auth:sanctum',
+    // config('jetstream.auth_session'),
+    // 'verified',
 ])->group(function () {
 
     Route::prefix('admin')->group(function() {
@@ -103,10 +110,6 @@ Route::middleware([
     });
 
     Route::prefix('company')->group(function() {
-
-        Route::get('register', function () {
-            return Inertia::render('Auth/CompanyRegister');
-        })->name('company.register');
 
         Route::get('dashboard', function () {
             return Inertia::render('Company/Dashboard');

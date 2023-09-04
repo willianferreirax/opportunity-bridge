@@ -1,9 +1,10 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { vMaska } from 'maska';
 
 const form = useForm('companyRegisterStep2', {
     fantasyName: '',
@@ -14,8 +15,36 @@ const form = useForm('companyRegisterStep2', {
     companyDescription: '',
 });
 
-const submit = () => {
+const page = usePage();
 
+const nextStep = () => {
+
+    form.clearErrors()
+
+    if(!form.fantasyName) {
+        page.props.errors.fantasyName = 'Nome fantasia é obrigatório'
+        return;
+    }
+
+    if(!form.companyName) {
+        page.props.errors.companyName = 'Razão social é obrigatório'
+        return;
+    }
+
+    if(!form.workersNumber) {
+        page.props.errors.workersNumber = 'Número de funcionarios é obrigatório'
+        return;
+    }
+
+    if(!form.companyArea) {
+        page.props.errors.companyArea = 'Área de atuação é obrigatório'
+        return;
+    }
+
+    if(!form.companyDescription) {
+        page.props.errors.companyDescription = 'Descrição da empresa é obrigatório'
+        return;
+    }
 
     emit("nextStep")
 };
@@ -23,7 +52,7 @@ const submit = () => {
 const emit = defineEmits(["nextStep"])
 </script>
 <template>
-    <form @submit.prevent="submit" class="p-12 pt-8">
+    <div class="p-12 pt-8">
         <div class="mb-8">
             <h1 class="font-bold text-xl">
                 Cadastro: Dados da empresa
@@ -44,7 +73,7 @@ const emit = defineEmits(["nextStep"])
                 autofocus
                 autocomplete="fantasyName"
             />
-            <InputError class="mt-2" :message="form.errors.fantasyName" />
+            <InputError class="mt-2" :message="$page.props.errors.fantasyName" />
         </div>
 
         <div class="mt-4">
@@ -57,7 +86,7 @@ const emit = defineEmits(["nextStep"])
                 required
                 autocomplete="companyName"
             />
-            <InputError class="mt-2" :message="form.errors.companyName" />
+            <InputError class="mt-2" :message="$page.props.errors.companyName" />
         </div>
 
         <div class="mt-4">
@@ -68,9 +97,13 @@ const emit = defineEmits(["nextStep"])
                 type="text"
                 class="mt-1 block w-full"
                 required
+                v-maska 
+                data-maska="[
+                    '##.###.###/####-##'
+                ]"
                 autocomplete="cnpj"
             />
-            <InputError class="mt-2" :message="form.errors.cnpj" />
+            <InputError class="mt-2" :message="$page.props.errors.cnpj" />
         </div>
 
         <div class="mt-4">
@@ -80,10 +113,14 @@ const emit = defineEmits(["nextStep"])
                 v-model="form.workersNumber"
                 type="text"
                 class="mt-1 block w-full"
+                v-maska 
+                data-maska="[
+                    '##########'
+                ]"
                 required
                 autocomplete="workersNumber"
             />
-            <InputError class="mt-2" :message="form.errors.workersNumber" />
+            <InputError class="mt-2" :message="$page.props.errors.workersNumber" />
         </div>
 
         <div class="mt-4">
@@ -97,7 +134,7 @@ const emit = defineEmits(["nextStep"])
                 autocomplete="companyArea"
             />
 
-            <InputError class="mt-2" :message="form.errors.companyArea" />
+            <InputError class="mt-2" :message="$page.props.errors.companyArea" />
         </div>
 
         <div class="mt-4">
@@ -110,14 +147,14 @@ const emit = defineEmits(["nextStep"])
 
             </textarea>
 
-            <InputError class="mt-2" :message="form.errors.companyDescription" />
+            <InputError class="mt-2" :message="$page.props.errors.companyDescription" />
         </div>
 
         <div class="flex items-center justify-center mt-4">
             
-            <PrimaryButton class="ml-4">
+            <PrimaryButton class="ml-4" @click="nextStep()">
                 Próximo
             </PrimaryButton>
         </div>
-    </form>
+    </div>
 </template>

@@ -5,11 +5,12 @@ import { Link } from '@inertiajs/vue3';
 import FloatingButton from '@/Components/FloatingButton.vue';
 import CandidateCard from '@/Components/CandidateCard.vue';
 import AnnouncedOpportunityCard from '@/Components/AnnouncedOpportunityCard.vue';
+import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
 
+    <CompanyAppLayout title="Dashboard">
         <section class="">
 
             <div class="flex justify-between p-8 pl-0">
@@ -66,8 +67,7 @@ import AnnouncedOpportunityCard from '@/Components/AnnouncedOpportunityCard.vue'
                 </FloatingButton>
             </Link>
 
-
         </section>
+    </CompanyAppLayout>
 
-    </AppLayout>
 </template>

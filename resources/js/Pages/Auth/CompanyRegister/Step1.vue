@@ -1,10 +1,13 @@
 <script setup>
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import StandardSelect from '@/Components/StandardSelect.vue';
+import { vMaska } from 'maska';
+import validatePhone from '@/Utils/validatePhone';
+import validatePassword from '@/Utils/validatePassword';
 
 const form = useForm('companyRegisterStep1', {
     name: '',
@@ -12,19 +15,68 @@ const form = useForm('companyRegisterStep1', {
     role: '',
     phone: '',
     password: '',
-    passwordConfirm: '',
+    password_confirmation: '',
 });
 
-const submit = () => {
+const page = usePage();
 
+function nextStep() {
+
+    emit('resetForm', form.data())
+
+    if(!form.name) {
+        page.props.errors.name = 'Nome é obrigatório'
+        return;
+    }
+
+    if(!form.email) {
+        page.props.errors.email = 'Email é obrigatório'
+        return;
+    }
+
+    if(!form.role) {
+        page.props.errors.role = 'Cargo é obrigatório'
+        return;
+    }
+
+    if(!form.phone) {
+        page.props.errors.phone = 'Celular é obrigatório'
+        return;
+    }
+
+    if(!validatePhone(form.phone)) {
+        page.props.errors.phone = 'Celular inválido'
+        return;
+    }
+
+    if(!form.password) {
+        page.props.errors.password = 'Senha é obrigatório'
+        return;
+    }
+
+    if(!form.password_confirmation) {
+        page.props.errors.password_confirmation = 'Confirmação de senha é obrigatório'
+        return;
+    }
+
+    if(!validatePassword(form.password)) {
+        page.props.errors.password = 'Senha inválida'
+        return;
+    }
+
+    if(form.password != form.password_confirmation) {
+        page.props.errors.password_confirmation = 'As senhas não conferem'
+        return;
+    }
 
     emit("nextStep")
 };
 
-const emit = defineEmits(["nextStep"])
+const emit = defineEmits(["nextStep", 'resetForm'])
+
 </script>
 <template>
-    <form @submit.prevent="submit" class="p-12 pt-8">
+    <div class="p-12 pt-8">
 
         <div class="mb-8">
             <h1 class="font-bold text-xl">
@@ -46,7 +98,7 @@ const emit = defineEmits(["nextStep"])
                 autofocus
                 autocomplete="name"
             />
-            <InputError class="mt-2" :message="form.errors.name" />
+            <InputError class="mt-2" :message="$page.props.errors.name" />
         </div>
 
         <div class="mt-4">
@@ -57,10 +109,9 @@ const emit = defineEmits(["nextStep"])
                 type="email"
                 class="mt-1 block w-full"
                 required
-                autofocus
                 autocomplete="email"
             />
-            <InputError class="mt-2" :message="form.errors.email" />
+            <InputError class="mt-2" :message="$page.props.errors.email" />
         </div>
 
         <div class="mt-4">
@@ -69,10 +120,10 @@ const emit = defineEmits(["nextStep"])
                 v-model="form.role"
             >
                 <option value="1">cargo 1</option>
-                <option value="2">option2</option>
-                <option value="3">option3</option>
+                <option value="2">cargo 2</option>
+                <option value="3">cargo 3</option>
             </StandardSelect>
-            <InputError class="mt-2" :message="form.errors.role" />
+            <InputError class="mt-2" :message="$page.props.errors.role" />
         </div>
 
         <div class="mt-4">
@@ -83,10 +134,11 @@ const emit = defineEmits(["nextStep"])
                 type="text"
                 class="mt-1 block w-full"
                 required
-                autofocus
+                v-maska 
+                data-maska="(##) #####-####"
                 autocomplete="phone"
             />
-            <InputError class="mt-2" :message="form.errors.phone" />
+            <InputError class="mt-2" :message="$page.props.errors.phone" />
         </div>
 
         <div class="mt-4">
@@ -97,34 +149,32 @@ const emit = defineEmits(["nextStep"])
                 type="password"
                 class="mt-1 block w-full"
                 required
-                autofocus
                 autocomplete="password"
             />
             <p class="text-sm text-gray-600">
                 *Minimo de 8 caracteres, 1 caractere especial, 1 letra maiusucula, letras e numeros
             </p>
-            <InputError class="mt-2" :message="form.errors.password" />
+            <InputError class="mt-2" :message="$page.props.errors.password" />
         </div>
 
         <div class="mt-4">
             <InputLabel class="mb-2" for="passwordConfirm" value="Confirme a senha" />
             <TextInput
                 id="passwordConfirm"
-                v-model="form.passwordConfirm"
+                v-model="form.password_confirmation"
                 type="password"
                 class="mt-1 block w-full"
                 required
-                autofocus
                 autocomplete="passwordConfirm"
             />
-            <InputError class="mt-2" :message="form.errors.passwordConfirm" />
+            <InputError class="mt-2" :message="$page.props.errors.password_confirmation" />
         </div>
 
         <div class="flex items-center justify-center mt-4">
             
-            <PrimaryButton class="ml-4">
+            <PrimaryButton class="ml-4" @click="nextStep">
                 Próximo
             </PrimaryButton>
         </div>
-    </form>
+    </div>
 </template>

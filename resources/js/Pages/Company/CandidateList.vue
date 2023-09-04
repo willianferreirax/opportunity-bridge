@@ -52,7 +52,7 @@ const componentMapping = {
 </script>
 
 <template>
-    <AppLayout title="Candidate List">
+    <CompanyAppLayout title="Candidate List">
 
         <h1 class="font-bold text-xl sm:text-4xl mb-8">
             Candidatos aplicantes
@@ -69,7 +69,7 @@ const componentMapping = {
 
         </section>
 
-        <div :class="{ 'translate-x-full': !open, 'translate-x-none' : open }" class="fixed top-0 right-0 z-40 h-screen p-4 overflow-y-auto shadow-2xl transition-transform bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-right-label">
+        <div :class="{ 'translate-x-full': !open, 'translate-x-none' : open }" class="fixed top-0 right-0 z-[99] h-screen p-4 overflow-y-auto shadow-2xl transition-transform bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-right-label">
             <h5 id="drawer-right-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400">
                 <svg class="w-4 h-4 mr-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
@@ -116,6 +116,6 @@ const componentMapping = {
         <!-- <div :class="{ 'fixed': open, 'hidden': !open }" @click="open = !open" class="bg-gray-700 bg-opacity-50 dark:bg-opacity-80 inset-0 z-30"></div> -->
         <div :class="{ 'fixed': open, 'hidden': !open }" @click="open = !open" class="inset-0 z-30"></div>
 
-    </AppLayout>
+    </CompanyAppLayout>
 
 </template>

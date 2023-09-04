@@ -8,6 +8,9 @@ const props = defineProps({
 	},
 	currentStep: {
 		default: 1
+	},
+	showProgress: {
+		default: true
 	}
 });
 
@@ -75,6 +78,10 @@ const calculateBarPosition = () => {
 	const offset = rect.left + (window.pageXOffset || docEl.scrollLeft || 0);
 	const top = rect.top + rect.height/2 - 2;
 	pBarSize.value = `left: ${offset}px; right: ${offset}px; top: ${top}px`;
+
+	if(!props.showProgress){
+		pBarSize.value = `display: none;`;
+	}
 };
 
 </script>
@@ -85,7 +92,6 @@ const calculateBarPosition = () => {
 			<div class="progress" :style="pBarSize">
 				<div class="progress-bar"
 					role="progressbar"
-					aria-valuenow="60"
 					aria-valuemin="0"
 					aria-valuemax="100"
 					:style="progress"
