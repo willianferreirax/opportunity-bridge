@@ -152,4 +152,12 @@ class User extends Authenticatable
         return $this->hasMany(CurriculumAcadExperience::class);
     }
 
+    public function appliedOpportunities(){
+        return $this->belongsToMany(Opportunity::class, 'opportunity_user')
+            ->using(OpportunityUser::class)
+            ->withPivot(['current_step', 'status'])
+            ->withTimestamps()
+        ;
+    }
+
 }

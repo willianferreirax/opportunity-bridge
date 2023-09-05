@@ -16,4 +16,13 @@ class Deficiency extends Model
     public function users(){
         return $this->belongsToMany(User::class, 'user_deficiency');
     }
+
+    public function opportunities(){
+        return $this->belongsToMany(Opportunity::class, 'target_user')
+            ->using(TargetUsers::class)
+            ->withPivot([
+                'opportunity_id',
+                'deficiency_id',
+            ]);
+    }
 }
