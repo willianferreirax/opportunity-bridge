@@ -27,8 +27,9 @@ class Opportunity extends Model
         'is_pcd',
         'competences',
         'requirements',
-        'responsabilities',
+        'responsabilities', 
         'is_remote',
+        'company_id'
     ];
 
     protected $casts = [
@@ -58,12 +59,12 @@ class Opportunity extends Model
 
     public function address()
     {
-        return $this->hasOne(Address::class);
+        return $this->hasOne(OpportunityAddress::class);
     }
 
     public function targetUsers()
     {
-        return $this->belongsToMany(Deficiency::class, 'target_users')
+        return $this->belongsToMany(Deficiency::class, 'target_user')
             ->using(TargetUsers::class)
             ->withPivot([
                 'opportunity_id',
@@ -82,5 +83,9 @@ class Opportunity extends Model
         ;
     }
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
     
 }

@@ -1,11 +1,15 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Link } from '@inertiajs/vue3';
 import FloatingButton from '@/Components/FloatingButton.vue';
 import CandidateCard from '@/Components/CandidateCard.vue';
 import AnnouncedOpportunityCard from '@/Components/AnnouncedOpportunityCard.vue';
 import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
+
+const props = defineProps({
+    opportunities: Object,
+    appliedUsers: Object,
+});
 </script>
 
 <template>
@@ -34,7 +38,11 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
 
             <div class="bg-gray-200 rounded-lg p-4 sm:p-8 mt-8">
 
-                <CandidateCard />
+                <CandidateCard 
+                    v-for="user in appliedUsers"
+                    :key="user.id"
+                    :user="user"
+                />
 
             </div>
 
@@ -42,7 +50,12 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
 
             <div class="bg-gray-200 rounded-lg p-4 sm:p-8 mt-8">
 
-                <AnnouncedOpportunityCard class="bg-white">
+                <AnnouncedOpportunityCard
+                    v-for="opportunity in opportunities"
+                    :key="opportunity.id"
+                    :opportunity="opportunity" 
+                    class="bg-white mb-4"
+                >
 
                 </AnnouncedOpportunityCard>
 

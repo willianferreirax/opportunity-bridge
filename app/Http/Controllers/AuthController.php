@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\CompanyUser;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Enum;
 
@@ -134,7 +135,7 @@ class AuthController extends Controller
         } );
 
         //authenticates user
-        auth()->login($user);
+        Auth::login($user);
 
         return redirect()->route('user.dashboard');
 
@@ -175,7 +176,7 @@ class AuthController extends Controller
         }
 
         //verify if company already exists
-        if((new CompanyUser())->isEmailTaken($request->email)){
+        if((new User())->existsByEmail($request->email)){
             return back()->withErrors('Email já cadastrado');
         }
 
@@ -190,11 +191,12 @@ class AuthController extends Controller
                 'description' => $request->companyDescription
             ]);
 
-            $user = CompanyUser::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'role' => $request->role,
                 'password' => bcrypt($request->password),
+                'type' => 'company',
                 'company_id' => $company->id
             ]);
 
@@ -215,7 +217,7 @@ class AuthController extends Controller
             $phone = substr($phone, 2);
 
             //add contact
-            $user->phones()->create([
+            $user->contact()->create([
                 'phone' => $phone,
                 'ddd' => $ddd
             ]);
@@ -228,7 +230,7 @@ class AuthController extends Controller
         
 
         //authenticates user
-        auth()->login($user);
+        Auth::login($user);
 
         return redirect()->route('company.dashboard');
 

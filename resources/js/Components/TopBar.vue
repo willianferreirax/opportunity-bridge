@@ -11,7 +11,7 @@ import ApplicationMark from './ApplicationMark.vue';
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <!-- Logo -->
-                    <div class="shrink-0 flex items-center">
+                    <div class="shrink-0 flex items-center text-white">
                         <Link :href="route('frontpage')">
                             <ApplicationMark class="block h-8 md:h-16" />
                         </Link>

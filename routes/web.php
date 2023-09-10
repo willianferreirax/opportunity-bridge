@@ -1,13 +1,16 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CurriculumAcadExperienceController;
 use App\Http\Controllers\CurriculumCourseController;
 use App\Http\Controllers\CurriculumLanguageController;
 use App\Http\Controllers\CurriculumProExperienceController;
 use App\Http\Controllers\CurriculumResumeController;
+use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,6 +29,12 @@ Route::get('/', function () {
     return Inertia::render('FrontPage' );
 })->name('frontpage');
 
+Route::get('/register', function () {
+    return Inertia::render('Auth/Register', [
+        'deficiences' => \App\Models\Deficiency::all()
+    ]);
+})->name('register');
+
 Route::prefix('auth')->group(function (){
     Route::post('register/user', [AuthController::class, 'registerUser'])
         ->name('register.user');
@@ -39,9 +48,9 @@ Route::get('company/register', function () {
 })->name('company.register');
 
 Route::middleware([
-    // 'auth:sanctum',
-    // config('jetstream.auth_session'),
-    // 'verified',
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
 ])->group(function () {
 
     Route::prefix('admin')->group(function() {
@@ -53,6 +62,9 @@ Route::middleware([
     });
 
     Route::prefix('user')->group(function () {
+
+        Route::post('/apply/{opportunity}', [UserController::class, 'apply'])
+            ->name('user.apply');
 
         Route::get('/dashboard', [UserController::class, 'index'])
             ->name('user.dashboard');
@@ -99,54 +111,56 @@ Route::middleware([
         Route::delete('/profile/curriculum/course/{curriculumCourse}', [CurriculumCourseController::class, 'destroy'])
             ->name('profile.curriculum.course.destroy');
 
-        Route::get('/recommendedJobs', function () {
-            return Inertia::render('User/RecommendedOpportunities');
-        })->name('user.recommendedJobs');
+        Route::get('/recommendedJobs', [UserController::class, 'recommendedJobs'])
+            ->name('user.recommendedJobs');
 
-        Route::get('/appliedJobs', function () {
-            return Inertia::render('User/AppliedOpportunities');
-        })->name('user.appliedJobs');
+        Route::get('/appliedJobs', [UserController::class, 'appliedJobs'])
+            ->name('user.appliedJobs');
 
     });
 
     Route::prefix('company')->group(function() {
 
-        Route::get('dashboard', function () {
-            return Inertia::render('Company/Dashboard');
-        })->name('company.dashboard');
+        Route::get('dashboard', [CompanyController::class, 'dashboard'])->name('company.dashboard');
 
-        Route::get('announced', function () {
-            return Inertia::render('Company/ListAnnouncedJobs');
-        })->name('company.announced');
+        Route::get('announced', [OpportunityController::class, 'listAnnouncedJobs'])
+            ->name('company.announced');
 
-        Route::get('candidates', function () {
-            return Inertia::render('Company/CandidateList');
-        })->name('company.candidates');
+        Route::get('candidates/{opportunity}', [OpportunityController::class, 'appliedUsers'])
+            ->name('company.candidates');
 
-        Route::get('opportunity/{id}', function () {
-            return Inertia::render('Company/OpportunityReport');
-        })->name('company.opportunitiy.report');
+        Route::get('opportunity/{opportunity}', [OpportunityController::class, 'opportunityReport'])
+            ->name('company.opportunitiy.report');
 
     });
 
+    Route::get('/opportunity/create', function () {
+
+        $deficiences = \App\Models\Deficiency::all();
+    
+        return Inertia::render('Opportunity/Create', [
+            'deficiences' => $deficiences
+        ]);
+    
+    })->name('opportunity.create');
+    
+    Route::post('/opportunity/create', [OpportunityController::class, 'store'])
+        ->name('opportunity.store');
+    
+    Route::get('/opportunity/edit', function () {
+        return Inertia::render('Opportunity/Edit');
+    })->name('opportunity.edit');
+    
+    Route::get('/opportunities', [OpportunityController::class, 'showAllOpportunities'])
+        ->name('opportunity.list');
+    
+    Route::get('/opportunity/{opportunity}', [OpportunityController::class, 'opportunityShow'])
+        ->name('opportunity.show');
+    
+    Route::get('/candidate/profile', function () {
+        return Inertia::render('Company/CandidateProfileView');
+    })->name('candidate.profile.view');
+
 });
 
-Route::get('/opportunity/create', function () {
-    return Inertia::render('Opportunity/Create');
-})->name('opportunity.create');
 
-Route::get('/opportunity/edit', function () {
-    return Inertia::render('Opportunity/Edit');
-})->name('opportunity.edit');
-
-Route::get('/opportunities', function () {
-    return Inertia::render('Opportunity/List');
-})->name('opportunity.list');
-
-Route::get('/opportunity/{id}', function () {
-    return Inertia::render('Opportunity/Show');
-})->name('opportunity.show');
-
-Route::get('/candidate/profile', function () {
-    return Inertia::render('Company/CandidateProfileView');
-})->name('candidate.profile.view');

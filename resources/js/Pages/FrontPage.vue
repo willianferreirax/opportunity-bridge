@@ -49,9 +49,11 @@ import { Head, Link } from '@inertiajs/vue3';
                         </div>
 
                         <div>
-                            <BorderButton class="border-black w-full md:w-1/2 text-xl p-4">
-                                Encontrar vagas
-                            </BorderButton>
+                            <Link :href="route('register')">
+                                <BorderButton class="border-black w-full md:w-1/2 text-xl p-4">
+                                    Encontrar vagas
+                                </BorderButton>
+                            </Link>
                         </div>
 
                         <div>

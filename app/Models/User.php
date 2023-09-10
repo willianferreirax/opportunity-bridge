@@ -29,7 +29,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'cpf', 'birth_date', 'is_pcd', 'email', 'password',
+        'name', 
+        'cpf', 
+        'birth_date', 
+        'is_pcd', 
+        'email', 
+        'password',
+        'type',
+        'company_id',
+        'role',
     ];
 
     /**
@@ -104,7 +112,7 @@ class User extends Authenticatable
     }
 
     public function hasCurriculum(): bool{
-        return $this->steps()->first()->hasCurriculum;
+        return $this->steps()?->first()->hasCurriculum ?? false;
     }
 
     public function address(): HasOne{
@@ -158,6 +166,10 @@ class User extends Authenticatable
             ->withPivot(['current_step', 'status'])
             ->withTimestamps()
         ;
+    }
+
+    public function company(){
+        return $this->belongsTo(Company::class);
     }
 
 }

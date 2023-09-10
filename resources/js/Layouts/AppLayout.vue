@@ -71,7 +71,7 @@ const logout = () => {
 
                         <div class="flex">
                             <!-- Logo -->
-                            <div class="shrink-0 flex items-center">
+                            <div class="shrink-0 flex items-center text-white">
                                 <Link :href="route('user.dashboard')">
                                     <ApplicationMark class="block h-9 w-auto" />
                                 </Link>
@@ -85,6 +85,17 @@ const logout = () => {
                                 <NavLink :href="route('profile.curriculum.show')" :active="route().current('profile.curriculum.show')">
                                     Curriculo
                                 </NavLink>
+                                <NavLink :href="route('user.appliedJobs')" :active="route().current('user.appliedJobs')">
+                                    Vagas aplicadas
+                                </NavLink>
+                                <NavLink :href="route('user.recommendedJobs')" :active="route().current('user.recommendedJobs')">
+                                    Vagas recomendadas
+                                </NavLink>
+                                <NavLink :href="route('opportunity.list')" :active="route().current('opportunity.list')">
+                                    Buscar
+                                </NavLink>
+                                
+                                
                             </div>
                         </div>
 
@@ -172,6 +183,20 @@ const logout = () => {
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('user.dashboard')" :active="route().current('dashboard')">
                             Dashboard
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('profile.curriculum.show')" :active="route().current('profile.curriculum.show')">
+                            Curriculo
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('user.appliedJobs')" :active="route().current('user.appliedJobs')">
+                            Vagas aplicadas
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('user.recommendedJobs')" :active="route().current('user.recommendedJobs')">
+                            Vagas recomendadas
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('opportunity.list')" :active="route().current('opportunity.list')">
+                            Buscar
                         </ResponsiveNavLink>
                     </div>
                 </div>

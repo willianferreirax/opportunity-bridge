@@ -116,7 +116,7 @@ const emit = defineEmits(['nextStep', 'resetForm'])
         </div>
 
         <div class="mt-4">
-            <InputLabel class="mb-2" for="certificate" value="Certificado EY Institute" />
+            <InputLabel class="mb-2" for="certificate" value="Certificado" />
             <TextInput
                 id="certificate"
                 v-model="form.certificate"

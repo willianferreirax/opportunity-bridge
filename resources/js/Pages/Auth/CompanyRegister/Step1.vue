@@ -4,7 +4,6 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import StandardSelect from '@/Components/StandardSelect.vue';
 import { vMaska } from 'maska';
 import validatePhone from '@/Utils/validatePhone';
 import validatePassword from '@/Utils/validatePassword';
@@ -116,13 +115,14 @@ const emit = defineEmits(["nextStep", 'resetForm'])
 
         <div class="mt-4">
             <InputLabel class="mb-2" for="role" value="Seu cargo:" />
-            <StandardSelect
+            <TextInput
+                id="role"
                 v-model="form.role"
-            >
-                <option value="1">cargo 1</option>
-                <option value="2">cargo 2</option>
-                <option value="3">cargo 3</option>
-            </StandardSelect>
+                type="text"
+                class="mt-1 block w-full"
+                required
+                autocomplete="role"
+            />
             <InputError class="mt-2" :message="$page.props.errors.role" />
         </div>
 

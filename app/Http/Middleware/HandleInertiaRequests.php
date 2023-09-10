@@ -37,7 +37,15 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'hasCurriculum' => fn () => $request->user()?->hasCurriculum(),
+            'hasCurriculum' => function () use ($request){
+                //is instance of App\Models\User
+                if(auth()->user() instanceof \App\Models\User) {
+                    return $request->user()?->hasCurriculum();
+                }
+
+                return true;
+
+            }
         ]);
     }
 }

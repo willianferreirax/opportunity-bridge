@@ -8,6 +8,10 @@ import { ref } from 'vue';
 
 const status = ref('1');
 
+const props = defineProps({
+    user: Object,
+});
+
 </script>
 
 <template>
@@ -17,12 +21,12 @@ const status = ref('1');
         <div class="flex justify-center ">
             <img 
                 class="w-32 h-32 rounded-full p-1 border border-yellow-400 " 
-                src="https://shreethemes.in/techwind/layouts/assets/images/client/05.jpg" alt="user" 
+                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user" 
             />
         </div>
 
-        <h3>Ricky Park</h3>
-        <h6>São Paulo, SP</h6>
+        <h3>{{ user.name }}</h3>
+        <h6>{{ user.address.city }}, {{ user.address.state }}</h6>
         
         <div class="buttons">
             <PrimaryButton>
@@ -37,10 +41,10 @@ const status = ref('1');
             <StandardSelect
                 v-model="status"
             >
-                <option value="1" >Status 1</option>
-                <option>Status 2</option>
-                <option>Status 3</option>
-                <option>Status 4</option>
+                <option value="1" >Em andamento</option>
+                <option>Aprovado</option>
+                <option>Rejeitado</option>
+
             </StandardSelect>
         </div>
 

@@ -39,12 +39,7 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-        ],
-
-        'CompanyUsers' => [ // Add this guard for your Customer model
-            'driver' => 'session',
-            'provider' => 'CompanyUsers', // Use the 'customers' provider
-        ],
+        ]
     ],
 
     /*
@@ -68,12 +63,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-        ],
-
-        'CompanyUsers' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\CompanyUser::class,
-        ],
+        ]
     ],
 
     /*

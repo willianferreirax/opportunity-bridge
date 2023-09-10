@@ -9,6 +9,13 @@ import Step2 from './Partials/Step2.vue';
 import Step3 from './Partials/Step3.vue';
 import Step4 from './Partials/Step4.vue';
 
+const props = defineProps({
+    deficiences: {
+        type: Array,
+        default: () => [],
+    },
+})
+
 const page = usePage();
 
 const steps = [Step1, Step2, Step3, Step4]
@@ -44,7 +51,7 @@ function submit () {
     let data3 = router.restore('opportunityRegisterStep3')
     let data4 = router.restore('opportunityRegisterStep4')
 
-    router.post(route('register.user'), {
+    router.post(route('opportunity.store'), {
         ...data1.data,
         ...data2.data,
         ...data3.data,
@@ -75,3 +82,7 @@ function submit () {
         
     </CompanyAppLayout>
 </template>
+<style>
+@import 'vue3-toastify/dist/index.css';
+
+</style>

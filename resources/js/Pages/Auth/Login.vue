@@ -40,7 +40,7 @@ const submit = () => {
 
         <TopBar>
             <template #buttons>
-                <Link href="">
+                <Link :href="route('company.register')">
                     <BorderButton class="text-white mr-2 text-xs md:text-base sm:p-1 md:p-2">
                         Anunciar vaga
                     </BorderButton>

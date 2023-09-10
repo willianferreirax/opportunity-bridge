@@ -1,28 +1,75 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
+
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Link } from '@inertiajs/vue3';
+import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
 
+const props = defineProps({
+    opportunity: Object,
+});
 
 const options = {
         chart: {
           id: 'vuechart-example'
         },
         xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+          categories: ['Masculino', "Feminino"]
         }
       }
       
  const series = [{
         name: 'series-1',
-        data: [30, 40, 45, 50, 49, 60, 70, 91]
+        data: [30, 40]
       }]
+
+      const options2 = {
+        chart: {
+          id: 'vuechart-example'
+        },
+        xaxis: {
+          categories: [30,32,25,22,20]
+        }
+      }
+      
+ const series2 = [{
+        name: 'series-1',
+        data: [2,4,6,8,10]
+      }]
+
+      const options3 = {
+        chart: {
+          id: 'vuechart-example'
+        },
+        xaxis: {
+          categories: ["SP", 'RJ', "MG", "ES", "BA"]
+        }
+      }
+      
+ const series3 = [{
+        name: 'series-1',
+        data: [10,8,6,4,2]
+      }]
+
+      const options4 = {
+        chart: {
+          id: 'vuechart-example'
+        },
+        xaxis: {
+          categories: ['Deficiente Visual', "Deficiente audititvo"]
+        }
+      }
+      
+ const series4 = [{
+        name: 'series-1',
+        data: [30, 40]
+      }]
+
 
 </script>
 
 <template>
-    <AppLayout title="Oportunidade">
+    <CompanyAppLayout title="Oportunidade">
         <section class="">
             
             <div class="flex justify-center items-center p-4">
@@ -31,7 +78,7 @@ const options = {
             
             <div class="flex justify-center items-center p-4 mt-4">
                 <h1 class="text-ey-black text-xl md:text-3xl font-bold">
-                    Engenheiro de Software Sênior
+                    {{ opportunity.name }}
                 </h1>
             </div>
 
@@ -41,7 +88,10 @@ const options = {
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
 
-                    <p class="text-sm sm:text-base">A combinar</p>
+                    <p class="text-sm sm:text-base">
+                        {{ opportunity.salary_start.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }} 
+                        - 
+                        {{ opportunity.salary_end.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }}</p>
                 </div>
 
                 <div class="mr-6 flex flex-col sm:flex-row items-center">
@@ -50,14 +100,16 @@ const options = {
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                     </svg>
 
-                    <p class="text-sm sm:text-base">São Paulo, SP</p>
+                    <p class="text-sm sm:text-base">
+                        {{ opportunity.address.city }}, {{ opportunity.address.state }}
+                    </p>
                 </div>
                 <div class="flex flex-col sm:flex-row items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
                     </svg>
 
-                    <p class="text-sm sm:text-base">Empresa X</p>
+                    <p class="text-sm sm:text-base">{{ opportunity.company.company_name }}</p>
                 </div>
             </div>
 
@@ -73,9 +125,9 @@ const options = {
                     </div>
 
                     <div class="ml-4">
-                        <p class="font-bold">Empresa X</p>
-                        <p class="text-sm text-gray-700">Empresa do ramo X</p>
-                        <p class="text-sm text-gray-700">www.empresax.com</p>
+                        <p class="font-bold">{{ opportunity.company.company_name }}</p>
+                        <p class="text-sm text-gray-700">{{ opportunity.company.company_area }}</p>
+                        <!-- <p class="text-sm text-gray-700">www.empresax.com</p> -->
                     </div>
                 </div>
                 
@@ -86,15 +138,17 @@ const options = {
             <div class="mt-2">
                 
                 <span class="font-bold">Competências:</span>
-                <ul>
+                <!-- <ul>
                     <li>Java</li>
                     <li>Python</li>
                     <li>Spring boot</li>
-                </ul> 
+                </ul>  -->
+
+                {{ opportunity.competences }}
             
             </div>
 
-            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+            <!-- <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
             <div class="mt-2">
                 <span class="font-bold">Área:</span> Regulatório
@@ -102,18 +156,20 @@ const options = {
 
             <div class="mt-2">
                 <span class="font-bold">Equipe:</span> Reporting
-            </div>
+            </div> -->
 
             <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
             <div class="mt-2">
                 <span class="font-bold">Requisitos:</span>
-                <ul>
+                <!-- <ul>
                     <li>Java</li>
                     <li>Python</li>
                     <li>Spring boot</li>
                     <li>Experiência framework Django</li>
-                </ul> 
+                </ul>  -->
+                    
+                    {{ opportunity.requirements }}
             </div>
 
             <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
@@ -121,7 +177,7 @@ const options = {
             <div class="mt-2">
                 <span class="font-bold">Responsabilidades:</span>
                 <p>
-                    Atuar em automações de report de arquivos para a receita federal conforme seus requisitos
+                    {{ opportunity.responsabilities }}
                 </p>
             </div>
 
@@ -129,13 +185,22 @@ const options = {
 
             <div class="mt-2">
                 <p>
-                    <span class="font-bold">Horário:</span> 8h às 18h
+                    <span class="font-bold">Horário:</span> {{ opportunity.work_start }} - {{ opportunity.work_end }}
                 </p>
                 <p>
-                    <span class="font-bold">Regime:</span> CLT
+                    <span class="font-bold">Regime:</span> {{ opportunity.hiring_regime }}
                 </p>
                 <p>
-                    <span class="font-bold">Localização:</span> Remoto
+                    <span class="font-bold">Localização: </span> 
+                    
+                    <span v-if="opportunity.is_remote">Remoto</span>
+
+                    <span v-else>
+                        {{ opportunity.address.street }}, 
+                        {{ opportunity.address.number }} - 
+                        {{ opportunity.address.city }}, 
+                        {{ opportunity.address.state }}
+                    </span>
                 </p>
             </div>
 
@@ -143,13 +208,13 @@ const options = {
 
             <div class="mt-2">
                 <p class="mb-4">
-                    <span class="font-bold">Quantidade de candidatos:</span> 30
+                    <span class="font-bold">Quantidade de candidatos:</span> {{ opportunity.applied_users_count }}
                 </p>
                 <p class="mb-4">
-                    <span class="font-bold">Visualizações:</span> 100
+                    <span class="font-bold">Visualizações:</span> {{ opportunity.views }}
                 </p>
 
-                <Link :href="route('company.candidates')">
+                <Link :href="route('company.candidates', { opportunity: opportunity.id })">
                     <PrimaryButton>
                         Ver candidatos
                     </PrimaryButton>
@@ -176,7 +241,7 @@ const options = {
                 </h3>
 
                 <div>
-                    grafico
+                    <apexchart width="500" type="bar" :options="options2" :series="series2"></apexchart>
                 </div>
             </div>
 
@@ -186,7 +251,7 @@ const options = {
                 </h3>
 
                 <div>
-                    grafico
+                    <apexchart width="500" type="bar" :options="options3" :series="series3"></apexchart>
                 </div>
             </div>
 
@@ -196,10 +261,10 @@ const options = {
                 </h3>
 
                 <div>
-                    grafico
+                    <apexchart width="500" type="bar" :options="options4" :series="series4"></apexchart>
                 </div>
             </div>
 
         </section>
-    </AppLayout>
+    </CompanyAppLayout>
 </template>

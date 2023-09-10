@@ -8,6 +8,7 @@ import StandardSelect from '@/Components/StandardSelect.vue';
 import StandardTextArea from '@/Components/StandardTextArea.vue';
 import VueSelect from "vue-select";
 import { vMaska } from 'maska';
+import { onMounted, ref } from 'vue';
 
 const form = useForm('opportunityRegisterStep1', {
     name: '',
@@ -15,6 +16,7 @@ const form = useForm('opportunityRegisterStep1', {
     resume: '',
     regime: '',
     type: '',
+    pcd: false,
     workHour_start: '',
     workHour_end: '',
     targetUsers: [],
@@ -23,13 +25,7 @@ const form = useForm('opportunityRegisterStep1', {
     quantity: '',
 });
 
-const type = [
-    { label: 'Branca', value: 1 },
-    { label: 'Preta', value: 2 },
-    { label: 'Amarela', value: 3 },
-    { label: 'Parda', value: 4 },
-    { label: 'Indígena', value: 5 },
-]
+const type = ref([])
 
 const page = usePage();
 
@@ -78,10 +74,10 @@ function nextStep() {
     //     return;
     // }
 
-    if(!form.targetUsers.length) {
-        page.props.errors.targetUsers = 'Candidatos alvo é obrigatório'
-        return;
-    }
+    // if(!form.targetUsers.length) {
+    //     page.props.errors.targetUsers = 'Candidatos alvo é obrigatório'
+    //     return;
+    // }
 
     if(!form.salary_start) {
         page.props.errors.salary_start = 'Salário é obrigatório'
@@ -140,6 +136,15 @@ function compareTimes(timeA, timeB) {
     return false;
 }
 
+onMounted(() => {
+    type.value = page.props.deficiences.map((item) => {
+        return {
+            label: item.deficiency,
+            value: item.id,
+        }
+    })
+})
+
 const emit = defineEmits(['nextStep', 'resetForm'])
 </script>
 
@@ -160,13 +165,13 @@ const emit = defineEmits(['nextStep', 'resetForm'])
 
         <div class="mt-4">
             <InputLabel class="mb-2" for="role" value="Cargo:" />
-            <StandardSelect
+            <TextInput
+                id="role"
                 v-model="form.role"
-            >
-                <option value="1">Cargo 1</option>
-                <option value="2">Cargo 2</option>
-
-            </StandardSelect>
+                type="text"
+                class="mt-1 block w-full"
+                required
+            />
             <InputError class="mt-2" :message="$page.props.errors.role" />
         </div>
 
@@ -188,10 +193,10 @@ const emit = defineEmits(['nextStep', 'resetForm'])
             <StandardSelect
                 v-model="form.regime"
             >
-                <option value="1">CLT</option>
-                <option value="2">PJ</option>
-                <option value="3">Estágio</option>
-                <option value="4">Cooperado</option>
+                <option value="CLT">CLT</option>
+                <option value="PJ">PJ</option>
+                <option value="Estágio">Estágio</option>
+                <option value="Cooperado">Cooperado</option>
 
             </StandardSelect>
             <InputError class="mt-2" :message="$page.props.errors.regime" />
@@ -202,8 +207,8 @@ const emit = defineEmits(['nextStep', 'resetForm'])
             <StandardSelect
                 v-model="form.type"
             >
-                <option value="1">Efetivo</option>
-                <option value="2">Temporario</option>
+                <option value="Efetivo">Efetivo</option>
+                <option value="Temporario">Temporario</option>
             </StandardSelect>
             <InputError class="mt-2" :message="$page.props.errors.type" />
         </div>
@@ -246,9 +251,27 @@ const emit = defineEmits(['nextStep', 'resetForm'])
         </div>
 
         <div class="mt-4">
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input
+                    v-model="form.pcd"  
+                    type="checkbox" 
+                    value="" 
+                    class="sr-only peer"
+                >
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 dark:peer-focus:ring-yellow-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-yellow-600"></div>
+                <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Vaga para PCD ?</span>
+            </label>
+        </div>
+
+        <div class="mt-4">
             <InputLabel class="mb-2" for="targetUsers" value="Candidatos alvo:" />
             <vue-select 
-                v-model="form.targetUsers" :options="type" multiple clearable :closeOnSelect="false"
+                v-model="form.targetUsers" 
+                :options="type" 
+                multiple 
+                clearable
+                :reduce="deficiency => deficiency.value" 
+                :closeOnSelect="false"
                 id="type"
                 aria-multiselectable="true"
                 class="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

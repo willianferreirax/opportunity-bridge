@@ -1,14 +1,31 @@
 <script setup>
 import AnnouncedOpportunityCard from '@/Components/AnnouncedOpportunityCard.vue';
-
+import Pagination from '@/Components/Pagination.vue';
 import SearchBar from '@/Components/SearchBar.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
+import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
+import { router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
+defineProps({
+    opportunities: Object,
+});
+
+const params = new URLSearchParams(window.location.search)
+const defaultValue = ''
+
+const search = params.has('search') ? params.get('search') : defaultValue
+const searchRef = ref(search)
+
+const loadAnnouncedJobsList = () => {
+    router.get(route('company.announced'), { 
+        search: searchRef.value,
+    }, { preserveState: true });
+}
 
 </script>
 
 <template>
-    <AppLayout title="Announced jobs">
+    <CompanyAppLayout title="Announced jobs">
         <section class="">
             <div class="mt-4">
                 <h1 class="text-3xl font-bold ">
@@ -17,16 +34,45 @@ import AppLayout from '@/Layouts/AppLayout.vue';
             </div>
 
             <div class="mt-4">
-                <SearchBar></SearchBar>
+                <div>   
+                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                            
+                        </div>
+                        <input 
+                            type="text" 
+                            id="default-search" 
+                            class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                            placeholder="Busque sua vaga"
+                            @keyup.enter.native="loadAnnouncedJobsList" 
+                            v-model="searchRef"
+                        >
+                        <div class="text-ey-black absolute right-2.5 bottom-1.5 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="mt-4 flex flex-col items-center">
                 <AnnouncedOpportunityCard
-                    v-for="n in 3"
+                    v-for="opportunity in opportunities.data"
+                    :opportunity="opportunity"
+                    :key="opportunity.id"
+                    class="mb-4"
                 >
                 </AnnouncedOpportunityCard>
             </div>
 
         </section>
-    </AppLayout>
+
+        <Pagination :data="opportunities"></Pagination>
+    </CompanyAppLayout>
 </template>

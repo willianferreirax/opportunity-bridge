@@ -1,11 +1,12 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
 
 
 </script>
 
 <template>
-    <AppLayout title="Candidate">
+    <CompanyAppLayout title="Candidate">
         <section class="relative lg:pb-24 pb-16 m-4 sm:m-0">
 
             <div class="container lg:mt-24 mt-16">
@@ -17,7 +18,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                                     <input id="pro-img" name="profile-image" type="file" class="hidden" onchange="loadFile(event)">
                                     <div>
                                         <div class="relative h-28 w-28 mx-auto">
-                                            <img src="https://shreethemes.in/techwind/layouts/assets/images/client/05.jpg" class="rounded-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800" id="profile-image" alt="">
+                                            <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" class="rounded-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800" id="profile-image" alt="">
                                             <label class="absolute inset-0 cursor-pointer" for="pro-img"></label>
                                         </div>
 
@@ -52,17 +53,6 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                                                 <div class="flex-1">
                                                     <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Language :</h6>
                                                     <a href="" class="text-slate-400">English</a>, <a href="" class="text-slate-400">Japanese</a>, <a href="" class="text-slate-400">Chinese</a>
-                                                </div>
-                                            </div>
-                                            <div class="flex items-center mt-3">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe fea icon-ex-md text-slate-400 mr-3">
-                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                                </svg>
-                                                <div class="flex-1">
-                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Website :</h6>
-                                                    <a href="" class="text-slate-400">www.kristajoseph.com</a>
                                                 </div>
                                             </div>
                                             <div class="flex items-center mt-3">
@@ -155,7 +145,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
                             </div>
                         </div>
 
-                        <h5 class="text-xl font-semibold mt-[30px]">Portfolio :</h5>
+                        <h5 class="text-xl font-semibold mt-[30px]">Curriculos criativos :</h5>
 
                         <div class="grid lg:grid-cols-3 md:grid-cols-2 mt-6 gap-[30px]">
                             <div class="group relative block overflow-hidden rounded-md transition-all duration-500">
@@ -260,5 +250,5 @@ import AppLayout from '@/Layouts/AppLayout.vue';
             </div>
         <!--end container-->
         </section>
-    </AppLayout>
+    </CompanyAppLayout>
 </template>

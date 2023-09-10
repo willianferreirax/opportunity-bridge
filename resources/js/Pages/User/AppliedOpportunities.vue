@@ -3,16 +3,20 @@ import OpportunityCard from '@/Components/OpportunityCard.vue';
 import SearchBar from '@/Components/SearchBar.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
+const props = defineProps({
+    opportunities: Object,
+});
+
 </script>
 
 <template>
     <AppLayout title="Procura vagas">
         
-        <div class="mt-4 px-8 md:px-32">
+        <!-- <div class="mt-4 px-8 md:px-32">
 
             <SearchBar></SearchBar>
 
-        </div>
+        </div> -->
 
         <section class="p-12 flex flex-col items-center">
 
@@ -21,11 +25,15 @@ import AppLayout from '@/Layouts/AppLayout.vue';
             </h1>
 
             <OpportunityCard
-                v-for="n in 3"
+                v-for="opportunity in opportunities.data"
+                :key="opportunity.id"
+                :opportunity="opportunity"
             >
             </OpportunityCard>
 
         </section>
+
+        <Pagination :data="opportunities"></Pagination>
 
     </AppLayout>
 </template>

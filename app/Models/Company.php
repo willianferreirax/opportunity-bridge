@@ -27,7 +27,7 @@ class Company extends Model
 
     public function users()
     {
-        return $this->hasMany(CompanyUser::class);
+        return $this->hasMany(User::class);
     }
 
     public function isCnpjTaken($cnpj)

@@ -3,11 +3,15 @@
 import { Link } from '@inertiajs/vue3';
 import ApplicationMark from './ApplicationMark.vue';
 
+const props = defineProps({
+    opportunity: Object,
+});
+
 </script>
 
 <template>
 
-    <Link :href="route('opportunity.show', 1)">
+    <Link :href="route('opportunity.show', opportunity.opportunity.id)">
         <div class="flex bg-white p-4 mb-4">
 
             <div class="p-4 bg-gray-100 rounded-lg mr-4 hidden sm:block">
@@ -15,10 +19,10 @@ import ApplicationMark from './ApplicationMark.vue';
             </div>
 
             <div class="w-full flex flex-col justify-center">
-                <p class="font-bold">Engenheiro de Software Sr.</p>
+                <p class="font-bold">{{ opportunity.opportunity.name }}</p>
                 <div class="flex justify-between flex-col sm:flex-row">
                     <div class="flex items-center text-sm text-gray-700 mb-4 sm:mb-0">
-                        Belo Horizonte
+                        {{ opportunity.opportunity.address.city }}, {{ opportunity.opportunity.address.state }}
                     </div>
 
                     <div class="flex">

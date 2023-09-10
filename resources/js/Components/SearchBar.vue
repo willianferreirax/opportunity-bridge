@@ -1,5 +1,10 @@
 <script setup>
 
+const props = defineProps({
+    searchFunction: Function,
+    modelValue: String,
+});
+
 </script>
 <template>
     <div>   

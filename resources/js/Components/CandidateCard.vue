@@ -1,6 +1,10 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import moment from 'moment';
 
+const props = defineProps({
+    user: Object,
+});
 
 </script>
 
@@ -9,9 +13,9 @@ import { Link } from '@inertiajs/vue3';
         <Link :href="route('candidate.profile.view')">
             <div class="flex justify-between">
                 <div class="flex flex-col">
-                    <p class="font-bold mb-1 sm:text-xl">João Antonio Fagundes</p>
-                    <p class="text-gray-700 text-sm mb-1">Vaga: Analista de Redes Sociais Jr.</p>
-                    <p class="text-gray-700 text-sm">Data: 02/02/2021</p>
+                    <p class="font-bold mb-1 sm:text-xl">{{ user.user.name }}</p>
+                    <p class="text-gray-700 text-sm mb-1">Vaga: {{ user.opportunity.name }}</p>
+                    <p class="text-gray-700 text-sm">Data: {{ moment(user.created_at).format("DD/MM/YYYY")}}</p>
                 </div>
 
                 <div class="justify-center items-center hidden sm:flex">

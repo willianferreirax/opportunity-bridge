@@ -11,6 +11,13 @@ import Stepper from '@/Components/Stepper.vue';
 import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 
+const props = defineProps({
+    deficiences: {
+        type: Array,
+        default: () => [],
+    },
+})
+
 const page = usePage();
 
 const steps = [Step1, Step2, Step3, Step4]

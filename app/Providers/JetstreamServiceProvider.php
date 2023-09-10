@@ -51,14 +51,7 @@ class JetstreamServiceProvider extends ServiceProvider
                 return $user;
             }
 
-            $companyUser = CompanyUser::where('email', $request->email)
-                ->first();
-
-            if ($companyUser && Hash::check($request->password, $companyUser->password)) {
-
-                // dd($companyUser);
-                return $companyUser;
-            }
+            return null;
         });
     }
 

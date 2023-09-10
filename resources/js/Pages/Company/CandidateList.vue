@@ -1,18 +1,18 @@
 <script setup>
 
 import CandidateCard from '@/Pages/Company/Partials/CandidateCard.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
 import { ref } from 'vue';
-
 import VideoInterviewStepCard from '@/Pages/Company/Partials/VideoInterviewStepCard.vue';
 import TestInterviewStepCard from '@/Pages/Company/Partials/TestInterviewStepCard.vue';
 import InterviewStepCard from '@/Pages/Company/Partials/InterviewStepCard.vue';
 import SimpleInterviewStepCard from '@/Pages/Company/Partials/SimpleInterviewStepCard.vue';
 import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
 
-const open = ref(false);
+const props = defineProps({
+    opportunity: Object,
+});
 
-const test = ref('InterviewStepCard');
+const open = ref(false);
 
 const opportunitySteps = ref([
     {
@@ -29,7 +29,7 @@ const opportunitySteps = ref([
     },
     {
         name: 'Teste de lógica',
-        status: 'Efetuado',
+        status: 'Aguardando',
         description: 'Acesse o link e execute os testes de lógica requisitados',
         type: 'TestInterviewStepCard',
     },
@@ -63,7 +63,9 @@ const componentMapping = {
             <CandidateCard
                 class="mb-4"
                 @click="open = true"
-                v-for="n in 3"
+                v-for="user in opportunity.applied_users"
+                :key="user.id"
+                :user="user"
             >
             </CandidateCard>
 
@@ -87,7 +89,7 @@ const componentMapping = {
             <div class="flex mb-4">
                 <img 
                     class="w-12 h-12 rounded-full" 
-                    src="https://shreethemes.in/techwind/layouts/assets/images/client/05.jpg" alt="user" 
+                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user" 
                 />
                 <div class="ml-4">
                     <h3 class="font-bold ">
