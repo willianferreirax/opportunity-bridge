@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Opportunity;
+use App\Models\OpportunityUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -70,15 +71,71 @@ class OpportunityController extends Controller
 
     }
 
-    public function appliedUsers(Opportunity $opportunity)
+    public function appliedUsers(Opportunity $opportunity, Request $request)
     {
 
-        $opportunity->load('appliedUsers')
-            ->load('appliedUsers.address');
+        $search = $request->query('search');
+
+        $appliedUsers = $opportunity
+            ->appliedUsers()
+            ->with('address')
+            ->paginate(9);
+        
+        $oportunitySimpleSteps = $opportunity
+            ->simpleSteps()
+            ->select('id', 'name', 'description', 'order')
+            ->get();
+
+        $oportunityVideoSteps = $opportunity
+            ->videoSteps()
+            ->select('id', 'name', 'description', 'order')
+            ->get();
+
+        $oportunityInterviewSteps = $opportunity
+            ->interviewSteps()
+            ->select('id', 'name', 'description', 'order')
+            ->get();
+
+        $oportunityTestSteps = $opportunity
+            ->testSteps()
+            ->select('id', 'name', 'description', 'order')
+            ->get();
+
+        //add type to each step
+        $oportunitySimpleSteps->map(function($step){
+            $step->type = 'SimpleInterviewStepCard';
+            return $step;
+        });
+
+        $oportunityVideoSteps->map(function($step){
+            $step->type = 'VideoInterviewStepCard';
+            return $step;
+        });
+
+        $oportunityInterviewSteps->map(function($step){
+            $step->type = 'InterviewStepCard';
+            return $step;
+        });
+
+        $oportunityTestSteps->map(function($step){
+            $step->type = 'TestInterviewStepCard';
+            return $step;
+        });
+
+        //transform all steps in one array and order by order
+        $steps = collect($oportunitySimpleSteps->toArray())
+            ->merge($oportunityVideoSteps->toArray())
+            ->merge($oportunityInterviewSteps->toArray())
+            ->merge($oportunityTestSteps->toArray())
+            ->sortBy('order')
+            ->values()
+            ->toArray();
 
         return Inertia::render('Company/CandidateList',
             [
                 'opportunity' => $opportunity,
+                'opportunitySteps' => $steps,
+                'appliedUsers' => $appliedUsers,
             ]
         );
     }

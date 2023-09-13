@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Opportunity;
 use App\Models\OpportunityUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -78,7 +79,11 @@ class UserController extends Controller
 
     public function apply(Opportunity $opportunity)
     {
-        $opportunity->appliedUsers()->attach(auth()->user()->id);
+        $opportunity->appliedUsers()
+            ->attach(auth()->user()->id, [
+                'current_step' => 0,
+                'status' => 'applied',
+            ]);
 
         return back()->with('success', 'Você se candidatou a vaga com sucesso!');
 
@@ -95,6 +100,22 @@ class UserController extends Controller
 
         return Inertia::render('User/AppliedOpportunities',[
             'opportunities' => $opportunities,
+        ]);
+    }
+
+    public function publicProfile(User $user)
+    {
+
+        $user->load('curriculumResume');
+        $user->load('curriculumProExperiences');
+        $user->load('curriculumAcadExperiences');
+        $user->load('curriculumCourses');
+        $user->load('curriculumLanguages');
+        $user->load('address');
+        $user->load('contact');
+
+        return Inertia::render('Company/CandidateProfileView', [
+            'user' => $user,
         ]);
     }
 }

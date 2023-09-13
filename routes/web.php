@@ -157,9 +157,8 @@ Route::middleware([
     Route::get('/opportunity/{opportunity}', [OpportunityController::class, 'opportunityShow'])
         ->name('opportunity.show');
     
-    Route::get('/candidate/profile', function () {
-        return Inertia::render('Company/CandidateProfileView');
-    })->name('candidate.profile.view');
+    Route::get('/candidate/profile/{user}', [UserController::class, "publicProfile"])
+        ->name('candidate.profile.view');
 
 });
 

@@ -196,10 +196,6 @@ function aplicar(){
                 <PrimaryButton class="mr-0 md:mr-4" @click="aplicar()">
                     Aplicar
                 </PrimaryButton>
-
-                <PrimaryButton disabled aria-disabled="" class="bg-gray-300">
-                    Salvar
-                </PrimaryButton>
             </div>
 
         </section>

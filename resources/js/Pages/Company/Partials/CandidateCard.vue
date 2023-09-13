@@ -30,7 +30,7 @@ const props = defineProps({
         
         <div class="buttons">
             <PrimaryButton>
-                <Link :href="route('candidate.profile.view')">
+                <Link :href="route('candidate.profile.view', { user: user.id })">
                     <a>Ver perfil</a>
                 </Link>
             </PrimaryButton>

@@ -1,7 +1,11 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
-import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
 
+import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
+import moment  from 'moment';
+
+const props = defineProps({
+    user: Object,
+});
 
 </script>
 
@@ -23,8 +27,8 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
                                         </div>
 
                                         <div class="mt-4">
-                                            <h5 class="text-lg font-semibold">Jenny Jimenez</h5>
-                                            <p class="text-slate-400">jennyhot@hotmail.com</p>
+                                            <h5 class="text-lg font-semibold">{{ user?.name ?? "" }}</h5>
+                                            <p class="text-slate-400">{{ user?.email ?? "" }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -33,17 +37,7 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
                                     <div>
                                         
                                         <div class="mt-6">
-                                            <div class="flex items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail fea icon-ex-md text-slate-400 mr-3">
-                                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                                </svg>
-                                                <div class="flex-1">
-                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Email :</h6>
-                                                    <a href="" class="text-slate-400">jennyhot@hotmail.com</a>
-                                                </div>
-                                            </div>
-                                            
+
                                             <div class="flex items-center mt-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-italic fea icon-ex-md text-slate-400 mr-3">
                                                     <line x1="19" y1="4" x2="10" y2="4"></line>
@@ -51,10 +45,18 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
                                                     <line x1="15" y1="4" x2="9" y2="20"></line>
                                                 </svg>
                                                 <div class="flex-1">
-                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Language :</h6>
-                                                    <a href="" class="text-slate-400">English</a>, <a href="" class="text-slate-400">Japanese</a>, <a href="" class="text-slate-400">Chinese</a>
+                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Idiomas :</h6>
+                                                    <a
+                                                        v-if="user.curriculum_languages.length > 0"
+                                                        v-for="lang in user.curriculum_languages" 
+                                                        href="" 
+                                                        class="text-slate-400"
+                                                    >
+                                                        {{ lang.language }},
+                                                    </a>
                                                 </div>
                                             </div>
+
                                             <div class="flex items-center mt-3">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-gift fea icon-ex-md text-slate-400 mr-3">
                                                     <polyline points="20 12 20 22 4 22 4 12"></polyline>
@@ -64,8 +66,8 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
                                                     <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
                                                 </svg>
                                                 <div class="flex-1">
-                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Birthday :</h6>
-                                                    <p class="text-slate-400 mb-0">2nd March, 1996</p>
+                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Aniversário :</h6>
+                                                    <p class="text-slate-400 mb-0"> {{ moment(user?.birth_date ?? "").format("DD/MM/YYYY") }}</p>
                                                 </div>
                                             </div>
                                             <div class="flex items-center mt-3">
@@ -74,8 +76,15 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
                                                     <circle cx="12" cy="10" r="3"></circle>
                                                 </svg>
                                                 <div class="flex-1">
-                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Location :</h6>
-                                                    <a href="" class="text-slate-400">Beijing, China</a>
+                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Endereço :</h6>
+                                                    <a href="" class="text-slate-400">
+                                                        {{ user.address.street }}, 
+                                                        {{ user.address.number }}
+                                                        <br>
+                                                        {{ user.address.neighborhood }}, 
+                                                        {{ user.address.city }} - 
+                                                        {{ user.address.state }}
+                                                    </a>
                                                 </div>
                                             </div>
                                             <div class="flex items-center mt-3">
@@ -83,8 +92,8 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
                                                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                                                 </svg>
                                                 <div class="flex-1">
-                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Cell No :</h6>
-                                                    <a href="" class="text-slate-400">(+12) 1254-56-4896</a>
+                                                    <h6 class="text-indigo-600 dark:text-white font-medium mb-0">Celular/Telefone:</h6>
+                                                    <a href="" class="text-slate-400">({{ user.contact.ddd }}) {{ user.contact.phone }}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -96,22 +105,32 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
 
                     <div class="lg:w-3/4 md:w-2/3 md:px-3 mt-[30px] md:mt-0">
                         <div class="pb-6 border-b border-gray-100 dark:border-gray-700">
-                            <h5 class="text-xl font-semibold">Jenny Jimenez</h5>
+                            <h5 class="text-xl font-semibold">{{ user?.name ?? "" }}</h5>
 
-                            <p class="text-slate-400 mt-3">I have started my career as a trainee and prove my self and achieve all the milestone with good guidance and reach up to the project manager. In this journey, I understand all the procedure which make me a good developer, team leader, and a project manager.</p>
+                            <p class="text-slate-400 mt-3">
+                                {{ user?.curriculum_resume.resume ?? "" }}
+                            </p>
                         </div>
 
                         <div class="grid lg:grid-cols-2 grid-cols-1 gap-[30px] pt-6">
                         
                             <div class="mt-[30px] lg:mt-0">
-                                <h5 class="text-xl font-semibold">Experience :</h5>
+                                <h5 class="text-xl font-semibold">Experiência profissional :</h5>
 
-                                <div v-for="n in 3" class="flex transition-all duration-500 hover:scale-105 shadow dark:shadow-gray-800 hover:shadow-md dark:hover:shadow-gray-700 ease-in-out items-center p-4 rounded-md bg-white dark:bg-slate-900 mt-6">
+                                <div v-for="exp in user.curriculum_pro_experiences" class="flex transition-all duration-500 hover:scale-105 shadow dark:shadow-gray-800 hover:shadow-md dark:hover:shadow-gray-700 ease-in-out items-center p-4 rounded-md bg-white dark:bg-slate-900 mt-6">
                                     
                                     <div class="flex-1 content ml-4">
-                                        <h4 class="text-lg text-medium">Senior Web Developer</h4>
-                                        <p class="text-slate-400 mb-0">3 Years Experience</p>
-                                        <p class="text-slate-400 mb-0"><a href="" class="text-indigo-600">CircleCi</a> @London, UK</p>
+                                        <h4 class="text-lg text-medium">{{ exp.role }}</h4>
+                                        <p class="text-slate-400 mb-0">
+                                            {{  moment(exp.start_date ?? "").format("DD/MM/YYYY") }} 
+                                            - 
+                                            {{ exp?.end_date ? moment(exp?.end_date).format("DD/MM/YYYY") : "Atualmente" }}
+                                        </p>
+                                        <p class="text-slate-400 mb-0">
+                                            <a href="" class="text-indigo-600">
+                                                {{ exp.company_name }}
+                                            </a> 
+                                        </p>
                                     </div>
 
                                 </div>
@@ -119,25 +138,41 @@ import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
                             </div>
 
                             <div class="mt-[30px] lg:mt-0">
-                                <h5 class="text-xl font-semibold">Formação academica :</h5>
+                                <h5 class="text-xl font-semibold">Formação acadêmica :</h5>
 
-                                <div v-for="n in 3" class="flex transition-all duration-500 hover:scale-105 shadow dark:shadow-gray-800 hover:shadow-md dark:hover:shadow-gray-700 ease-in-out items-center p-4 rounded-md bg-white dark:bg-slate-900 mt-6">
+                                <div v-for="exp in user.curriculum_acad_experiences" class="flex transition-all duration-500 hover:scale-105 shadow dark:shadow-gray-800 hover:shadow-md dark:hover:shadow-gray-700 ease-in-out items-center p-4 rounded-md bg-white dark:bg-slate-900 mt-6">
                                     <div class="flex-1 content ml-4">
-                                        <h4 class="text-lg text-medium">Senior Web Developer</h4>
-                                        <p class="text-slate-400 mb-0">3 Years Experience</p>
-                                        <p class="text-slate-400 mb-0"><a href="" class="text-indigo-600">CircleCi</a> @London, UK</p>
+                                        <h4 class="text-lg text-medium">{{ exp.course_name }}</h4>
+                                        <p class="text-slate-400 mb-0">
+                                            {{  moment(exp.start_date ?? "").format("DD/MM/YYYY") }} 
+                                            - 
+                                            {{ exp?.end_date ? moment(exp?.end_date).format("DD/MM/YYYY") : "Atualmente" }}
+                                        </p>
+                                        <p class="text-slate-400 mb-0">
+                                            <a href="" class="text-indigo-600">
+                                                {{ exp.institution_name }}
+                                            </a> 
+                                        </p>
                                     </div>
                                 </div>
 
 
                                 <h5 class="text-xl font-semibold mt-[30px]">Cursos</h5>
 
-                                <div v-for="n in 3" class="flex transition-all duration-500 hover:scale-105 shadow dark:shadow-gray-800 hover:shadow-md dark:hover:shadow-gray-700 ease-in-out items-center p-4 rounded-md bg-white dark:bg-slate-900 mt-6">
+                                <div v-for="exp in user.curriculum_courses" class="flex transition-all duration-500 hover:scale-105 shadow dark:shadow-gray-800 hover:shadow-md dark:hover:shadow-gray-700 ease-in-out items-center p-4 rounded-md bg-white dark:bg-slate-900 mt-6">
                                     
                                     <div class="flex-1 content ml-4">
-                                        <h4 class="text-lg text-medium">Senior Web Developer</h4>
-                                        <p class="text-slate-400 mb-0">3 Years Experience</p>
-                                        <p class="text-slate-400 mb-0"><a href="" class="text-indigo-600">CircleCi</a> @London, UK</p>
+                                        <h4 class="text-lg text-medium">{{ exp.course_name }}</h4>
+                                        <p class="text-slate-400 mb-0">
+                                            {{  moment(exp.start_date ?? "").format("DD/MM/YYYY") }} 
+                                            - 
+                                            {{ exp?.end_date ? moment(exp?.end_date).format("DD/MM/YYYY") : "Atualmente" }}
+                                        </p>
+                                        <p class="text-slate-400 mb-0">
+                                            <a href="" class="text-indigo-600">
+                                                {{ exp.institution_name }}
+                                            </a> 
+                                        </p>
                                     </div>
 
                                 </div>

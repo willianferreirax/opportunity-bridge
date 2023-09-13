@@ -7,40 +7,19 @@ import TestInterviewStepCard from '@/Pages/Company/Partials/TestInterviewStepCar
 import InterviewStepCard from '@/Pages/Company/Partials/InterviewStepCard.vue';
 import SimpleInterviewStepCard from '@/Pages/Company/Partials/SimpleInterviewStepCard.vue';
 import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
+import Pagination from '@/Components/Pagination.vue';
 
 const props = defineProps({
     opportunity: Object,
+    opportunitySteps: Object,
+    appliedUsers: Object,
 });
 
 const open = ref(false);
 
-const opportunitySteps = ref([
-    {
-        name: 'Análise de currículo',
-        status: 'Aguardando',
-        description: 'Análise de pré-requisitos e experiências profissionais',
-        type: 'SimpleInterviewStepCard',
-    },
-    {
-        name: 'Entrevista com recrutador',
-        status: 'Aguardando',
-        description: 'Entrevista com recrutador da empresa (pessoa X)',
-        type: 'VideoInterviewStepCard',
-    },
-    {
-        name: 'Teste de lógica',
-        status: 'Aguardando',
-        description: 'Acesse o link e execute os testes de lógica requisitados',
-        type: 'TestInterviewStepCard',
-    },
-    {
-        name: 'Entrevista com gestor',
-        status: 'Aguardando',
-        description: 'Entrevista com gestor da empresa (pessoa Y)',
-        type: 'InterviewStepCard',
-    },
-    
-]);
+const test = ref(false);
+
+const selectedUser = ref(null);
 
 const componentMapping = {
     'SimpleInterviewStepCard': SimpleInterviewStepCard,
@@ -48,6 +27,11 @@ const componentMapping = {
     'TestInterviewStepCard': TestInterviewStepCard,
     'InterviewStepCard': InterviewStepCard,
 };
+
+const openDrawer = (user) => {
+    open.value = !open.value;
+    selectedUser.value = user
+}
 
 </script>
 
@@ -62,14 +46,17 @@ const componentMapping = {
             
             <CandidateCard
                 class="mb-4"
-                @click="open = true"
-                v-for="user in opportunity.applied_users"
+                @click="openDrawer(user)"
+                v-for="user in appliedUsers.data"
                 :key="user.id"
                 :user="user"
             >
             </CandidateCard>
 
         </section>
+
+        <Pagination :data="appliedUsers"></Pagination>
+        <button @click="test = !test">test</button>
 
         <div :class="{ 'translate-x-full': !open, 'translate-x-none' : open }" class="fixed top-0 right-0 z-[99] h-screen p-4 overflow-y-auto shadow-2xl transition-transform bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-right-label">
             <h5 id="drawer-right-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400">
@@ -93,9 +80,11 @@ const componentMapping = {
                 />
                 <div class="ml-4">
                     <h3 class="font-bold ">
-                        Ricky Park
+                        {{ selectedUser?.name ?? "" }}
                     </h3>
-                    <h6 class="text-gray-500">São Paulo, SP</h6>
+                    <h6 class="text-gray-500">
+                        {{ selectedUser?.address?.city ?? "" }}, {{ selectedUser?.address?.state ?? "" }}
+                    </h6>
                 </div>
             </div>
 
@@ -105,7 +94,14 @@ const componentMapping = {
 
                 <ol class="relative border-l border-gray-200 dark:border-gray-700">
 
-                    <component :is="componentMapping[step.type]" v-for="step in opportunitySteps" :key="step.name" />
+                    <component 
+                        v-for="(step, index) in opportunitySteps" 
+                        :is="componentMapping[step.type]" 
+                        :key="step.name" 
+                        :passed="test"
+                        :step="step"
+                        :order="index + 1"
+                    />
 
                 </ol>
 
