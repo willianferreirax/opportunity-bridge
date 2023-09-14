@@ -49,7 +49,14 @@ const nextStep = () => {
     emit("nextStep")
 };
 
-const emit = defineEmits(["nextStep"])
+const backStep = () => {
+    emit("backStep")
+};
+
+const emit = defineEmits([
+    "nextStep",
+    "backStep"
+])
 </script>
 <template>
     <div class="p-12 pt-8">
@@ -151,6 +158,10 @@ const emit = defineEmits(["nextStep"])
         </div>
 
         <div class="flex items-center justify-center mt-4">
+
+            <PrimaryButton class="ml-4" @click="backStep()">
+                Voltar
+            </PrimaryButton>
             
             <PrimaryButton class="ml-4" @click="nextStep()">
                 Próximo

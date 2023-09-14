@@ -10,7 +10,7 @@ const props = defineProps({
 
 <template>
     <div class="bg-white p-4 mb-4 rounded-lg">
-        <Link :href="route('candidate.profile.view')">
+        <Link :href="route('candidate.profile.view', { user: user.user.id })">
             <div class="flex justify-between">
                 <div class="flex flex-col">
                     <p class="font-bold mb-1 sm:text-xl">{{ user.user.name }}</p>

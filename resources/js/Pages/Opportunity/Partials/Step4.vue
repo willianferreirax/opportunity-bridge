@@ -54,7 +54,14 @@ const submit = () => {
     emit("submit")
 };
 
-const emit = defineEmits(["submit"])
+const backStep = () => {
+    emit("backStep")
+};
+
+const emit = defineEmits([
+    "submit",
+    "backStep"
+])
 
 </script>
 
@@ -103,6 +110,10 @@ const emit = defineEmits(["submit"])
         </div>
 
         <div class="flex items-center justify-center mt-4">
+
+            <PrimaryButton class="ml-4" @click="backStep()">
+                Voltar
+            </PrimaryButton>
             
             <PrimaryButton class="ml-4" @click="submit()">
                 Concluir

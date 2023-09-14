@@ -14,6 +14,10 @@ const form = useForm('userRegisterStep2', {
 
 const page = usePage();
 
+const backStep = () => {
+    emit("backStep")
+};
+
 const nextStep = () => {
     
     form.clearErrors()
@@ -46,7 +50,10 @@ const nextStep = () => {
     emit("nextStep")
 };
 
-const emit = defineEmits(["nextStep"])
+const emit = defineEmits([
+    "nextStep",
+    "backStep"
+])
 </script>
 <template>
     <div class="p-12 pt-8">
@@ -106,6 +113,10 @@ const emit = defineEmits(["nextStep"])
         </div>
 
         <div class="flex items-center justify-center mt-4">
+
+            <PrimaryButton class="ml-4" @click="backStep()">
+                voltar
+            </PrimaryButton>
             
             <PrimaryButton class="ml-4" @click="nextStep()">
                 Próximo

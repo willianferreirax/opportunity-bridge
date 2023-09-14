@@ -43,7 +43,14 @@ onMounted(() => {
     })
 })
 
-const emit = defineEmits(["submit"])
+const backStep = () => {
+    emit("backStep")
+};
+
+const emit = defineEmits([
+    "submit",
+    "backStep"
+])
 </script>
 <template>
     <div class="p-12 pt-8">
@@ -56,7 +63,7 @@ const emit = defineEmits(["submit"])
         </div>
 
         <div class="mt-4">
-            <InputLabel class="mb-2" for="sex" value="Sexo:" />
+            <InputLabel class="mb-2" for="sex" value="Gênero:" />
             <StandardSelect
                 v-model="form.sex"
             >
@@ -67,7 +74,7 @@ const emit = defineEmits(["submit"])
         </div>
 
         <div class="mt-4">
-            <InputLabel class="mb-2" for="skin" value="Cor da pele:" />
+            <InputLabel class="mb-2" for="skin" value="Raça/Etnia:" />
             <StandardSelect
                 v-model="form.skin"
             >
@@ -81,7 +88,7 @@ const emit = defineEmits(["submit"])
         </div>
 
         <div class="mt-4">
-            <InputLabel class="mb-2" for="gender" value="Gênero:" />
+            <InputLabel class="mb-2" for="gender" value="Orientação sexual:" />
             <StandardSelect
                 v-model="form.gender"
             >
@@ -105,7 +112,7 @@ const emit = defineEmits(["submit"])
         </div>
 
         <div class="mt-4">
-            <InputLabel class="mb-2" for="deficiency" value="PCD:" />
+            <InputLabel class="mb-2" for="deficiency" value="Pessoa com deficiência:" />
             <div class="flex gap-2 items-center">
 
                 <Checkbox v-model:checked="form.isPCD" value="true"></Checkbox>
@@ -126,6 +133,10 @@ const emit = defineEmits(["submit"])
 
 
         <div class="flex items-center justify-center mt-4">
+
+            <PrimaryButton class="ml-4" @click="backStep()">
+                voltar
+            </PrimaryButton>
             
             <PrimaryButton class="ml-4" @click="submit()">
                 Concluir

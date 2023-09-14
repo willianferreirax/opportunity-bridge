@@ -82,7 +82,16 @@ function getAddress(cep) {
 
 }
 
-const emit = defineEmits(['nextStep', 'resetForm'])
+const backStep = () => {
+    emit("backStep")
+};
+
+
+const emit = defineEmits([
+    'nextStep', 
+    'resetForm',
+    'backStep'
+])
 
 </script>
 
@@ -180,6 +189,10 @@ const emit = defineEmits(['nextStep', 'resetForm'])
         </div>
 
         <div class="flex items-center justify-center mt-4">
+
+            <PrimaryButton class="ml-4" @click="backStep()">
+                Voltar
+            </PrimaryButton>
             
             <PrimaryButton class="ml-4" @click="nextStep">
                 Próximo
