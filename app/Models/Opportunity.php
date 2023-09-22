@@ -78,7 +78,7 @@ class Opportunity extends Model
     {
         return $this->belongsToMany(User::class)
             ->using(OpportunityUser::class)
-            ->withPivot(['current_step', 'status', 'user_id'])
+            ->withPivot(['current_step', 'status', 'user_id', 'id'])
             ->withTimestamps()
         ;
     }

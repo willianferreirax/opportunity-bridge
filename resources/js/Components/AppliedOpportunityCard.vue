@@ -26,11 +26,16 @@ const props = defineProps({
                     </div>
 
                     <div class="flex">
-                        <div class="h-[4px] w-[30px] mr-2 bg-ey-yellow"></div>
-                        <div class="h-[4px] w-[30px] mr-2 bg-ey-yellow"></div>
-                        <div class="h-[4px] w-[30px] mr-2 bg-ey-yellow"></div>
-                        <div class="h-[4px] w-[30px] mr-2 bg-ey-black"></div>
-                        <div class="h-[4px] w-[30px] mr-2 bg-ey-black"></div>
+                        <div 
+                            v-for="(step, key) in opportunity.steps" 
+                            class="h-[4px] w-[30px] mr-2"
+                            :class="{
+                                'bg-ey-black': opportunity.current_step < key,
+                                'bg-ey-yellow': opportunity.current_step >= key,
+                            }"
+                        >
+                        </div>
+                        
                     </div>
                 </div>
             </div>

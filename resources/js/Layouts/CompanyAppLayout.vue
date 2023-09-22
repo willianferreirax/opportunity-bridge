@@ -138,3 +138,7 @@ const openMenu = ref(true);
 </div>
 
 </template>
+<style>
+@import 'vue3-toastify/dist/index.css';
+
+</style>

@@ -1,13 +1,16 @@
 <script setup>
 
 import CandidateCard from '@/Pages/Company/Partials/CandidateCard.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import VideoInterviewStepCard from '@/Pages/Company/Partials/VideoInterviewStepCard.vue';
 import TestInterviewStepCard from '@/Pages/Company/Partials/TestInterviewStepCard.vue';
 import InterviewStepCard from '@/Pages/Company/Partials/InterviewStepCard.vue';
 import SimpleInterviewStepCard from '@/Pages/Company/Partials/SimpleInterviewStepCard.vue';
 import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import { router } from '@inertiajs/vue3';
+import { toast } from 'vue3-toastify';
 
 const props = defineProps({
     opportunity: Object,
@@ -16,8 +19,6 @@ const props = defineProps({
 });
 
 const open = ref(false);
-
-const test = ref(false);
 
 const selectedUser = ref(null);
 
@@ -32,6 +33,36 @@ const openDrawer = (user) => {
     open.value = !open.value;
     selectedUser.value = user
 }
+
+const nextStep = () => {
+    router.post(route('candidate.nextStep'), { opportunityUser: selectedUser.value.pivot.id }, {
+        preserveState: true,
+        onSuccess: () => {
+            toast.success('Etapa avançada com sucesso!')
+            selectedUser.value.pivot.current_step += 1;
+        },
+        onError: () => {
+            toast.error('Erro ao avançar etapa!')
+        },
+    })
+}
+
+const backStep = () => {
+    router.post(route('candidate.backStep'), { opportunityUser: selectedUser.value.pivot.id }, {
+        preserveState: true,
+        onSuccess: () => {
+            toast.success('Etapa retornada com sucesso!')
+            selectedUser.value.pivot.current_step -= 1;
+        },
+        onError: () => {
+            toast.error('Erro ao avançar etapa!')
+        },
+    })
+}
+
+const test = computed(function() {
+    // console.log(props.opportunitySteps);
+})
 
 </script>
 
@@ -56,7 +87,6 @@ const openDrawer = (user) => {
         </section>
 
         <Pagination :data="appliedUsers"></Pagination>
-        <button @click="test = !test">test</button>
 
         <div :class="{ 'translate-x-full': !open, 'translate-x-none' : open }" class="fixed top-0 right-0 z-[99] h-screen p-4 overflow-y-auto shadow-2xl transition-transform bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-right-label">
             <h5 id="drawer-right-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400">
@@ -88,6 +118,16 @@ const openDrawer = (user) => {
                 </div>
             </div>
 
+            <div class="mt-2 flex justify-between">
+                <PrimaryButton @click="backStep()">
+                    Voltar etapa
+                </PrimaryButton>
+
+                <PrimaryButton @click="nextStep()">
+                    Avançar etapa
+                </PrimaryButton>
+            </div>
+
             <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
             <div class="m-2">
@@ -97,10 +137,11 @@ const openDrawer = (user) => {
                     <component 
                         v-for="(step, index) in opportunitySteps" 
                         :is="componentMapping[step.type]" 
-                        :key="step.name" 
-                        :passed="test"
+                        :key="step.order" 
+                        :passed="index < selectedUser?.pivot?.current_step"
                         :step="step"
                         :order="index + 1"
+                        :opportunityUser="selectedUser?.pivot"
                     />
 
                 </ol>

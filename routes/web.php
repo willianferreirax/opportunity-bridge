@@ -9,8 +9,6 @@ use App\Http\Controllers\CurriculumProExperienceController;
 use App\Http\Controllers\CurriculumResumeController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -159,6 +157,24 @@ Route::middleware([
     
     Route::get('/candidate/profile/{user}', [UserController::class, "publicProfile"])
         ->name('candidate.profile.view');
+
+    Route::post('/candidate/nextStep', [OpportunityController::class, "nextStep"])
+        ->name('candidate.nextStep');
+
+    Route::post('/candidate/backStep', [OpportunityController::class, "backStep"])
+        ->name('candidate.backStep');
+
+    Route::post('/candidate/interviewDate', [OpportunityController::class, "setInterviewDate"])
+        ->name('candidate.setInterviewDate');
+    
+    Route::post('/candidate/videoInterview', [OpportunityController::class, "setVideoInterview"])
+        ->name('candidate.setVideoInterview');
+
+    Route::get('/candidate/downloadVideoInterview/{video}', [OpportunityController::class, "downloadVideoInterview"])
+        ->name('candidate.downloadVideoInterview');
+
+    Route::put('/candidate/status', [OpportunityController::class, "updateCandidateStatus"])
+        ->name('candidate.status.update');
 
 });
 

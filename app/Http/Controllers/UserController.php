@@ -11,7 +11,7 @@ use Inertia\Inertia;
 class UserController extends Controller
 {
     public function index()
-    {
+    {//THIS SHOULD BE DONE IN A REPOSITORY OR SERVICE
 
         //fetch two last created opportunities that the user has not applied yet by any company
         
@@ -30,6 +30,30 @@ class UserController extends Controller
             ->orderBy('created_at', 'desc')
             ->take(2)
             ->get();
+
+        //get steps of opportunities
+        $lastApplied->each(function ($opportunity, $key) {
+
+            $oportunitySimpleSteps = $opportunity->opportunity
+                ->simpleSteps()
+                ->count();
+
+            $oportunityVideoSteps = $opportunity->opportunity
+                ->videoSteps()
+                ->count();
+
+            $oportunityInterviewSteps = $opportunity->opportunity
+                ->interviewSteps()
+                ->count();
+
+            $oportunityTestSteps = $opportunity->opportunity
+                ->testSteps()
+                ->count();
+
+            $steps = $oportunitySimpleSteps + $oportunityVideoSteps + $oportunityInterviewSteps + $oportunityTestSteps;
+
+            $opportunity->steps = $steps;
+        });
 
         return Inertia::render('User/Dashboard',[
             'opportunities' => $opportunities,

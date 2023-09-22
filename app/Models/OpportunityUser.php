@@ -9,6 +9,7 @@ class OpportunityUser extends Pivot
     protected $table = 'opportunity_user';
 
     protected $fillable = [
+        'id',
         'opportunity_id',
         'user_id',
         'status',
@@ -23,5 +24,15 @@ class OpportunityUser extends Pivot
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function interview()
+    {
+        return $this->hasMany(Interview::class, 'opportunity_user_id');
+    }
+
+    public function videoInterview()
+    {
+        return $this->hasMany(VideoInterview::class, 'opportunity_user_id');
     }
 }

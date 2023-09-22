@@ -1,16 +1,34 @@
 <script setup>
 
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import InputLabel from '@/Components/InputLabel.vue';
 import StandardSelect from '@/Components/StandardSelect.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { ref } from 'vue';
+import { toast } from 'vue3-toastify';
 
-const status = ref('1');
 
 const props = defineProps({
     user: Object,
 });
+
+const status = ref(props.user.pivot.status);
+
+const updateStatus = () => {
+    router.put(route('candidate.status.update'), { 
+        opportunityUser: props.user.pivot.id, 
+        status: status.value 
+    }, {
+        preserveState: true,
+        onSuccess: () => {
+            toast.success('Status atualizado com sucesso!')
+            status.value = status.value;
+        },
+        onError: () => {
+            toast.error('Erro ao atualizar status!')
+        },
+    })
+}
 
 </script>
 
@@ -40,10 +58,11 @@ const props = defineProps({
             <InputLabel class="mb-2 mr-2" for="" value="Status" />
             <StandardSelect
                 v-model="status"
+                @change="updateStatus"
             >
-                <option value="1" >Em andamento</option>
-                <option>Aprovado</option>
-                <option>Rejeitado</option>
+                <option value="applied" >Em andamento</option>
+                <option value="approved">Aprovado</option>
+                <option value="rejected">Rejeitado</option>
 
             </StandardSelect>
         </div>
