@@ -151,7 +151,7 @@ const calculateBarPosition = () => {
   background-color: #cdcdcd;
 }
 .flex-container .progress .progress-bar {
-  background-color: #ffe600;
+  background-color: #2EC384;
 }
 .flex-container .step {
   text-align: center;
@@ -164,7 +164,7 @@ const calculateBarPosition = () => {
   border-radius: 2em;
   background-size: 0% 0%;
   background-position: center;
-  background-image: radial-gradient(circle at center, #ffe600 50%, transparent 50%);
+  background-image: radial-gradient(circle at center, #2EC384 50%, transparent 50%);
   background-repeat: no-repeat;
 }
 .flex-container .step.current .step-number {
@@ -172,7 +172,7 @@ const calculateBarPosition = () => {
   transition: all 0.4s 0.5s;
 }
 .flex-container .step.done .step-number {
-  background-color: #ffe600;
+  background-color: #2EC384;
 }
 .flex-container .step .step-label {
   padding-top: 5px;

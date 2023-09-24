@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCertificateRequest;
 use App\Http\Requests\UpdateCertificateRequest;
+use App\Jobs\CertificateCSVImportJob;
 use App\Models\Certificate;
+use Illuminate\Http\Request;
 
 class CertificateController extends Controller
 {
@@ -27,9 +29,19 @@ class CertificateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCertificateRequest $request)
+    public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'file' => 'required|mimes:csv,txt',
+        ]);
+
+        $filename = uniqid(). ".csv";
+        $path = $request->file->storeAs("certificates", $filename);
+
+        CertificateCSVImportJob::dispatch($path);
+
+        return back()->with('success', 'Arquivo sendo processado');
     }
 
     /**

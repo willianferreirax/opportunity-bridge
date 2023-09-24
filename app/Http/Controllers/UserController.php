@@ -20,6 +20,7 @@ class UserController extends Controller
             ->whereDoesntHave('appliedUsers', function ($query) {
                 $query->where('user_id', auth()->user()->id);
             })
+            ->where('status', 'Aberta')
             ->orderBy('created_at', 'desc')
             ->take(2)
             ->get();
@@ -92,6 +93,7 @@ class UserController extends Controller
             ->whereDoesntHave('appliedUsers', function ($query) {
                 $query->where('user_id', auth()->user()->id);
             })
+            ->where('status', 'Aberta')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

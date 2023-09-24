@@ -301,6 +301,7 @@ class OpportunityController extends Controller
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'like', "%{$search}%");
             })
+            ->where('status', 'Aberta')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -310,14 +311,6 @@ class OpportunityController extends Controller
         return Inertia::render('Opportunity/List',[
             'opportunities' => $opportunities,
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -454,34 +447,132 @@ class OpportunityController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Opportunity $opportunity)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Opportunity $opportunity)
     {
-        //
+
+        $deficiences = \App\Models\Deficiency::all();
+
+        $opportunity
+            ->load('address');
+
+        //load the target users as an array of only ids
+        $opportunity->targetUsers = $opportunity->targetUsers->pluck('id')->toArray();
+
+        return Inertia::render('Opportunity/Edit', [
+            'deficiences' => $deficiences,
+            'opportunity' => $opportunity,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Opportunity $opportunity)
+    public function updatePart1(Request $request, Opportunity $opportunity)
     {
-        //
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'role' => 'required|string|max:255',
+            'resume' => 'required|string|max:255',
+            'regime' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'workHour_start' => 'required|string|max:255',
+            'workHour_end' => 'required|string|max:255',
+            'salary_start' => 'required|string|max:255',
+            'salary_end' => 'required|string|max:255',
+            'pcd' => 'required|boolean',
+            'quantity' => 'required|integer',
+            'targetUsers' => 'array',
+        ]);
+
+        $update = $request->all();
+
+        $update["salary_start"] = str_replace( ['.', ','], ['','.'], $request->salary_start);
+        $update["salary_end"] = str_replace( ['.', ','], ['','.'], $request->salary_end);
+
+        $targetUsers = $request->targetUsers;
+
+        unset($update["targetUsers"]);
+
+        DB::transaction(function () use ($opportunity, $update, $targetUsers){
+
+            $opportunity->update($update);
+
+            //update target users
+            $opportunity->targetUsers()->sync($targetUsers);
+
+        });
+
+        return back()->with('success', 'Dados atualizados!');
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Opportunity $opportunity)
+    public function updatePart2(Request $request, Opportunity $opportunity)
     {
-        //
+
+        $request->validate([
+            'benefits' => 'required|string|max:255',
+            'skills' => 'required|string|max:255',
+            'requisites' => 'required|string|max:255',
+            'responsabilities' => 'required|string|max:255',
+            'remote' => 'required|boolean',
+        ]);
+
+        $update = $request->all();
+
+        $opportunity->update([
+            'benefits' => $update["benefits"],
+            'competences' => $update["skills"],
+            'requirements' => $update["requisites"],
+            'responsabilities' => $update["responsabilities"],
+            'is_remote' => $update["remote"],
+        ]);
+
+        return back()->with('success', 'Dados atualizados!');
     }
+
+    public function updateAddress(Request $request, Opportunity $opportunity)
+    {
+
+        $request->validate([
+            'cep' => 'required|string|max:255',
+            'street' => 'required|string|max:255',
+            'neighbor' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'number' => 'required|string|max:255',
+        ]);
+
+        $update = $request->all();
+
+        $opportunity->address()->update([
+            'cep' => $update["cep"],
+            'street' => $update["street"],
+            'neighborhood' => $update["neighbor"],
+            'state' => $update["state"],
+            'city' => $update["city"],
+            'number' => $update["number"],
+        ]);
+
+        return back()->with('success', 'Dados atualizados!');
+    }
+
+    public function updateOpportunityStatus(Request $request, Opportunity $opportunity)
+    {
+
+        $request->validate([
+            'status' => 'required|string|max:255',
+        ]);
+
+        $update = $request->all();
+
+        $opportunity->update([
+            'status' => $update["status"],
+        ]);
+
+        return back()->with('success', 'Dados atualizados!');
+    }
+
 }

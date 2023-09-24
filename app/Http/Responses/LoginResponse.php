@@ -12,7 +12,19 @@ class LoginResponse implements LoginResponseContract
      */
     public function toResponse($request)
     {
-        $home = auth()->user()->type == 'company' ? '/company/dashboard' : 'user/dashboard';
+
+        if(auth()->user()->type == 'company'){
+            $home = '/company/dashboard';
+        }
+
+        else if(auth()->user()->type == 'admin'){
+            $home = '/admin/dashboard';
+        }
+
+        else{
+            $home = '/user/dashboard';
+        }
+
  
         return redirect()->intended($home);
     }

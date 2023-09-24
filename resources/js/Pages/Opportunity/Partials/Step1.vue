@@ -108,23 +108,6 @@ function compareValues(a, b) {
 
 }
 
-function compareTimes(timeA, timeB) {
-    const [hoursA, minutesA] = timeA.split(':').map(Number);
-    const [hoursB, minutesB] = timeB.split(':').map(Number);
-
-    if (isNaN(hoursA) || isNaN(minutesA) || isNaN(hoursB) || isNaN(minutesB)) {
-        throw new Error('Invalid input times');
-    }
-
-    if (hoursA > hoursB) {
-        return true;
-    } else if (hoursA === hoursB) {
-        return minutesA > minutesB;
-    }
-
-    return false;
-}
-
 onMounted(() => {
     type.value = page.props.deficiences.map((item) => {
         return {

@@ -72,6 +72,14 @@ const options = {
     <CompanyAppLayout title="Oportunidade">
         <section class="">
             
+            <div class="flex justify-end">
+                <Link :href="route('opportunity.edit', { opportunity: opportunity.id })">
+                    <PrimaryButton>
+                        Editar
+                    </PrimaryButton>
+                </Link>
+            </div>
+
             <div class="flex justify-center items-center p-4">
                 <ApplicationMark class="block h-20 md:h-32 w-auto" />
             </div>
@@ -125,9 +133,9 @@ const options = {
                     </div>
 
                     <div class="ml-4">
-                        <p class="font-bold">{{ opportunity.company.company_name }}</p>
-                        <p class="text-sm text-gray-700">{{ opportunity.company.company_area }}</p>
-                        <!-- <p class="text-sm text-gray-700">www.empresax.com</p> -->
+                        <p class="font-bold">Nome: {{ opportunity.company.company_name }}</p>
+                        <p class="text-sm text-gray-700">Área: {{ opportunity.company.company_area }}</p>
+                        <p class="text-sm text-gray-700">Número de funcionarios: {{ opportunity.company.workers_number }}</p>
                     </div>
                 </div>
                 
@@ -137,39 +145,44 @@ const options = {
 
             <div class="mt-2">
                 
+                <span class="font-bold">Descrição:</span>
+                <p>
+                    {{ opportunity.resume }}
+                </p>
+            </div>
+
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+
+            <div class="mt-2">
+                
+                <span class="font-bold">Cargo:</span>
+                <p>
+                    {{ opportunity.role }} -  
+                    <span class="font-bold">
+                        {{ opportunity.job_type }}
+                    </span>
+                </p>
+               
+            </div>
+
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+
+            <div class="mt-2">
+                
                 <span class="font-bold">Competências:</span>
-                <!-- <ul>
-                    <li>Java</li>
-                    <li>Python</li>
-                    <li>Spring boot</li>
-                </ul>  -->
-
-                {{ opportunity.competences }}
-            
+                <p>
+                    {{ opportunity.competences }}
+                </p>
             </div>
-
-            <!-- <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
-
-            <div class="mt-2">
-                <span class="font-bold">Área:</span> Regulatório
-            </div>
-
-            <div class="mt-2">
-                <span class="font-bold">Equipe:</span> Reporting
-            </div> -->
 
             <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
             <div class="mt-2">
                 <span class="font-bold">Requisitos:</span>
-                <!-- <ul>
-                    <li>Java</li>
-                    <li>Python</li>
-                    <li>Spring boot</li>
-                    <li>Experiência framework Django</li>
-                </ul>  -->
                     
+                <p>
                     {{ opportunity.requirements }}
+                </p>
             </div>
 
             <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
@@ -201,6 +214,10 @@ const options = {
                         {{ opportunity.address.city }}, 
                         {{ opportunity.address.state }}
                     </span>
+                </p>
+                <p>
+                    <span class="font-bold">Vaga para pessoa com deficiência(s): </span>
+                    {{ opportunity.is_pcd ? 'Sim' : 'Não' }}
                 </p>
             </div>
 

@@ -60,10 +60,6 @@ const backStep = () => {
     })
 }
 
-const test = computed(function() {
-    // console.log(props.opportunitySteps);
-})
-
 </script>
 
 <template>
@@ -73,7 +69,7 @@ const test = computed(function() {
             Candidatos aplicantes
         </h1>
 
-        <section class="sm:p-12 pt-12 flex items-center justify-between flex-col sm:flex-row">
+        <section class="sm:p-12 pt-12 grid grid-cols-3">
             
             <CandidateCard
                 class="mb-4"

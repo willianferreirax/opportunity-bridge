@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CurriculumAcadExperienceController;
 use App\Http\Controllers\CurriculumCourseController;
@@ -53,9 +55,11 @@ Route::middleware([
 
     Route::prefix('admin')->group(function() {
 
-        Route::get('dashboard', function () {
-            return Inertia::render('Admin/Dashboard');
-        })->name('admin.dashboard');
+        Route::get('dashboard', [AdminController::class, 'dashboard'])
+            ->name('admin.dashboard');
+
+        Route::post('/upload/certificate', [CertificateController::class, 'store'])
+            ->name('admin.upload.certificate');
 
     });
 
@@ -145,9 +149,7 @@ Route::middleware([
     Route::post('/opportunity/create', [OpportunityController::class, 'store'])
         ->name('opportunity.store');
     
-    Route::get('/opportunity/edit', function () {
-        return Inertia::render('Opportunity/Edit');
-    })->name('opportunity.edit');
+    Route::get('/opportunity/edit/{opportunity}', [OpportunityController::class, 'edit'])->name('opportunity.edit');
     
     Route::get('/opportunities', [OpportunityController::class, 'showAllOpportunities'])
         ->name('opportunity.list');
@@ -175,6 +177,18 @@ Route::middleware([
 
     Route::put('/candidate/status', [OpportunityController::class, "updateCandidateStatus"])
         ->name('candidate.status.update');
+    
+    Route::put("/opportunity/update/stepOne/{opportunity}", [OpportunityController::class, 'updatePart1'])
+        ->name('opportunity.update.step1');
+
+    Route::put("/opportunity/update/stepTwo/{opportunity}", [OpportunityController::class, 'updatePart2'])
+        ->name('opportunity.update.step2');
+
+    Route::put("/opportunity/update/stepThree/{opportunity}", [OpportunityController::class, 'updateAddress'])
+        ->name('opportunity.update.step3');
+
+    Route::put("/opportunity/update/status/{opportunity}", [OpportunityController::class, 'updateOpportunityStatus'])
+        ->name('opportunity.update.status');
 
 });
 

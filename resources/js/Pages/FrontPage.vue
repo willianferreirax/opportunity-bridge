@@ -57,9 +57,11 @@ import { Head, Link } from '@inertiajs/vue3';
                         </div>
 
                         <div>
-                            <BorderButton class="border-black w-full md:w-1/2 text-xl p-4">
-                                Sobre nós
-                            </BorderButton>
+                            <a href="https://www.everymind.com.br" target="_blank">
+                                <BorderButton class="border-black w-full md:w-1/2 text-xl p-4">
+                                    Sobre nós
+                                </BorderButton>
+                            </a>
                         </div>
                     </div>
                     

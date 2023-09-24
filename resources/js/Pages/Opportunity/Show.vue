@@ -26,6 +26,10 @@ function aplicar(){
 
 const interviewDate = computed(() => {
 
+    if(!props.opportunityUser?.pivot?.interviews?.length) {
+        return "Ainda não marcada :(";
+    }
+
     for(const interview of props.opportunityUser.pivot.interviews) {
         if(interview.interview_step_id == props.opportunitySteps[props.opportunityUser.pivot.current_step].id) {
             return moment(interview.date).format("DD/MM/YYYY HH:MM:SS");
@@ -59,105 +63,151 @@ const sendVideo = (event) => {
     <AppLayout title="Oportunidade">
         <section class="">
 
-            <div v-if="hasApplied">
-                <div class="mb-4 font-bold text-lg sm:text-2xl">
-                    Progesso da candidatura
-                </div>
-                <div>
-                    <div class="flex justify-evenly">
-                        <div v-for="(steps, key) in opportunitySteps"  class="flex flex-col items-center">
-                            <div 
-                                class="h-[8px] w-[50px] mr-2 border-ey-black border"
-                                :class="{
-                                    'bg-ey-yellow': opportunityUser.pivot.current_step >= key,
-                                    'bg-ey-black': opportunityUser.pivot.current_step < key,
-                                }"
-                            >
-                            </div>
-                            {{ steps.name }} {{ key }}
-                        </div>
+            <div v-if="hasApplied && opportunity.status == 'Aberta'">
+                <div v-if="opportunityUser.pivot.status == 'rejected'">
+                    <div class="mb-4 font-bold text-lg sm:text-2xl">
+                        Informações da vaga:
+                    </div>
+
+                    <div class="flex justify-between md:justify-center mt-2">
+                        <PrimaryButton :disabled="true">
                         
+                            Você não foi aprovado<br> infelizmente não foi dessa vez, continue se candidatando, você encontrará sua oportunidade :)
+                                             
+                        </PrimaryButton>
                     </div>
                 </div>
 
-                <div class="mt-12">
+                <div v-else-if="opportunityUser.pivot.status == 'applied'">
                     <div class="mb-4 font-bold text-lg sm:text-2xl">
-                        Passo {{ opportunityUser.pivot.current_step + 1 }} - {{ opportunitySteps[opportunityUser.pivot.current_step].name }}
-                    </div>
-                    <div class="mb-4 font-bold">
-                        Descrição:
+                        Progesso da candidatura
                     </div>
                     <div>
-                        {{ opportunitySteps[opportunityUser.pivot.current_step].description }}
-                    </div>
-
-                    <div v-if="opportunitySteps[opportunityUser.pivot.current_step].type == 'VideoInterviewStepCard'">
-
-                    
-                        <p class="mt-4">
-                            Você tem
-                            <strong> 
-                                {{ opportunitySteps[opportunityUser.pivot.current_step].limit_days }}
-                                dias 
-                            </strong>
-                            para enviar o video. 
-                        </p>
-                    
-                        
-                     
-                        <div class="flex justify-start mt-4">
+                        <div class="md:flex md:justify-evenly">
+                            <div v-for="(steps, key) in opportunitySteps"  class="flex md:flex-col items-center">
+                                <div 
+                                    class="h-[8px] w-[50px] mr-2 border-ey-black border"
+                                    :class="{
+                                        'bg-ey-yellow': opportunityUser.pivot.current_step >= key,
+                                        'bg-ey-black': opportunityUser.pivot.current_step < key,
+                                    }"
+                                >
+                                </div>
+                                {{ steps.name }}
+                            </div>
                             
-                            <label class="w-48 flex flex-col items-center px-4 py-2 rounded-lg uppercase border border-ey-yellow cursor-pointer hover:text-ey-yellow">
-                                <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                                </svg>
-                                <span class="mt-2 text-sm leading-normal">Enviar video</span>
-                                <input type='file' class="hidden" @change="sendVideo($event)" accept="video/*"/>
-                            </label>
-                           
-
                         </div>
-                            
                     </div>
 
-                    <div v-if="opportunitySteps[opportunityUser.pivot.current_step].type == 'InterviewStepCard'">
-                     
-                        <div class="mt-4">
-                         
-                            <p>
-                                Você tem uma entrevista marcada para: 
-                                <strong>{{ interviewDate }}</strong>
-                            </p>
-
+                    <div class="mt-12">
+                        <div class="mb-4 font-bold text-lg sm:text-2xl">
+                            Passo {{ opportunityUser.pivot.current_step + 1 }} - {{ opportunitySteps[opportunityUser.pivot.current_step].name }}
                         </div>
-                         
-                    </div>
+                        <div class="mb-4 font-bold">
+                            Descrição:
+                        </div>
+                        <div>
+                            {{ opportunitySteps[opportunityUser.pivot.current_step].description }}
+                        </div>
 
-                    <div v-if="opportunitySteps[opportunityUser.pivot.current_step].type == 'TestInterviewStepCard'">
-                     
-                        <div class="mt-4">
+                        <div v-if="opportunitySteps[opportunityUser.pivot.current_step].type == 'VideoInterviewStepCard'">
+
                         
-                            <p>
-                                Acesse o link: 
-                                <strong>
-                                    <a :href="'//' +  opportunitySteps[opportunityUser.pivot.current_step].link" target="_blank">
-                                        {{ opportunitySteps[opportunityUser.pivot.current_step].link }}
-                                    </a>
-                                </strong>
-                            </p>
-
                             <p class="mt-4">
                                 Você tem
                                 <strong> 
                                     {{ opportunitySteps[opportunityUser.pivot.current_step].limit_days }}
                                     dias 
                                 </strong>
-                                para realizar o teste. 
+                                para enviar o video. 
                             </p>
-
-                        </div>
                         
+                            
+                        
+                            <div class="flex justify-start mt-4">
+                                
+                                <label class="w-48 flex flex-col items-center px-4 py-2 rounded-lg uppercase border border-ey-yellow cursor-pointer hover:text-ey-yellow">
+                                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                                    </svg>
+                                    <span class="mt-2 text-sm leading-normal">Enviar video</span>
+                                    <input type='file' class="hidden" @change="sendVideo($event)" accept="video/*"/>
+                                </label>
+                            
+
+                            </div>
+                                
+                        </div>
+
+                        <div v-if="opportunitySteps[opportunityUser.pivot.current_step].type == 'InterviewStepCard'">
+                        
+                            <div class="mt-4">
+                            
+                                <p>
+                                    Você tem uma entrevista marcada para: 
+                                    <strong>{{ interviewDate }}</strong>
+                                </p>
+
+                            </div>
+                            
+                        </div>
+
+                        <div v-if="opportunitySteps[opportunityUser.pivot.current_step].type == 'TestInterviewStepCard'">
+                        
+                            <div class="mt-4">
+                            
+                                <p>
+                                    Acesse o link: 
+                                    <strong>
+                                        <a :href="'//' +  opportunitySteps[opportunityUser.pivot.current_step].link" target="_blank">
+                                            {{ opportunitySteps[opportunityUser.pivot.current_step].link }}
+                                        </a>
+                                    </strong>
+                                </p>
+
+                                <p class="mt-4">
+                                    Você tem
+                                    <strong> 
+                                        {{ opportunitySteps[opportunityUser.pivot.current_step].limit_days }}
+                                        dias 
+                                    </strong>
+                                    para realizar o teste. 
+                                </p>
+
+                            </div>
+                            
+                        </div>
                     </div>
+                </div>
+
+                <div v-else-if="opportunityUser.pivot.status == 'approved'">
+                    <div class="mb-4 font-bold text-lg sm:text-2xl">
+                        Informações da vaga:
+                    </div>
+
+                    <div class="flex justify-between md:justify-center mt-2">
+                        <PrimaryButton :disabled="true">
+                        
+                            Você foi aprovado!<br> Você deve continuar o processo com o recrutador, Parabéns! :) 
+                                             
+                        </PrimaryButton>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div v-else-if="hasApplied && opportunity.status != 'Aberta'">
+                <div class="mb-4 font-bold text-lg sm:text-2xl">
+                    Informações da vaga:
+                </div>
+
+                <div class="flex justify-between md:justify-center mt-2">
+                    <PrimaryButton :disabled="true">
+                    
+                        Esta vaga não está mais aberta :(
+                                         
+                    </PrimaryButton>
                 </div>
             </div>
 
@@ -193,12 +243,21 @@ const sendVideo = (event) => {
 
                     <p class="text-sm sm:text-base">{{ opportunity.address.city }}, {{ opportunity.address.state }}</p>
                 </div>
+
                 <div class="flex flex-col sm:flex-row items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
                     </svg>
 
                     <p class="text-sm sm:text-base">{{ opportunity.company.company_name }}</p>
+                </div>
+
+                <div class="ml-6 flex flex-col sm:flex-row items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+
+                    <p class="text-sm sm:text-base">{{ opportunity.vacancies }} - vaga(s)</p>
                 </div>
             </div>
 
@@ -214,8 +273,9 @@ const sendVideo = (event) => {
                     </div>
 
                     <div class="ml-4">
-                        <p class="font-bold">{{ opportunity.company.company_name }}</p>
-                        <p class="text-sm text-gray-700">{{ opportunity.company.company_area }}</p>
+                        <p class="font-bold">Nome: {{ opportunity.company.company_name }}</p>
+                        <p class="text-sm text-gray-700">Área: {{ opportunity.company.company_area }}</p>
+                        <p class="text-sm text-gray-700">Número de funcionarios: {{ opportunity.company.workers_number }}</p>
                     </div>
                 </div>
                 
@@ -225,8 +285,35 @@ const sendVideo = (event) => {
 
             <div class="mt-2">
                 
+                <span class="font-bold">Descrição:</span>
+                <p>
+                    {{ opportunity.resume }}
+                </p>
+            </div>
+
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+
+            <div class="mt-2">
+                
+                <span class="font-bold">Cargo:</span>
+                <p>
+                    {{ opportunity.role }} -  
+                    <span class="font-bold">
+                        {{ opportunity.job_type }}
+                    </span>
+                </p>
+               
+            </div>
+
+
+            <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
+
+            <div class="mt-2">
+                
                 <span class="font-bold">Competências:</span>
-                {{ opportunity.competences }}
+                <p>
+                    {{ opportunity.competences }}
+                </p>
             </div>
 
             <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
@@ -234,7 +321,9 @@ const sendVideo = (event) => {
             <div class="mt-2">
                 <span class="font-bold">Requisitos:</span>
                     
-                {{ opportunity.requirements }}
+                <p>
+                    {{ opportunity.requirements }}
+                </p>
             </div>
 
             <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
@@ -266,13 +355,18 @@ const sendVideo = (event) => {
                         {{ opportunity.address.state }}
                     </span>
                 </p>
+                <p>
+                    <span class="font-bold">Vaga para pessoa com deficiência(s): </span>
+                    {{ opportunity.is_pcd ? 'Sim' : 'Não' }}
+                </p>
             </div>
 
             <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
             <div v-if="!hasApplied" class="flex justify-between md:justify-center mt-2">
-                <PrimaryButton class="mr-0 md:mr-4" @click="aplicar()">
-                    Aplicar
+                <PrimaryButton class="mr-0 md:mr-4" @click="aplicar()" :disabled="opportunity.status != 'Aberta'">
+                    <p v-if="opportunity.status == 'Aberta'">Aplicar</p>
+                    <p v-else>Esta vaga não está mais aberta :(</p>                    
                 </PrimaryButton>
             </div>
 
