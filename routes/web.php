@@ -68,6 +68,10 @@ Route::middleware([
 
     });
 
+    //download file
+    Route::get('/profile/curriculum/creativeCurriculum/{creativeCurriculum}', [CreativeCurriculumController::class, 'downloadFile'])
+        ->name('profile.curriculum.creativeCurriculum.download');
+
     Route::prefix('user')
         ->middleware([IsUser::class])
         ->group(function () {
@@ -123,9 +127,6 @@ Route::middleware([
         Route::post('/profile/curriculum/creativeCurriculum', [CreativeCurriculumController::class, 'create'])
             ->name('profile.curriculum.creativeCurriculum.create');
 
-        //download file
-        Route::get('/profile/curriculum/creativeCurriculum/{creativeCurriculum}', [CreativeCurriculumController::class, 'downloadFile'])
-            ->name('profile.curriculum.creativeCurriculum.download');
 
         Route::delete('/profile/curriculum/creativeCurriculum/{creativeCurriculum}', [CreativeCurriculumController::class, 'destroy'])
             ->name('profile.curriculum.creativeCurriculum.destroy');
