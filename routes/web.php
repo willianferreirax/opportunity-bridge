@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CreativeCurriculumController;
 use App\Http\Controllers\CurriculumAcadExperienceController;
 use App\Http\Controllers\CurriculumCourseController;
 use App\Http\Controllers\CurriculumLanguageController;
@@ -11,6 +12,8 @@ use App\Http\Controllers\CurriculumProExperienceController;
 use App\Http\Controllers\CurriculumResumeController;
 use App\Http\Controllers\OpportunityController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsUser;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -53,7 +56,9 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::prefix('admin')->group(function() {
+    Route::prefix('admin')
+        ->middleware([IsAdmin::class])
+        ->group(function() {
 
         Route::get('dashboard', [AdminController::class, 'dashboard'])
             ->name('admin.dashboard');
@@ -63,7 +68,9 @@ Route::middleware([
 
     });
 
-    Route::prefix('user')->group(function () {
+    Route::prefix('user')
+        ->middleware([IsUser::class])
+        ->group(function () {
 
         Route::post('/apply/{opportunity}', [UserController::class, 'apply'])
             ->name('user.apply');
@@ -112,6 +119,16 @@ Route::middleware([
             
         Route::delete('/profile/curriculum/course/{curriculumCourse}', [CurriculumCourseController::class, 'destroy'])
             ->name('profile.curriculum.course.destroy');
+
+        Route::post('/profile/curriculum/creativeCurriculum', [CreativeCurriculumController::class, 'create'])
+            ->name('profile.curriculum.creativeCurriculum.create');
+
+        //download file
+        Route::get('/profile/curriculum/creativeCurriculum/{creativeCurriculum}', [CreativeCurriculumController::class, 'downloadFile'])
+            ->name('profile.curriculum.creativeCurriculum.download');
+
+        Route::delete('/profile/curriculum/creativeCurriculum/{creativeCurriculum}', [CreativeCurriculumController::class, 'destroy'])
+            ->name('profile.curriculum.creativeCurriculum.destroy');
 
         Route::get('/recommendedJobs', [UserController::class, 'recommendedJobs'])
             ->name('user.recommendedJobs');

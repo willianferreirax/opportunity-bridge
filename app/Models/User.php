@@ -67,7 +67,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $appends = [
-        'profile_photo_url',
+        // 'profile_photo_url',
     ];
 
     public static function validateCPF(string $cpf): bool{
@@ -95,6 +95,77 @@ class User extends Authenticatable
         }
 
         return true;
+    }
+
+    public function verifyCurriculumIsComplete(): bool{
+       
+        //verify has resume
+        if(!$this->curriculumResume()->first()){
+
+            if($this->hasCurriculum()){
+                $this->steps()->update([
+                    'hasCurriculum' => false,
+                ]);
+            }
+
+            return false;
+        }
+
+        //verify has professional experiences
+        if(!$this->curriculumProExperiences()->first()){
+
+            if($this->hasCurriculum()){
+                $this->steps()->update([
+                    'hasCurriculum' => false,
+                ]);
+            }
+
+            return false;
+        }
+
+        //verify has academic experiences
+        if(!$this->curriculumAcadExperiences()->first()){
+
+            if($this->hasCurriculum()){
+                $this->steps()->update([
+                    'hasCurriculum' => false,
+                ]);
+            }
+
+            return false;
+        }
+
+        //verify has courses
+        if(!$this->curriculumCourses()->first()){
+
+            if($this->hasCurriculum()){
+                $this->steps()->update([
+                    'hasCurriculum' => false,
+                ]);
+            }
+
+            return false;
+        }
+
+        //verify has languages
+        if(!$this->curriculumLanguages()->first()){
+
+            if($this->hasCurriculum()){
+                $this->steps()->update([
+                    'hasCurriculum' => false,
+                ]);
+            }
+
+            return false;
+        }
+
+        //set curriculum as complete
+        $this->steps()->update([
+            'hasCurriculum' => true,
+        ]);
+
+        return true;
+
     }
 
     public static function existsByCpf(string $cpf): bool{
@@ -158,6 +229,10 @@ class User extends Authenticatable
 
     public function curriculumAcadExperiences(){
         return $this->hasMany(CurriculumAcadExperience::class);
+    }
+
+    public function creativeCurriculums(){
+        return $this->hasMany(CreativeCurriculum::class);
     }
 
     public function appliedOpportunities(){

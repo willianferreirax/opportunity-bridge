@@ -47,10 +47,50 @@ class OpportunityController extends Controller
             ->load('address')
             ->load('company');
 
+        $countByGender = OpportunityUser::query()
+            ->select('genders.label', DB::raw('count(*) as total'))
+            ->join('users', 'users.id', '=', 'opportunity_user.user_id')
+            ->join('user_personal_data as t3', 't3.user_id', '=', 'users.id')
+            ->join('genders', 'genders.id', '=', 't3.gender_id')
+            ->where('opportunity_user.opportunity_id', $opportunity->id)
+            ->groupBy('genders.label')
+            ->get()
+            ->toArray();
+
+        $countByState = OpportunityUser::query()
+            ->select('user_addresses.state as label', DB::raw('count(*) as total'))
+            ->join('users', 'users.id', '=', 'opportunity_user.user_id')
+            ->join('user_addresses', 'user_addresses.user_id', '=', 'users.id')
+            ->where('opportunity_user.opportunity_id', $opportunity->id)
+            ->groupBy('user_addresses.state')
+            ->get()
+            ->toArray();
+
+        $countByAge = OpportunityUser::query()
+            ->select(DB::raw('YEAR(CURDATE()) - YEAR(users.birth_date) - IF(DAYOFYEAR(CURDATE()) < DAYOFYEAR(users.birth_date), 1, 0) as label'), DB::raw('count(*) as total'))
+            ->join('users', 'users.id', '=', 'opportunity_user.user_id')
+            ->where('opportunity_user.opportunity_id', $opportunity->id)
+            ->groupBy('label')
+            ->get()
+            ->toArray();
+
+        $countByDeficiency = OpportunityUser::query()
+            ->select('deficiencies.deficiency as label', DB::raw('count(*) as total'))
+            ->join('users', 'users.id', '=', 'opportunity_user.user_id')
+            ->join('user_deficiency', 'user_deficiency.user_id', '=', 'users.id')
+            ->join('deficiencies', 'deficiencies.id', '=', 'user_deficiency.deficiency_id')
+            ->where('opportunity_user.opportunity_id', $opportunity->id)
+            ->groupBy('deficiencies.deficiency')
+            ->get()
+            ->toArray();
 
         return Inertia::render('Company/OpportunityReport',
             [
                 'opportunity' => $opportunity,
+                'countByGender' => $countByGender,
+                'countByState' => $countByState,
+                'countByAge' => $countByAge,
+                'countByDeficiency' => $countByDeficiency,
             ]
         );
     }
@@ -68,6 +108,12 @@ class OpportunityController extends Controller
             ->get();
 
         $hasApplied = $opportunityUser->count() > 0 ? true : false;
+
+        if(!$hasApplied){
+            //increase views
+            $opportunity->views = $opportunity->views + 1;
+            $opportunity->save();
+        }
 
         if($hasApplied){
             $opportunityUser = $opportunityUser->first();

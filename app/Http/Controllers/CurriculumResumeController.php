@@ -19,6 +19,10 @@ class CurriculumResumeController extends Controller
         $resume->fill($request->all());
         $resume->save();
 
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+
         return redirect()->route('profile.curriculum.show');
     }
 }

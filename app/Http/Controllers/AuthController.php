@@ -99,7 +99,7 @@ class AuthController extends Controller
             $user->personal()->create([
                 'sex' => $request->sex, 
                 'skin_id' => $request->skin,
-                'gender_id' => $request->gender, 
+                'gender_id' => $request->gender ?? 'Pnr',
                 'nacionality' => $request->nacionality
             ]);
 

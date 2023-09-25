@@ -23,6 +23,10 @@ const close = () => {
     selected.value = null;
 };
 
+function fileExtension(filename) {
+    return filename.split('.').pop();
+}
+
 </script>
 
 <template>
@@ -289,22 +293,29 @@ const close = () => {
                 </div>
                 
                 <div class="ml-4">
-                    <h5 class="text-xl font-semibold mt-[30px]">Curriculos criativos :</h5>
+                    <h5 class="text-xl font-semibold mt-[30px]">Curriculos criativos (pdf, docx, video) :</h5>
 
-                    <div class="grid lg:grid-cols-3 md:grid-cols-2 mt-6 gap-[30px]">
+                    <div class="grid lg:grid-cols-6 md:grid-cols-3 mt-6 gap-[30px]">
                         
-                        <div class="group relative block overflow-hidden rounded-md transition-all duration-500">
-                            <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" class="group-hover:origin-center group-hover:scale-110 group-hover:rotate-3 transition duration-500" alt="">
-                            <div class="absolute inset-2 group-hover:bg-white/90 dark:group-hover:bg-slate-900/90 transition duration-500 z-0 rounded-md"></div>
+                        <div
+                            v-if="user.creative_curriculums.length > 0"
+                            v-for="curriculum in user.creative_curriculums"
+                            :key="curriculum.id"
+                            class="group relative block overflow-hidden rounded-md transition-all duration-500 bg-gray-100 p-2 flex justify center"
+                        >
+                            <img :src="'/images/'+fileExtension(curriculum.file_name)+'.png'" class="w-24 group-hover:origin-center group-hover:scale-110 group-hover:rotate-3 transition duration-500" alt="">
+                            
+                            <div class="absolute inset-2 group-hover:bg-white/90 dark:group-hover:bg-slate-900/90 transition duration-500 z-0 rounded-md">
+
+                            </div>
 
                             <div class="content transition-all duration-500">
-                                <div class="icon absolute z-10 hidden group-hover:block top-6 right-6 transition-all duration-500">
-                                    <a href="assets/images/portfolio/1.jpg" class="btn bg-ey-yellow-600 hover:bg-ey-yellow-700 border-ey-yellow-600 hover:border-ey-yellow-700 text-white btn-icon rounded-full lightbox"><i class="uil uil-camera"></i></a>
-                                </div>
 
                                 <div class="title absolute z-10 hidden group-hover:block bottom-6 left-6">
-                                    <a href="portfolio-detail-three.html" class="h6 text-lg font-medium hover:text-ey-yellow-600 duration-500 ease-in-out">Mockup Collection</a>
-                                    <p class="text-slate-400 mb-0">Abstract</p>
+                                    <p class="h6 text-lg font-medium hover:text-ey-yellow-600 duration-500 ease-in-out">
+                                        {{ curriculum.file_name }}
+                                    </p>
+                                    <a :href="route('profile.curriculum.creativeCurriculum.download', {creativeCurriculum: curriculum.id})" download class="text-slate-400 mb-0">Download</a>
                                 </div>
                             </div>
                         </div>

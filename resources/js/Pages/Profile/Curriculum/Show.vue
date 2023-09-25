@@ -8,15 +8,20 @@ import ResumeModal from './Partials/ResumeModal.vue';
 import { ref } from 'vue';
 import AddProfessionalExperienceModal from './Partials/AddProfessionalExperienceModal.vue';
 import AddAcademicExperienceModal from './Partials/AddAcademicExperienceModal.vue';
+import AddCreativeCurriculumModal    from './Partials/AddCreativeCurriculumModal.vue';
 import AddCourseModal from './Partials/AddCourseModal.vue';
 import AddLanguageModal from './Partials/AddLanguageModal.vue';
 import NoContentCard from './Partials/NoContentCard.vue';
+import { router } from '@inertiajs/vue3';
+import { toast } from 'vue3-toastify';
+import CreativeCurriculumCard from './Partials/CreativeCurriculumCard.vue';
 
 const resumeModal = ref(false);
 const addProfessionalExperienceModal = ref(false);
 const addAcademicExperienceModal = ref(false);
 const addCourseModal = ref(false);
 const addLanguageModal = ref(false);
+const addFileModal = ref(false);
 
 const props = defineProps({
     resume: String,
@@ -24,6 +29,7 @@ const props = defineProps({
     academicExperiences: Array,
     courses: Array,
     languages: Array,
+    creativeCurriculums: Array,
 });
 
 const selected = ref({});
@@ -37,6 +43,20 @@ function udpateProExperienceModal(index) {
     selectedIndex.value = index;
     addProfessionalExperienceModal.value = true;
     selected.value = props.professionalExperiences[index];
+}
+
+function deleteProExperience(index) {
+    
+    if(confirm('Tem certeza que deseja remover essa experiência profissional?') == false) {
+        return;
+    }
+
+    router.delete(route('profile.curriculum.proExperience.destroy', props.professionalExperiences[index].id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.success('Experiência profissional removida com sucesso!');
+        },
+    });
 }
 
 function addProExperience() {
@@ -57,6 +77,20 @@ function udpateAcadExperienceModal(index) {
     selected.value = props.academicExperiences[index];
 }
 
+function deleteAcadExperience(index) {
+    
+    if(confirm('Tem certeza que deseja remover essa experiência Acadêmica?') == false) {
+        return;
+    }
+
+    router.delete(route('profile.curriculum.acadExperience.destroy', props.academicExperiences[index].id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.success('Experiência acadêmica removida com sucesso!');
+        },
+    });
+}
+
 function addAcadExperience(data) {
     // props.academicExperiences.push(selected.value);
 }
@@ -72,6 +106,20 @@ function udpateLanguageModal(index) {
     selectedIndex.value = index;
     addLanguageModal.value = true;
     selected.value = props.languages[index];
+}
+
+function deleteLanguage(index) {
+    
+    if(confirm('Tem certeza que deseja remover esse idioma?') == false) {
+        return;
+    }
+
+    router.delete(route('profile.curriculum.language.destroy', props.languages[index].id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.success('Idioma removido com sucesso!');
+        },
+    });
 }
 
 function addLanguage(data) {
@@ -92,12 +140,42 @@ function updateCourseModal(index) {
     selected.value = props.courses[index];
 }
 
+function deleteCourse(index) {
+    
+    if(confirm('Tem certeza que deseja remover esse curso?') == false) {
+        return;
+    }
+
+    router.delete(route('profile.curriculum.course.destroy', props.courses[index].id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.success('Curso removido com sucesso!');
+        },
+    });
+}
+
 function addCourse(data) {
     // props.courses.push(selected.value);
 }
 
 function updateCourse(data) {
     props.courses[selectedIndex.value] = data;
+}
+
+// ----------------------------- file ----------------------------
+
+function deleteFile(index) {
+    
+    if(confirm('Tem certeza que deseja remover esse arquivo?') == false) {
+        return;
+    }
+
+    router.delete(route('profile.curriculum.file.destroy', props.creativeCurriculums[index].id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            toast.success('Arquivo removido com sucesso!');
+        },
+    });
 }
 
 </script>
@@ -146,6 +224,11 @@ function updateCourse(data) {
             @updateLanguage="updateLanguage($event)"
             :experience="selected"
             :isEditing="isEditing"
+        />
+
+        <AddCreativeCurriculumModal
+            :show="addFileModal"
+            @close="addFileModal = false; selected = {}; isEditing = false; selectedIndex = null"
         />
 
         <section class="">
@@ -199,6 +282,7 @@ function updateCourse(data) {
                     :startDate="experience.start_date"
                     :endDate="experience.end_date"
                     @update-experience="udpateProExperienceModal(key)"
+                    @delete-experience="deleteProExperience(key)"
                 />
 
                 <NoContentCard 
@@ -230,6 +314,7 @@ function updateCourse(data) {
                     :startDate="experience.start_date"
                     :endDate="experience.end_date"
                     @updateAcadExperience="udpateAcadExperienceModal(key)"
+                    @deleteAcadExperience="deleteAcadExperience(key)"
                 />
 
                 <NoContentCard 
@@ -259,7 +344,8 @@ function updateCourse(data) {
                     :institutionName="language.institution_name"
                     :language="language.language"
                     :level="language.level"
-                    @updateLanguage="udpateLanguageModal(key)"               
+                    @updateLanguage="udpateLanguageModal(key)"          
+                    @deleteLanguage="deleteLanguage(key)"     
                 />
 
                 <NoContentCard 
@@ -291,11 +377,41 @@ function updateCourse(data) {
                     :startDate="course.start_date"
                     :endDate="course.end_date"   
                     @update-course="updateCourseModal(key)"
+                    @delete-course="deleteCourse(key)"
                 />
 
                 <NoContentCard 
                     v-if="courses.length == 0" 
                     text="Você ainda não adicionou nenhum curso"
+                />    
+                
+            </div>
+
+            <div class="p-4 mb-4">
+                <div class="flex justify-between mb-4">
+                    <div class="font-bold text-base sm:text-2xl">
+                        Curriculos em arquivo (pdf, docx, videos):
+                    </div>
+
+                    <div @click="addFileModal = true" class="cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 sm:w-8 sm:h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+
+                    </div>
+                </div>
+
+                <CreativeCurriculumCard
+                    v-for="(file, key ) in creativeCurriculums"
+                    :key="key"
+                    :name="file.file_name"
+                    :path="file.id"
+                    @deleteFile="deleteFile(key)"
+                />
+
+                <NoContentCard 
+                    v-if="courses.length == 0" 
+                    text="Você ainda não adicionou nenhum arquivo"
                 />    
                 
             </div>

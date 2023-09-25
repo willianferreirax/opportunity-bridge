@@ -23,6 +23,9 @@ class CurriculumAcadExperienceController extends Controller
             'still_coursing' => $request->stillStudying ?? false
         ]);
 
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
         return redirect()->route('profile.curriculum.show');
     }
 
@@ -39,14 +42,24 @@ class CurriculumAcadExperienceController extends Controller
             'still_coursing' => $request->stillStudying ?? false
         ]);
 
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+
         return redirect()->route('profile.curriculum.show');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CurriculumAcadExperience $curriculumAcadExperience)
+    public function destroy(CurriculumAcadExperience $curriculumAcadExperience, Request $request)
     {
-        //
+        $curriculumAcadExperience->delete();
+
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+
+        return back()->with('success', 'Experiência acadêmica removida com sucesso');
     }
 }

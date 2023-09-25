@@ -76,12 +76,15 @@ class UserController extends Controller
 
         $languages = $user->curriculumLanguages()->get();
 
+        $creative = $user->creativeCurriculums()->get();
+
         return Inertia::render('Profile/Curriculum/Show', [
             'resume' => $resume,
             'professionalExperiences' => $proExp,
             'academicExperiences' => $acadExp,
             'courses' => $courses,
             'languages' => $languages,
+            'creativeCurriculums' => $creative,
         ]);
     }
 
@@ -105,6 +108,12 @@ class UserController extends Controller
 
     public function apply(Opportunity $opportunity)
     {
+
+        //verify opportunity is not closed
+        if ($opportunity->status != 'Aberta') {
+            return back()->with('error', 'Esta vaga está fechada!');
+        }
+
         $opportunity->appliedUsers()
             ->attach(auth()->user()->id, [
                 'current_step' => 0,
@@ -137,6 +146,7 @@ class UserController extends Controller
         $user->load('curriculumAcadExperiences');
         $user->load('curriculumCourses');
         $user->load('curriculumLanguages');
+        $user->load('creativeCurriculums');
         $user->load('address');
         $user->load('contact');
 

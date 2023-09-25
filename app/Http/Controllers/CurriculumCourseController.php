@@ -20,6 +20,10 @@ class CurriculumCourseController extends Controller
             'still_coursing' => $request->stillCoursing,
         ]);
 
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+
         return redirect()->back();
     }
 
@@ -36,14 +40,24 @@ class CurriculumCourseController extends Controller
             'still_coursing' => $request->stillCoursing,
         ]);
 
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+
         return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CurriculumCourse $curriculumCourse)
+    public function destroy(CurriculumCourse $curriculumCourse, Request $request)
     {
-        //
+        $curriculumCourse->delete();
+
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+
+        return back()->with('success', 'Curso removido com sucesso');
     }
 }

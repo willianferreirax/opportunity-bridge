@@ -223,3 +223,7 @@ const logout = () => {
         </div>
     </div>
 </template>
+<style>
+@import 'vue3-toastify/dist/index.css';
+@import "vue-select/dist/vue-select.css";
+</style>

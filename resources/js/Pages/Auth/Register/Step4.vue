@@ -9,7 +9,7 @@ import VueSelect from "vue-select";
 import { onMounted, ref } from 'vue';
 
 const form = useForm('userRegisterStep4', {
-    sex: '',
+    sex: '1',
     skin: '',
     gender: '',
     nacionality: '',
@@ -26,10 +26,10 @@ const submit = () => {
 
     form.clearErrors()
 
-    if(!form.sex){
-        page.props.errors.sex = 'Sexo é obrigatório'
-        return;
-    }
+    // if(!form.sex){
+    //     page.props.errors.sex = 'Sexo é obrigatório'
+    //     return;
+    // }
 
     emit("submit")
 };
@@ -62,7 +62,7 @@ const emit = defineEmits([
             
         </div>
 
-        <div class="mt-4">
+        <!-- <div class="mt-4">
             <InputLabel class="mb-2" for="sex" value="Gênero:" />
             <StandardSelect
                 v-model="form.sex"
@@ -71,7 +71,7 @@ const emit = defineEmits([
                 <option value="2">Feminino</option>
             </StandardSelect>
             <InputError class="mt-2" :message="$page.props.errors.sex" />
-        </div>
+        </div> -->
 
         <div class="mt-4">
             <InputLabel class="mb-2" for="skin" value="Raça/Etnia:" />
@@ -88,7 +88,7 @@ const emit = defineEmits([
         </div>
 
         <div class="mt-4">
-            <InputLabel class="mb-2" for="gender" value="Orientação sexual:" />
+            <InputLabel class="mb-2" for="gender" value="Gênero:" />
             <StandardSelect
                 v-model="form.gender"
             >

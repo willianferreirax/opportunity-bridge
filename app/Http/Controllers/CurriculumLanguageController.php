@@ -19,6 +19,9 @@ class CurriculumLanguageController extends Controller
             'level' => $request->level,
         ]);
 
+        //verify if the user curriculum is complete
+        $user->verifyCurriculumIsComplete();
+
         return redirect()->back();
 
     }
@@ -35,14 +38,22 @@ class CurriculumLanguageController extends Controller
             'level' => $request->level,
         ]);
 
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
         return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CurriculumLanguage $curriculumLanguage)
+    public function destroy(CurriculumLanguage $curriculumLanguage, Request $request)
     {
-        //
+        $curriculumLanguage->delete();
+
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+        return back()->with('success', 'Idioma removido com sucesso');
     }
 }

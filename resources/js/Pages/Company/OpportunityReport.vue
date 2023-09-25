@@ -4,67 +4,130 @@ import ApplicationMark from '@/Components/ApplicationMark.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Link } from '@inertiajs/vue3';
 import CompanyAppLayout from '@/Layouts/CompanyAppLayout.vue';
+import { onMounted, reactive, ref } from 'vue';
 
 const props = defineProps({
     opportunity: Object,
+    countByGender: Array,
+    countByState: Array,
+    countByAge: Array,
+    countByDeficiency: Array,
 });
 
-const options = {
-        chart: {
-          id: 'vuechart-example'
-        },
-        xaxis: {
-          categories: ['Masculino', "Feminino"]
-        }
-      }
+const options = reactive({
+    chart: {
+        id: 'gender-chart'
+    },
+    xaxis: {
+        categories: []
+    }
+})
       
- const series = [{
-        name: 'series-1',
-        data: [30, 40]
-      }]
+const series = reactive([{
+    name: 'genero',
+    data: []
+}])
 
-      const options2 = {
-        chart: {
-          id: 'vuechart-example'
-        },
-        xaxis: {
-          categories: [30,32,25,22,20]
-        }
-      }
+//--------- state
+
+const options2 = reactive({
+    chart: {
+        id: 'state'
+    },
+    xaxis: {
+        categories: []
+    }
+})
       
- const series2 = [{
-        name: 'series-1',
-        data: [2,4,6,8,10]
-      }]
+const series2 = reactive([{
+    name: 'Estados',
+    data: []
+}])
 
-      const options3 = {
-        chart: {
-          id: 'vuechart-example'
-        },
-        xaxis: {
-          categories: ["SP", 'RJ', "MG", "ES", "BA"]
-        }
-      }
+//--------- age
+
+const options3 = reactive({
+    chart: {
+        id: 'age'
+    },
+    xaxis: {
+        categories: []
+    }
+})
       
- const series3 = [{
-        name: 'series-1',
-        data: [10,8,6,4,2]
-      }]
+const series3 = reactive( [{
+    name: 'Idade',
+    data: []
+}])
 
-      const options4 = {
-        chart: {
-          id: 'vuechart-example'
-        },
-        xaxis: {
-          categories: ['Deficiente Visual', "Deficiente audititvo"]
-        }
-      }
+//--------- deficiency
+
+const options4 = reactive({
+    chart: {
+        id: 'deficiency'
+    },
+    xaxis: {
+        categories: []
+    }
+})
       
- const series4 = [{
-        name: 'series-1',
-        data: [30, 40]
-      }]
+const series4 = reactive([{
+    name: 'inclusão',
+    data: []
+}])
 
+function mountGenderGraph(){
+    if(!props.countByGender){
+        return;
+    }
+    
+    for(const gender of props.countByGender){
+        options.xaxis.categories.push(gender.label)
+        series[0].data.push(gender.total)
+    }
+}
+
+function mountAgeGraph(){
+    if(!props.countByAge){
+        return;
+    }
+    
+    for(const age of props.countByAge){
+        options3.xaxis.categories.push(age.label)
+        series3[0].data.push(age.total)
+    }
+}
+
+function mountStateGraph(){
+    if(!props.countByState){
+        return;
+    }
+    
+    for(const state of props.countByState){
+        options2.xaxis.categories.push(state.label)
+        series2[0].data.push(state.total)
+    }
+}
+
+function mountDeficiencyGraph(){
+    if(!props.countByDeficiency){
+        return;
+    }
+    
+    for(const deficiency of props.countByDeficiency){
+        options4.xaxis.categories.push(deficiency.label)
+        series4[0].data.push(deficiency.total)
+    }
+}
+
+onMounted(()=> {
+
+    mountGenderGraph()
+    mountAgeGraph()
+    mountStateGraph()
+    mountDeficiencyGraph()
+
+})
 
 </script>
 
@@ -242,43 +305,45 @@ const options = {
                 Estatísticas candidatos
             </div>
 
-            <div class="mt-2">
-                <h3 class="font-bold text-xl">
-                    Por sexo:
-                </h3>
+            <div class="grid grid-cols-3 gap-3 mt-4">
+                <div class="mt-2 border p-2 rounded">
+                    <h3 class="font-bold text-xl">
+                        Por gênero:
+                    </h3>
 
-                <div>
-                    <apexchart width="500" type="bar" :options="options" :series="series"></apexchart>
+                    <div>
+                        <apexchart width="500" type="bar" :options="options" :series="series"></apexchart>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2">
-                <h3 class="font-bold text-xl">
-                    Por idade:
-                </h3>
+                <div class="mt-2 border p-2 rounded">
+                    <h3 class="font-bold text-xl">
+                        Por idade:
+                    </h3>
 
-                <div>
-                    <apexchart width="500" type="bar" :options="options2" :series="series2"></apexchart>
+                    <div>
+                        <apexchart width="500" type="bar" :options="options2" :series="series2"></apexchart>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2">
-                <h3 class="font-bold text-xl">
-                    Por Localização:
-                </h3>
+                <div class="mt-2 border p-2 rounded">
+                    <h3 class="font-bold text-xl">
+                        Por Localização:
+                    </h3>
 
-                <div>
-                    <apexchart width="500" type="bar" :options="options3" :series="series3"></apexchart>
+                    <div>
+                        <apexchart width="500" type="bar" :options="options3" :series="series3"></apexchart>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mt-2">
-                <h3 class="font-bold text-xl">
-                    Inclusão:
-                </h3>
+                <div class="mt-2 border p-2 rounded">
+                    <h3 class="font-bold text-xl">
+                        Inclusão (Pessoas com deficiência(s)):
+                    </h3>
 
-                <div>
-                    <apexchart width="500" type="bar" :options="options4" :series="series4"></apexchart>
+                    <div>
+                        <apexchart width="500" type="bar" :options="options4" :series="series4"></apexchart>
+                    </div>
                 </div>
             </div>
 

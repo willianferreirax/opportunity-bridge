@@ -22,6 +22,10 @@ class CurriculumProExperienceController extends Controller
             'is_current' => $request->stillWorking ?? false
         ]);
 
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+
         return redirect()->route('profile.curriculum.show');
 
     }
@@ -41,6 +45,10 @@ class CurriculumProExperienceController extends Controller
             'is_current' => $request->stillWorking ?? false
         ]);
 
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+
         return redirect()->route('profile.curriculum.show');
 
     }
@@ -48,8 +56,15 @@ class CurriculumProExperienceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CurriculumProExperience $curriculumProExperience)
+    public function destroy(CurriculumProExperience $curriculumProExperience, Request $request)
     {
-        //
+            
+        $curriculumProExperience->delete();
+
+        //verify if the user curriculum is complete
+        $request->user()->verifyCurriculumIsComplete();
+
+
+        return back()->with('success', 'Experiência profissional removida com sucesso');
     }
 }
