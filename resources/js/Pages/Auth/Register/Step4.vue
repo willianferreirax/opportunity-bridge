@@ -95,6 +95,10 @@ const emit = defineEmits([
                 <option value="Pnr">Prefiro não responder</option>
                 <option value="Gn">Gênero neutro</option>
                 <option value="Ag">Agênero</option>
+                <option value="Fem">Feminino</option>
+                <option value="Masc">Masculino</option>
+                <option value="Nb">Não-binario</option>
+                <option value="Tg">Transgênero</option>
             </StandardSelect>
             <InputError class="mt-2" :message="$page.props.errors.gender" />
         </div>

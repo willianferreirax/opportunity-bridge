@@ -102,7 +102,7 @@ const backStep = () => {
             <div class="flex mb-4">
                 <img 
                     class="w-12 h-12 rounded-full" 
-                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user" 
+                    :src="selectedUser?.profile_photo_url" :alt="selectedUser?.name" 
                 />
                 <div class="ml-4">
                     <h3 class="font-bold ">

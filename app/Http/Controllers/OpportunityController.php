@@ -344,6 +344,7 @@ class OpportunityController extends Controller
 
         $opportunities = Opportunity::withCount('appliedUsers')
             ->with('address')
+            ->with('company')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'like', "%{$search}%");
             })

@@ -17,6 +17,7 @@ class UserController extends Controller
         
         $opportunities = \App\Models\Opportunity::with('address')
             ->with('appliedUsers')
+            ->with('company')
             ->whereDoesntHave('appliedUsers', function ($query) {
                 $query->where('user_id', auth()->user()->id);
             })
@@ -27,6 +28,7 @@ class UserController extends Controller
 
         //fetch two last opportunities applied by the user
         $lastApplied = OpportunityUser::with('opportunity.address')
+            ->with('opportunity.company')
             ->where('user_id', auth()->user()->id)
             ->orderBy('created_at', 'desc')
             ->take(2)
@@ -93,6 +95,7 @@ class UserController extends Controller
 
         $opportunities = \App\Models\Opportunity::with('address')
             ->with('appliedUsers')
+            ->with('company')
             ->whereDoesntHave('appliedUsers', function ($query) {
                 $query->where('user_id', auth()->user()->id);
             })
@@ -127,6 +130,7 @@ class UserController extends Controller
     public function appliedJobs(){
         $opportunities = Opportunity::with('appliedUsers')
             ->with('address')
+            ->with('company')
             ->whereHas('appliedUsers', function ($query) {
                 $query->where('user_id', auth()->user()->id);
             })

@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Jetstream\HasProfilePhoto;
 
 class Company extends Model
 {
     use HasFactory;
     use HasUuids;
+    use HasProfilePhoto;
 
     protected $fillable = [
         'fantasy_name',
@@ -17,8 +19,19 @@ class Company extends Model
         'cnpj',
         'workers_number',
         'company_area',
-        'description'
+        'description',
+        'profile_photo_path'
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = [
+        'profile_photo_url',
+    ];
+
     
     public function address()
     {

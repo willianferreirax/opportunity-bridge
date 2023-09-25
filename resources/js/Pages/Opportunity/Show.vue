@@ -214,7 +214,7 @@ const sendVideo = (event) => {
             <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
             
             <div class="flex justify-center items-center p-4">
-                <ApplicationMark class="block h-20 md:h-32 w-auto" />
+                <img :src="opportunity.company.profile_photo_url" class="block h-20 md:h-32 w-auto" />
             </div>
             
             <div class="flex justify-center items-center p-4 mt-4">
@@ -269,7 +269,7 @@ const sendVideo = (event) => {
                 
                 <div class="flex mt-4">
                     <div class="p-4 bg-gray-100 rounded-lg">
-                        <ApplicationMark class="block h-12 md:h-16 w-auto" />
+                        <img :src="opportunity.company.profile_photo_url" class="block h-12 md:h-16 w-auto" />
                     </div>
 
                     <div class="ml-4">

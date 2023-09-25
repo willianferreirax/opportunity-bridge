@@ -85,7 +85,7 @@ function fileExtension(filename) {
                                     
                                     <div>
                                         <div class="relative h-28 w-28 mx-auto">
-                                            <img src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" class="rounded-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800" id="profile-image" alt="">
+                                            <img :src="user.profile_photo_url" class="rounded-full shadow dark:shadow-gray-800 ring-4 ring-slate-50 dark:ring-slate-800" id="profile-image" alt="">
                                         </div>
 
                                         <div class="mt-4">

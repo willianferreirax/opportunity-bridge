@@ -39,7 +39,7 @@ const updateStatus = () => {
         <div class="flex justify-center ">
             <img 
                 class="w-32 h-32 rounded-full p-1 border border-yellow-400 " 
-                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user" 
+                :src="user.profile_photo_url" :alt="user.name" 
             />
         </div>
 

@@ -140,7 +140,14 @@ Route::middleware([
 
     Route::prefix('company')->group(function() {
 
-        Route::get('dashboard', [CompanyController::class, 'dashboard'])->name('company.dashboard');
+        Route::get('dashboard', [CompanyController::class, 'dashboard'])
+            ->name('company.dashboard');
+
+        Route::get('profile', [CompanyController::class, 'profile'])
+            ->name('company.profile.show');
+
+        Route::post('profile/info', [CompanyController::class, 'updateProfile'])
+            ->name('company.profile.update');
 
         Route::get('announced', [OpportunityController::class, 'listAnnouncedJobs'])
             ->name('company.announced');
@@ -150,6 +157,8 @@ Route::middleware([
 
         Route::get('opportunity/{opportunity}', [OpportunityController::class, 'opportunityReport'])
             ->name('company.opportunitiy.report');
+
+
 
     });
 

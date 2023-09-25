@@ -164,7 +164,7 @@ onMounted(()=> {
 
         <hr class="h-px my-4 bg-gray-200 border-0 dark:bg-gray-700">
 
-        <div class="grid grid-cols-2 gap-3 mt-4">
+        <div class="grid md:grid-cols-2 gap-3 mt-4">
             <div class="mt-2 border p-2 rounded">
                 <h3 class="font-bold text-xl">
                     Novos candidatos:
