@@ -27,7 +27,7 @@ const submit = () => {
         return;
     }
 
-    cep = form.cep.replace(/[^\d]+/g, '');
+    const cep = form.cep.replace(/[^\d]+/g, '');
 
     if(cep.length != 8) {
         page.props.errors.cep = 'CEP inválido'
