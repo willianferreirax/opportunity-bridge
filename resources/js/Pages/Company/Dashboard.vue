@@ -19,7 +19,7 @@ const props = defineProps({
 
             <div class="flex justify-between p-8 pl-0">
                 <h1 class="text-3xl font-bold ">
-                    Bem vindo, xxxx
+                    Bem vindo, {{ $page.props.auth.user.name }}
                 </h1>
 
                 <div class="hidden sm:block">
