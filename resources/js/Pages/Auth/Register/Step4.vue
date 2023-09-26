@@ -9,7 +9,7 @@ import VueSelect from "vue-select";
 import { onMounted, ref } from 'vue';
 
 const form = useForm('userRegisterStep4', {
-    sex: '1',
+    sex: '',
     skin: '',
     gender: '',
     nacionality: '',
@@ -26,10 +26,25 @@ const submit = () => {
 
     form.clearErrors()
 
-    // if(!form.sex){
-    //     page.props.errors.sex = 'Sexo é obrigatório'
-    //     return;
-    // }
+    if(!form.sex){
+        page.props.errors.sex = 'Orientação sexual é obrigatório'
+        return;
+    }
+
+    if(!form.skin){
+        page.props.errors.skin = 'Raça/Etnia é obrigatório'
+        return;
+    }
+
+    if(!form.gender){
+        page.props.errors.gender = 'Genero é obrigatório'
+        return;
+    }
+
+    if(!form.nacionality){
+        page.props.errors.nacionality = 'Nacionalidade é obrigatório'
+        return;
+    }
 
     emit("submit")
 };
@@ -62,22 +77,28 @@ const emit = defineEmits([
             
         </div>
 
-        <!-- <div class="mt-4">
-            <InputLabel class="mb-2" for="sex" value="Gênero:" />
+        <div class="mt-4">
+            <InputLabel class="mb-2" for="sex" value="Orientação sexual:" />
             <StandardSelect
                 v-model="form.sex"
             >
-                <option value="1">Masculino</option>
-                <option value="2">Feminino</option>
+                
+                <option value="6">Prefiro não responder</option>
+                <option value="1">Heterossexual</option>
+                <option value="2">Homossexual</option>
+                <option value="3">Bissexual</option>
+                <option value="4">Assexual</option>
+                <option value="5">Pansexual</option>
             </StandardSelect>
             <InputError class="mt-2" :message="$page.props.errors.sex" />
-        </div> -->
+        </div>
 
         <div class="mt-4">
             <InputLabel class="mb-2" for="skin" value="Raça/Etnia:" />
             <StandardSelect
                 v-model="form.skin"
             >
+                <option value="Pnr">Prefiro não responder</option>
                 <option value="B">Branca</option>
                 <option value="Pt">Preta</option>
                 <option value="A">Amarela</option>

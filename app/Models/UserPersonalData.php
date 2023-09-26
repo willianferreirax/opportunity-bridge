@@ -25,4 +25,12 @@ class UserPersonalData extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function gender(){
+        return $this->belongsTo(Gender::class);
+    }
+
+    public function skin(){
+        return $this->belongsTo(Skin::class);
+    }
 }

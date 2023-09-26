@@ -322,7 +322,7 @@ onMounted(()=> {
                     </h3>
 
                     <div>
-                        <apexchart width="500" type="bar" :options="options2" :series="series2"></apexchart>
+                        <apexchart width="500" type="bar" :options="options3" :series="series3"></apexchart>
                     </div>
                 </div>
 
@@ -332,7 +332,7 @@ onMounted(()=> {
                     </h3>
 
                     <div>
-                        <apexchart width="500" type="bar" :options="options3" :series="series3"></apexchart>
+                        <apexchart width="500" type="bar" :options="options2" :series="series2"></apexchart>
                     </div>
                 </div>
 

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gender;
 use App\Models\Opportunity;
 use App\Models\OpportunityUser;
+use App\Models\Skin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -153,6 +155,22 @@ class UserController extends Controller
         $user->load('creativeCurriculums');
         $user->load('address');
         $user->load('contact');
+        $user->load('personal');
+        $user->load('deficiences');
+
+        $skin = Skin::where('id', $user->personal->skin_id)->first()?->label;
+
+        $user->personal->skin = $skin ?? 'Prefiro não informar';
+
+        $genero = Gender::where('id', $user->personal->gender_id)->first()?->label;
+
+        $user->personal->gender = $genero ?? 'Prefiro não informar';
+
+        $nascionality = $user->personal->nacionality == 1 ? 'Brasileiro' : 'Estrangeiro';
+
+        $nascionality = $nascionality ?? 'Prefiro não informar';
+
+        $user->personal->nacionality2 = $nascionality;
 
         return Inertia::render('Company/CandidateProfileView', [
             'user' => $user,
