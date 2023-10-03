@@ -6,10 +6,13 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import StandardTextArea from '@/Components/StandardTextArea.vue';
 
 const form = useForm('opportunityRegisterStep2', {
-    benefits: '',
-    skills: '',
-    requisites: '',
-    responsabilities: '',
+    benefits:`* Vale alimentação;`,
+    skills: 'PHP',
+    requisites: `* Conhecimento em PHP e sua estrutura;
+ * Experiência em desenvolvimento de aplicações web utilizando PHP;
+ * Conhecimento em bancos de dados SQL;`,
+    responsabilities:  `* Atuar no desenvolvimento de soluções web em PHP de alto desempenho para gestão pública, sempre com foco na usabilidade e engenharia de processamento;
+ * Participar do planejamento de projetos e definição de requisitos;`,
     remote: false,
 });
 

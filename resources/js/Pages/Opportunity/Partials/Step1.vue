@@ -11,18 +11,18 @@ import { vMaska } from 'maska';
 import { onMounted, ref } from 'vue';
 
 const form = useForm('opportunityRegisterStep1', {
-    name: '',
-    role: '',
-    resume: '',
-    regime: '',
-    type: '',
-    pcd: false,
-    workHour_start: '',
-    workHour_end: '',
-    targetUsers: [],
-    salary_start: '',
-    salary_end: '',
-    quantity: '',
+    name: 'Desenvolvedor PHP',
+    role: 'Desenvolvedor PHP Pleno',
+    resume: 'Estamos em busca de um desenvolvedor PHP para trabalhar em um projeto de 3 meses',
+    regime: 'PJ',
+    type: 'Temporario',
+    pcd: true,
+    workHour_start: '08:30',
+    workHour_end: '18:00',
+    targetUsers: [1,2],
+    salary_start: '3.000,00',
+    salary_end: '4.000,00',
+    quantity: '2',
 });
 
 const type = ref([])

@@ -44,11 +44,11 @@ const props = defineProps({
 });
 
 const form = useForm({
-    name: '',
-    description: '',
-    type: '',
-    limitDate: '',
-    link: '',
+    name: 'Análise de currículo',
+    description: 'algo pertinente a etapa sendo criada',
+    type: 'Simples',
+    limitDate: '7',
+    link: 'https://www.google.com',
 });
 
 watch(() => props.show, () => {

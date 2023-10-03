@@ -22,7 +22,10 @@ const props = defineProps({
                 <p class="font-bold">{{ opportunity.opportunity.name }}</p>
                 <div class="flex justify-between flex-col sm:flex-row">
                     <div class="flex items-center text-sm text-gray-700 mb-4 sm:mb-0">
-                        {{ opportunity.opportunity.address.city }}, {{ opportunity.opportunity.address.state }}
+                        <br>
+                        Empresa: {{ opportunity?.opportunity?.company?.company_name }}
+                        <br>
+                        {{ opportunity?.opportunity?.address?.city }}, {{ opportunity?.opportunity?.address?.state }}
                     </div>
 
                     <div class="flex">

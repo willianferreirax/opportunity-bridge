@@ -43,11 +43,11 @@ const props = defineProps({
 });
 
 const form = useForm({
-    institutionName: '',
-    courseName: '',
-    dateStart: '',
+    institutionName: 'Fiap',
+    courseName: 'Sistemas de informacao',
+    dateStart: '2020-02-07',
     dateEnd: '',
-    stillStudying: ''
+    stillStudying: true
 });
 
 watch(() => props.show, () => {

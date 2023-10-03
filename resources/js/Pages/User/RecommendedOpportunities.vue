@@ -13,7 +13,7 @@ const props = defineProps({
     <AppLayout title="Procura vagas">
         
 
-        <section class="p-12 flex flex-col items-center">
+        <section class="p-4 sm:p-12 flex flex-col items-center">
 
             <h1 class="mb-12 text-3xl font-bold">
                 Vagas recomendadas

@@ -224,7 +224,7 @@ class OpportunityController extends Controller
                 'interview_step_id' => $request->step,
             ],
             [
-                'date' => date('Y-m-d H:i:s', strtotime($request->date))
+                'date' => date('Y-m-d H:i:s', strtotime(str_replace('/', '-', $request->date)))
             ]);
 
         return back()->with('success', 'Data da entrevista atualizada!');

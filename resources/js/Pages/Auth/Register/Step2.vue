@@ -7,9 +7,9 @@ import TextInput from '@/Components/TextInput.vue';
 import validatePassword from '@/Utils/validatePassword';
 
 const form = useForm('userRegisterStep2', {
-    email: '',
-    password: '',
-    password_confirmation: '',
+    email: 'candidato7@gmail.com',
+    password: 'Mwc1234_',
+    password_confirmation: 'Mwc1234_',
 });
 
 const page = usePage();

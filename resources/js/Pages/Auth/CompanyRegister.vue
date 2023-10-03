@@ -21,6 +21,10 @@ const nextStep = () => {
     currentStep.value++;
 }
 
+const backStep = () => {
+    currentStep.value--;
+}
+
 function resetForm(object){
     Object.keys(object).forEach(key => {
         if(typeof object[key] === 'object') {
@@ -80,7 +84,7 @@ function submit () {
         <RegisterContainer>
 
             <Stepper :value="steps2" v-model:currentStep="currentStep">
-                <component :is="steps[currentStep]" @nextStep="nextStep()" @submit="submit()" @resetForm="resetForm($event)"></component>
+                <component :is="steps[currentStep]" @nextStep="nextStep()" @backStep="backStep()" @submit="submit()" @resetForm="resetForm($event)"></component>
             </Stepper>
 
         </RegisterContainer>

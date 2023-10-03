@@ -43,10 +43,10 @@ const props = defineProps({
 });
 
 const form = useForm({
-    institutionName: '',
-    courseName: '',
-    dateStart: '',
-    dateEnd: '',
+    institutionName: 'Kumon',
+    courseName: 'Matematica',
+    dateStart: '2011-08-01',
+    dateEnd: '2017-10-01',
     stillCoursing: false,
 });
 

@@ -9,12 +9,12 @@ import validatePhone from '@/Utils/validatePhone';
 import validatePassword from '@/Utils/validatePassword';
 
 const form = useForm('companyRegisterStep1', {
-    name: '',
-    email: '',
-    role: '',
-    phone: '',
-    password: '',
-    password_confirmation: '',
+    name: 'recrutador final',
+    email: 'empresa8@gmail.com',
+    role: 'Recrutador',
+    phone: '11954659621',
+    password: 'Mwc1234_',
+    password_confirmation: 'Mwc1234_',
 });
 
 const page = usePage();

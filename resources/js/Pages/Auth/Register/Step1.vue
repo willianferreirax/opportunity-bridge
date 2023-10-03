@@ -10,11 +10,11 @@ import validateCPF from '@/Utils/validateCPF';
 import validatePhone from '@/Utils/validatePhone';
 
 const form = useForm('userRegisterStep1', {
-    name: '',
-    cpf: '',
-    certificate: '',
-    birthdate: '',
-    phone: '',
+    name: 'candidato final',
+    cpf: '60906308020',
+    certificate: '5we5werwr',
+    birthdate: '2001-06-27',
+    phone: '11954659621',
     terms: false,
 });
 
@@ -40,7 +40,7 @@ function nextStep() {
     }
 
     if(!form.certificate) {
-        page.props.errors.certificate = 'Certificado EY Institute é obrigatório'
+        page.props.errors.certificate = 'Certificado é obrigatório'
         return;
     }
 

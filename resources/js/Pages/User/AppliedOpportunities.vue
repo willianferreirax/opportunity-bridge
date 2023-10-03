@@ -1,5 +1,6 @@
 <script setup>
 import OpportunityCard from '@/Components/OpportunityCard.vue';
+import Pagination from '@/Components/Pagination.vue';
 import SearchBar from '@/Components/SearchBar.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 

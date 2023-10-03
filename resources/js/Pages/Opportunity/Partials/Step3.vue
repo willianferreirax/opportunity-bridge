@@ -8,12 +8,12 @@ import { vMaska } from 'maska';
 import consultCep from '@/Utils/consultCep';
 
 const form = useForm('opportunityRegisterStep3', {
-    cep: '',
-    street: '',
-    neighbor: '',
-    city: '',
-    state: '',
-    number: '',
+    cep: '08050-314',
+    street: 'Travessa José Antônio Arze',
+    neighbor: 'Jardim das Camélias',
+    city: 'São Paulo',
+    state: 'SP',
+    number: '8',
 });
 
 const page = usePage();

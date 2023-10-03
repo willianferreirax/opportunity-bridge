@@ -7,12 +7,12 @@ import TextInput from '@/Components/TextInput.vue';
 import { vMaska } from 'maska';
 
 const form = useForm('companyRegisterStep2', {
-    fantasyName: '',
-    companyName: '',
-    cnpj: '',
-    workersNumber: '',
-    companyArea: '',
-    companyDescription: '',
+    fantasyName: 'nome fantasia empresa final',
+    companyName: 'empresa ltda',
+    cnpj: '29906792000140',
+    workersNumber: '250',
+    companyArea: 'Recursos Humanos',
+    companyDescription: 'contratamos pessoas para trabalhar',
 });
 
 const page = usePage();

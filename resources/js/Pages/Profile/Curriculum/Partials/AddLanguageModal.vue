@@ -42,9 +42,9 @@ const props = defineProps({
 });
 
 const form = useForm({
-    institutionName: '',
-    language: '',
-    level: 0,
+    institutionName: 'Kumon',
+    language: 'Inglês',
+    level: 4,
 });
 
 watch(() => props.show, () => {

@@ -1,7 +1,7 @@
 <script setup>
 import { router } from '@inertiajs/vue3';
 import VueDatepicker from '@vuepic/vue-datepicker';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 
 const format = (date) => {
@@ -45,20 +45,37 @@ const setInterviewDate = () => {
 
 }
 
-const date = computed(() => {
-    let date = new Date();
+// const date = computed(() => {
+//     let date = new Date();
+
+//     if (!props.opportunityUser){
+//         return date;
+//     }
+
+//     for(const interview of props.opportunityUser.interviews) {
+//         if(interview.interview_step_id == props.step.id) {
+//             date = new Date(interview.date);
+//         }
+//     }
+
+//     return date;
+// })
+
+const date = ref(new Date());
+
+watch(() => props.opportunityUser, () => {
+
+    date.value = new Date();
 
     if (!props.opportunityUser){
-        return date;
+        return;
     }
 
     for(const interview of props.opportunityUser.interviews) {
         if(interview.interview_step_id == props.step.id) {
-            date = new Date(interview.date);
+            date.value = new Date(interview.date);
         }
     }
-
-    return date;
 })
 
 </script>

@@ -9,12 +9,12 @@ import VueSelect from "vue-select";
 import { onMounted, ref } from 'vue';
 
 const form = useForm('userRegisterStep4', {
-    sex: '',
-    skin: '',
-    gender: '',
-    nacionality: '',
-    isPCD: false,
-    deficiency: [],
+    sex: '1',
+    skin: 'Pd',
+    gender: 'Nb',
+    nacionality: '2',
+    isPCD: true,
+    deficiency: [1,2],
 
 });
 
