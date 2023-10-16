@@ -32,6 +32,9 @@ const nextStep = () => {
 const backStep = () => {
 
     currentStep.value--;
+
+}
+
 function resetForm(object){
     Object.keys(object).forEach(key => {
         if(typeof object[key] === 'object') {
